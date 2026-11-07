@@ -6,12 +6,12 @@
 
 *Every decision points back to the exact patient sentence that supports it.*
 
-![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-CUDA-EE4C2C?logo=pytorch&logoColor=white)
 ![Transformers](https://img.shields.io/badge/🤗%20Transformers-PEFT%20·%20LoRA-FFD21E)
 ![FastAPI](https://img.shields.io/badge/FastAPI-app-009688?logo=fastapi&logoColor=white)
 ![uv](https://img.shields.io/badge/uv-managed-DE5FE9)
-![Status](https://img.shields.io/badge/status-in%20development-orange)
+![Status](https://img.shields.io/badge/status-complete-2ea44f)
 
 </div>
 
@@ -130,7 +130,7 @@ All of it is exposed in a **browser app** that has two parts: a screening workfl
 
 ## 🚀 Quick start
 
-> **Requirements:** Windows, Linux or macOS · Python 3.11 · [uv](https://docs.astral.sh/uv/) · [Task](https://taskfile.dev) · an NVIDIA GPU with at least 6 GB is recommended (a CPU fallback is supported but slow).
+> **Requirements:** Windows, Linux or macOS · Python 3.12 · [uv](https://docs.astral.sh/uv/) · [Task](https://taskfile.dev) · an NVIDIA GPU with at least 6 GB is recommended (a CPU fallback is supported but slow).
 
 ```bash
 git clone https://github.com/ruhank-dev/eligitrace.git
@@ -165,18 +165,35 @@ The API is self-documenting. While the app is running, open **http://127.0.0.1:8
 
 ## 📈 Results
 
-> Results will be published here once the final, frozen evaluation is complete. Every number will be generated from files in [`results/`](results/); none will be typed by hand.
+Every number here comes from files in [`results/`](results/). The test split was evaluated **once**, after the model, prompt and decoding settings were frozen ([`FROZEN.json`](results/final_test/FROZEN.json)). Hardware: a single **GTX 1660 SUPER (6 GB)**, bf16, batch size 1.
 
-| Area | Report location |
-|------|-----------------|
-| Before vs after fine-tuning (validation and test) | `results/final_test/before_after.csv` |
-| Classification and confusion matrices | `results/final_test/` |
-| Evidence precision, recall and F1 | `results/final_test/` |
-| Error analysis | `results/final_test/error_analysis.md` |
-| KV-cache benchmark | `results/kvcache/` |
-| Attention validation and benchmark | `results/attention/` |
-| Speculative decoding benchmark | `results/speculative/` |
-| Training curves and logs | `results/training/` |
+### Before vs after fine-tuning (held-out test patients, n = 206 criteria)
+
+| Model | Accuracy | Macro-F1 (present labels) | Inclusion F1 | Exclusion F1 | Evidence micro-F1 | Evidence macro-F1 | Unparseable |
+|---|---|---|---|---|---|---|---|
+| Qwen2.5-1.5B-Instruct, zero-shot | 0.160 | 0.155 | 0.207 | 0.056 | 0.169 | 0.354 | 0 % |
+| **+ EligiTrace LoRA** | **0.733** | **0.528** | **0.425** | **0.398** | **0.561** | **0.819** | **0 %** |
+
+Patient-level bootstrap 95 % CIs (fine-tuned): accuracy [0.583, 0.843], macro-F1 [0.436, 0.608]. On the validation split the fine-tuned model reaches 0.738 accuracy and 0.543 macro-F1.
+The model is precise on `included` (precision 1.00) and `not excluded` (F1 0.82). The rare `not included` and `not applicable` labels remain weak; see the [error analysis](results/final_test/finetuned/error_analysis.md).
+
+### Inference mechanisms
+
+| Mechanism | Headline result |
+|---|---|
+| KV-cached decoding | **3.6×** faster decoding than recomputation at 128 context tokens, **10×** at 512 and **18–20×** at 1,024. The cache costs only 28 KiB per token thanks to grouped-query attention. |
+| Tiled online-softmax attention | Matches PyTorch SDPA to **2.7e-6** in fp32 (432 cases). At 4,096 tokens it needs **41 MiB vs 1.9 GB** of extra memory compared with unfused attention, but it is slower because it is a Python loop over tiles, not a fused kernel. |
+| Speculative decoding (0.5B draft) | **91 %** draft acceptance at γ = 1, and 0.31 target forwards per token at γ = 8. Even so, it runs at **0.39–0.69×** the speed of KV-cached greedy decoding: on this launch-bound GPU, a 24-layer draft step costs nearly as much as a 28-layer target step. This negative result is reported as measured. |
+
+In bf16, a few long generations diverge from the reference decoder. Each divergence happens at a logit tie within one bf16 rounding step (a margin of 0.125). Re-running the same cases in fp32 is how we check that the decoders themselves are exact. Full analysis: [`report/`](report/).
+
+| Area | Files |
+|------|-------|
+| Before/after table and CIs | [`results/final_test/`](results/final_test/) |
+| Training curves and logs | [`results/training/`](results/training/) |
+| KV-cache benchmark | [`results/kvcache/`](results/kvcache/) |
+| Attention validation and benchmark | [`results/attention/`](results/attention/) |
+| Speculative decoding benchmark | [`results/speculative/`](results/speculative/) |
 
 ---
 
@@ -207,7 +224,7 @@ eligitrace/
 - Exact dependency versions are pinned in `uv.lock`; `task setup` reproduces the environment.
 - The dataset revision is pinned, and the split is deterministic (seed 42). Tests check it.
 - All hyperparameters live in versioned YAML configs; training logs and curves are committed.
-- The LoRA adapter is hosted on the Hugging Face Hub (link added on release), and `task download-weights` fetches it.
+- The LoRA adapter is hosted on the Hugging Face Hub at [`arceus1rk/eligitrace-qwen2.5-1.5b-lora`](https://huggingface.co/arceus1rk/eligitrace-qwen2.5-1.5b-lora) (adapter SHA-256 `eb1843b2…`), and `task download-weights` fetches it.
 - Benchmarks use warm-up runs, synchronised CUDA timing and repeated measurements; environment details are logged with every result.
 
 ---

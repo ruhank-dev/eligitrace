@@ -1,0 +1,40 @@
+All three mechanisms are exact in exact arithmetic, yet each produced a few bf16 outputs that differ from its
+reference. We checked whether these differences come from bugs or from rounding, using
+\texttt{speculative/investigate.py}, \texttt{attention/hf\_integration.py} and \texttt{kvcache/fp32\_check.py}.
+
+\textbf{Margins at the divergence point.} Every bf16 divergence we found occurs where the two best logits
+differ by at most 0.125. For logits in $[16,32)$, the spacing between adjacent bf16 values is $2^{4-7}=0.125$,
+so the two tokens are tied, or one rounding step apart. For speculative example~0, the target logits at
+step~22 are 18.375 vs.\ 18.25 when tokens are processed one at a time, as in greedy decoding. Inside the
+5-token verification block used by speculative decoding, the same two logits come out \emph{exactly equal}
+(17.875 and 17.875), and the tie is broken the other way. The single-token and block paths differ by up to 0.84
+in individual logits. Different matrix shapes select different GEMM kernels and reduction orders, and bf16
+keeps only 8 bits of mantissa.
+
+\textbf{fp32 reruns.} Table~\ref{tab:fp32} repeats the diverging cases in fp32 on the CPU, without changing any
+code. Speculative decoding then matches greedy decoding token for token on all three investigated prompts.
+With the tiled kernel substituted for every attention layer of the fine-tuned model through the Transformers
+\texttt{AttentionInterface}, final-position logits stay within $3.4\times10^{-4}$ of SDPA. Greedy output is
+identical on all three prompts, whereas in bf16 the logit gap is 0.5--0.7 and one prompt diverges.
+\KVFPthree
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Token agreement with the reference in bf16 (GPU) vs.\ fp32 (CPU), on the cases that diverged in
+bf16.}
+\label{tab:fp32}
+\begin{tabular}{lcc}
+\toprule
+Check & bf16 GPU & fp32 CPU \\
+\midrule
+Speculative vs.\ greedy ($\gamma{=}4$, 3 prompts) & 1/3 equal & 3/3 equal \\
+Tiled attention in model vs.\ SDPA (3 prompts) & 2/3 equal & 3/3 equal \\
+\quad max $|\Delta\text{logit}|$ & 0.70 & $3.4\times10^{-4}$ \\
+\KVFProw
+\bottomrule
+\end{tabular}
+\end{table}
+
+The mechanisms are therefore exact. In bf16 they are reproducible only up to ties within one rounding step,
+which is also true of production inference stacks. Any bf16 equality claim should be read with that caveat.

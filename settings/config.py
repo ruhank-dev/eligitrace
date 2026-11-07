@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     # Models
     target_model_id: str = "Qwen/Qwen2.5-1.5B-Instruct"
     draft_model_id: str = "Qwen/Qwen2.5-0.5B-Instruct"
-    adapter_repo_id: str = "ruhank-dev/eligitrace-qwen2.5-1.5b-lora"
+    adapter_repo_id: str = "arceus1rk/eligitrace-qwen2.5-1.5b-lora"
     adapter_local_dir: Path = REPO_ROOT / "models" / "eligitrace-lora"
     device: Literal["auto", "cuda", "cpu"] = "auto"
     dtype: Literal["bfloat16", "float16", "float32"] = "bfloat16"  # fp16 GEMM is ~5x slower on GTX 16xx

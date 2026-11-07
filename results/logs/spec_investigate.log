@@ -1,0 +1,111 @@
+warning: `VIRTUAL_ENV=C:\Users\RUHAN\anaconda3` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+{
+  "device": "cuda",
+  "dtype": "torch.bfloat16",
+  "example": 0,
+  "gamma": 4,
+  "max_new": 48,
+  "equal": false,
+  "first_diff": 22,
+  "greedy_tok": 458,
+  "spec_tok": 264,
+  "analysis": {
+    "single_token_path": {
+      "tokens": [
+        458,
+        825
+      ],
+      "logits": [
+        18.375,
+        18.25
+      ],
+      "margin": 0.125
+    },
+    "block_path": {
+      "tokens": [
+        825,
+        264
+      ],
+      "logits": [
+        17.875,
+        17.875
+      ],
+      "margin": 0.0
+    },
+    "max_abs_logit_diff": 0.8438
+  }
+}
+{
+  "device": "cpu",
+  "dtype": "torch.float32",
+  "example": 0,
+  "gamma": 4,
+  "max_new": 48,
+  "equal": true,
+  "first_diff": null
+}
+warning: `VIRTUAL_ENV=C:\Users\RUHAN\anaconda3` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+{
+  "device": "cuda",
+  "dtype": "torch.bfloat16",
+  "example": 1,
+  "gamma": 4,
+  "max_new": 48,
+  "equal": false,
+  "first_diff": 4,
+  "greedy_tok": 82622,
+  "spec_tok": 1921,
+  "analysis": {
+    "single_token_path": {
+      "tokens": [
+        82622,
+        1921
+      ],
+      "logits": [
+        30.75,
+        30.625
+      ],
+      "margin": 0.125
+    },
+    "block_path": {
+      "tokens": [
+        82622,
+        1921
+      ],
+      "logits": [
+        30.5,
+        30.375
+      ],
+      "margin": 0.125
+    },
+    "max_abs_logit_diff": 0.25
+  }
+}
+{
+  "device": "cpu",
+  "dtype": "torch.float32",
+  "example": 1,
+  "gamma": 4,
+  "max_new": 48,
+  "equal": true,
+  "first_diff": null
+}
+warning: `VIRTUAL_ENV=C:\Users\RUHAN\anaconda3` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+{
+  "device": "cuda",
+  "dtype": "torch.bfloat16",
+  "example": 2,
+  "gamma": 4,
+  "max_new": 48,
+  "equal": true,
+  "first_diff": null
+}
+{
+  "device": "cpu",
+  "dtype": "torch.float32",
+  "example": 2,
+  "gamma": 4,
+  "max_new": 48,
+  "equal": true,
+  "first_diff": null
+}

@@ -7,14 +7,17 @@ modify every component. No AI-generated content was used as data, labels or eval
 
 \section{Reproducibility}\label{app:repro}
 Source code, configuration, split manifest, logs and results: \url{https://github.com/ruhank-dev/eligitrace}.
-LoRA adapter: \url{https://huggingface.co/ruhank-dev/eligitrace-qwen2.5-1.5b-lora}.
+LoRA adapter: \url{https://huggingface.co/arceus1rk/eligitrace-qwen2.5-1.5b-lora}.
 With \texttt{uv} and \texttt{Task} installed:
+{\footnotesize
 \begin{verbatim}
-task setup              # environment from uv.lock
-task data               # split, manifest, token stats
-task train              # LoRA fine-tuning (bf16)
-task eval-final         # one-time test evaluation
-task bench-kv; task bench-attn; task bench-spec
-task download-weights   # published adapter
-task app                # http://127.0.0.1:8000
+task setup     # env from uv.lock
+task data      # split, manifest, stats
+task train     # LoRA fine-tuning
+task eval-final  # one-time test eval
+task bench-kv; task bench-attn
+task bench-spec
+task download-weights
+task app       # 127.0.0.1:8000
 \end{verbatim}
+}

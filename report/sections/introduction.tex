@@ -21,7 +21,8 @@ manifest and automated leakage tests;
 \item a LoRA~\cite{hu2022lora} adaptation whose precision strategy was \emph{chosen by measurement} on a
 6\,GB consumer GPU, with a same-model before/after comparison on identical held-out examples;
 \item a hand-written KV-cached greedy decoder, a tiled online-softmax attention kernel and a greedy
-speculative decoder, each validated for exact agreement with a reference and benchmarked honestly;
+speculative decoder, each validated against a reference (exact in fp32, and in bf16 up to logit ties within one rounding
+step) and benchmarked under controlled conditions;
 \item a browser application that screens unseen notes against typed or fetched criteria, highlights the
 exact evidence sentences, aggregates criterion decisions with an explicit rule, exports a provenance-stamped
 report, and exposes a live inference laboratory.

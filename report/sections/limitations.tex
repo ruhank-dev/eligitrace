@@ -14,8 +14,10 @@ unfaithful paraphrase. They should be read as summaries of the cited evidence, n
 
 \textbf{Inference measurements.} Timings are from one consumer GPU under Windows with a slow host CPU; at
 batch size 1 small kernels are launch-bound, which shapes every speed result (Section~\ref{sec:results}). The
-tiled attention kernel is an educational PyTorch implementation, not a fused kernel, and was validated in
-isolation rather than substituted into the production model path.
+tiled attention kernel is an educational PyTorch implementation, not a fused kernel. It was checked inside the
+full model (Section~\ref{sec:res-numerics}) but is not used in the application's serving path. Equality
+claims in bf16 hold only up to logit ties within one rounding step; exactness was confirmed in fp32 on a
+small number of prompts, not on the full benchmark grid.
 
 \textbf{Aggregation and scope.} The overall outcome is a hand-written rule over criterion predictions; the
 dataset contains no patient--trial ground truth, so this outcome is not evaluated. Criteria fetched from

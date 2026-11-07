@@ -1,0 +1,5 @@
+warning: `VIRTUAL_ENV=C:\Users\RUHAN\anaconda3` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+{'prompt_len': 343, 'max_abs_logit_diff': 0.00021529197692871094, 'same_argmax': True, 'greedy_tokens_equal': True, 'first_diff': None}
+{'prompt_len': 322, 'max_abs_logit_diff': 6.788969039916992e-05, 'same_argmax': True, 'greedy_tokens_equal': True, 'first_diff': None}
+{'prompt_len': 328, 'max_abs_logit_diff': 0.00033664703369140625, 'same_argmax': True, 'greedy_tokens_equal': True, 'first_diff': None}
+-> C:\Users\RUHAN\Downloads\gen_ai_assignment_2\results\attention\hf_integration_cpu_float32.json

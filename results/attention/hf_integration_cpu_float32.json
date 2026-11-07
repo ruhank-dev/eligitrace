@@ -1,0 +1,29 @@
+{
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "dtype": "torch.float32",
+  "max_new_tokens": 32,
+  "reference": "sdpa",
+  "cases": [
+    {
+      "prompt_len": 343,
+      "max_abs_logit_diff": 0.00021529197692871094,
+      "same_argmax": true,
+      "greedy_tokens_equal": true,
+      "first_diff": null
+    },
+    {
+      "prompt_len": 322,
+      "max_abs_logit_diff": 6.788969039916992e-05,
+      "same_argmax": true,
+      "greedy_tokens_equal": true,
+      "first_diff": null
+    },
+    {
+      "prompt_len": 328,
+      "max_abs_logit_diff": 0.00033664703369140625,
+      "same_argmax": true,
+      "greedy_tokens_equal": true,
+      "first_diff": null
+    }
+  ]
+}
