@@ -1,0 +1,23 @@
+# EligiTrace LoRA SFT config — selected from results/training/memory_bench.json (see report §III-E)
+run_name: lora_r16_fp16mixed
+base_model: Qwen/Qwen2.5-1.5B-Instruct
+seed: 42
+max_seq_len: 1024          # longest example is 623 tokens -> 0 truncation (results/data/token_stats.json)
+strategy: fp16-mixed       # fp32 | fp16-mixed | qlora-nf4
+grad_ckpt: true
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+train:
+  epochs: 4
+  lr: 2.0e-4
+  warmup_ratio: 0.05
+  micro_batch: 4
+  grad_accum: 4            # effective batch 16
+  weight_decay: 0.0
+  max_grad_norm: 1.0
+  log_every: 5
+oversample: {}             # e.g. {"excluded": 3, "not included": 3}
+eval_each_epoch: true      # generation-based val metrics per epoch (model selection)

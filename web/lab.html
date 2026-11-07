@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EligiTrace · Inference Lab</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><circle cx='10' cy='10' r='6' fill='none' stroke='%232f5bd3' stroke-width='2.5'/><path d='M14.5 14.5 21 21' stroke='%232f5bd3' stroke-width='2.5' stroke-linecap='round'/></svg>">
+  <link rel="stylesheet" href="/assets/app.css">
+</head>
+<body>
+<header class="topbar"><div class="topbar-inner">
+  <a class="brand" href="/"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="6.5" stroke="currentColor" stroke-width="2.2"/><path d="M7.3 10.2l1.9 1.9 3.6-3.8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 15l5.5 5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+    EligiTrace <small>evidence-traced trial screening</small></a>
+  <nav class="nav" aria-label="Main"><a href="/">Screen</a><a href="/lab" aria-current="page">Inference Lab</a><a href="/docs" target="_blank" rel="noopener">API</a></nav>
+  <span class="spacer"></span>
+  <span class="status" id="status" data-s="loading" role="status" aria-live="polite"><span class="dot"></span><span id="status-text">Connecting…</span></span>
+  <button class="icon-btn" id="theme" title="Toggle theme" aria-label="Toggle colour theme">◐</button>
+</div></header>
+
+<main>
+  <div class="page-head"><div><h1>Inference Lab</h1>
+    <p>Run the decoding mechanisms side by side on the loaded model. Every number below is measured live on this machine (warm-up, CUDA-synchronised timing, repeated runs).</p></div></div>
+
+  <div class="lab-grid">
+    <section class="card" aria-labelledby="h-dec">
+      <div class="card-h"><h2 id="h-dec">Decoding comparison</h2></div>
+      <div class="card-b form-grid">
+        <label>Prompt
+          <select id="src"><option value="example">Validation example (real screening prompt)</option><option value="custom">Custom prompt</option></select></label>
+        <label id="ex-wrap">Example #<input type="range" id="ex" min="0" max="49" value="0"><span class="hint" id="ex-v">0</span></label>
+        <label id="custom-wrap" hidden>Custom prompt<textarea id="custom" maxlength="6000" style="min-height:90px" placeholder="Explain what a KV cache is in two sentences."></textarea></label>
+        <div><span class="hint" style="font-weight:600">Modes</span>
+          <div class="checks" style="margin-top:4px">
+            <label><input type="checkbox" value="no_cache" checked> No cache (reference)</label>
+            <label><input type="checkbox" value="kv_cached" checked> KV-cached</label>
+            <label><input type="checkbox" value="speculative" checked> Speculative</label></div></div>
+        <label>Draft tokens per round γ = <span id="g-v">4</span><input type="range" id="gamma" min="1" max="8" value="4"></label>
+        <label>Max new tokens = <span id="m-v">48</span><input type="range" id="maxnew" min="8" max="256" step="8" value="48"></label>
+        <label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="noeos"> Ignore EOS (generate exactly max tokens)</label>
+        <label>Repeats<select id="repeats"><option>1</option><option selected>2</option><option>3</option><option>5</option></select></label>
+        <div class="field-error" id="dec-err" role="alert"></div>
+        <button class="btn primary" id="run-dec" disabled>Run comparison</button>
+      </div>
+    </section>
+    <section class="card" aria-live="polite"><div class="card-h"><h2>Results</h2><span class="hint" id="dec-when"></span></div>
+      <div class="card-b" id="dec-out"><p class="empty">Run a comparison to see prefill/decode time, throughput, memory, token equality and draft acceptance.</p></div></section>
+  </div>
+
+  <div class="lab-grid" style="margin-top:16px">
+    <section class="card" aria-labelledby="h-att">
+      <div class="card-h"><h2 id="h-att">Attention check</h2></div>
+      <div class="card-b form-grid">
+        <label>Sequence length = <span id="s-v">512</span><input type="range" id="seq" min="16" max="4096" step="16" value="512"></label>
+        <label>Query heads / KV heads<span class="row"><select id="heads"><option>4</option><option selected>12</option><option>16</option></select><select id="kvh"><option>1</option><option selected>2</option><option>4</option></select></span></label>
+        <label>Head dim<select id="hd"><option>32</option><option>64</option><option selected>128</option></select></label>
+        <label>Tile size<select id="block"><option>16</option><option>32</option><option selected>64</option><option>128</option><option>256</option></select></label>
+        <label>Precision<select id="adt"><option selected>float32</option><option>bfloat16</option><option>float16</option></select></label>
+        <label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="causal" checked> Causal mask</label>
+        <div class="field-error" id="att-err" role="alert"></div>
+        <button class="btn primary" id="run-att">Run attention check</button>
+      </div>
+    </section>
+    <section class="card" aria-live="polite"><div class="card-h"><h2>Numerical agreement & speed</h2></div>
+      <div class="card-b" id="att-out"><p class="empty">Compares the explicit reference, the tiled online-softmax kernel and PyTorch SDPA against a float64 ground truth.</p></div></section>
+  </div>
+
+  <section class="card history" style="margin-top:16px"><div class="card-h"><h2>Offline full benchmarks (from results/)</h2><span class="hint">repeated runs over the full input/output grid</span></div>
+    <div class="card-b" id="offline"><p class="empty">Loading…</p></div></section>
+  <section class="card history"><div class="card-h"><h2>Recent lab runs</h2><button class="btn sm ghost" id="runs-refresh">Refresh</button></div>
+    <div class="card-b" id="runs"><p class="empty">No runs yet.</p></div></section>
+</main>
+<div id="toasts" aria-live="assertive"></div>
+<script type="module" src="/assets/js/lab.js"></script>
+</body>
+</html>

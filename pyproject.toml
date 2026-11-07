@@ -56,7 +56,7 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
-ignore = ["E501", "B008"]
+ignore = ["E501", "B008", "B023", "B905", "E741"]  # lambdas run in-loop; l = paper notation
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

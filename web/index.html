@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EligiTrace · Screen</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><circle cx='10' cy='10' r='6' fill='none' stroke='%232f5bd3' stroke-width='2.5'/><path d='M14.5 14.5 21 21' stroke='%232f5bd3' stroke-width='2.5' stroke-linecap='round'/></svg>">
+  <link rel="stylesheet" href="/assets/app.css">
+</head>
+<body>
+<header class="topbar"><div class="topbar-inner">
+  <a class="brand" href="/" aria-label="EligiTrace home">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="6.5" stroke="currentColor" stroke-width="2.2"/><path d="M7.3 10.2l1.9 1.9 3.6-3.8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 15l5.5 5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+    EligiTrace <small>evidence-traced trial screening</small></a>
+  <nav class="nav" aria-label="Main"><a href="/" aria-current="page">Screen</a><a href="/lab">Inference Lab</a><a href="/docs" target="_blank" rel="noopener">API</a></nav>
+  <span class="spacer"></span>
+  <span class="status" id="status" data-s="loading" role="status" aria-live="polite"><span class="dot"></span><span id="status-text">Connecting…</span></span>
+  <button class="icon-btn" id="theme" title="Toggle theme" aria-label="Toggle colour theme">◐</button>
+</div></header>
+
+<div class="disclaimer"><div role="note"><span aria-hidden="true">⚠</span><span><b>Educational screening prototype — not a clinical enrollment decision.</b> Each criterion is judged by a fine-tuned language model; the overall outcome is a transparent rule-based aggregation, not a ground-truth label.</span></div></div>
+
+<main>
+  <div class="page-head">
+    <div><h1>Screen a patient against a trial</h1><p>Paste a clinical note, add the trial's eligibility criteria, and review every decision with its supporting sentence.</p></div>
+    <div class="row"><label class="hint" for="example">Load a validation example</label>
+      <select id="example" style="width:auto;min-width:220px"><option value="">— choose —</option></select></div>
+  </div>
+
+  <div class="grid-2">
+    <section class="card" aria-labelledby="h-note">
+      <div class="card-h"><h2 id="h-note"><span class="step">1</span> Patient note</h2><span class="counter" id="note-count">0 / 12000</span></div>
+      <div class="card-b">
+        <input type="text" id="patient-label" placeholder="Patient label (optional, e.g. 'Case 12, 58F')" maxlength="120" style="margin-bottom:8px">
+        <textarea id="note" maxlength="12000" placeholder="e.g. A 58-year-old woman presents with episodic chest pain radiating to the back… (free text, or dataset-style numbered lines '0. …')" aria-describedby="note-err note-hint"></textarea>
+        <div class="field-error" id="note-err" role="alert"></div>
+        <p class="hint" id="note-hint">The note is split into numbered sentences; the model cites these numbers as evidence. <a href="#" id="preview-toggle">Preview sentences</a></p>
+        <ol id="preview" class="evq" hidden></ol>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="h-crit">
+      <div class="card-h"><h2 id="h-crit"><span class="step">2</span> Trial criteria</h2><span class="counter" id="crit-count">0 / 40</span></div>
+      <div class="card-b">
+        <div class="tabs" role="tablist">
+          <button role="tab" aria-selected="true" data-tab="paste">Paste text</button>
+          <button role="tab" aria-selected="false" data-tab="nct">Fetch by NCT ID</button>
+          <button role="tab" aria-selected="false" data-tab="manual">Add manually</button>
+        </div>
+        <div data-panel="paste" style="margin-top:10px">
+          <textarea id="paste" style="min-height:110px" placeholder="Inclusion Criteria:&#10;- Age 18 or older&#10;- Chronic stable angina&#10;Exclusion Criteria:&#10;- Pregnancy"></textarea>
+          <div class="row" style="margin-top:8px"><button class="btn sm" id="parse-btn">Split into criteria</button><span class="hint">Headings "Inclusion/Exclusion Criteria" set the type.</span></div>
+        </div>
+        <div data-panel="nct" hidden style="margin-top:10px">
+          <div class="row"><input type="text" id="nct" placeholder="NCT01397994" maxlength="11" style="max-width:200px" aria-describedby="nct-err">
+            <button class="btn sm" id="nct-btn">Fetch from ClinicalTrials.gov</button></div>
+          <div class="field-error" id="nct-err" role="alert"></div>
+        </div>
+        <div data-panel="manual" hidden style="margin-top:10px">
+          <div class="row"><button class="btn sm" data-add="inclusion">+ Inclusion</button><button class="btn sm" data-add="exclusion">+ Exclusion</button>
+            <button class="btn sm ghost" id="clear-crit">Clear all</button></div>
+        </div>
+        <input type="text" id="trial-title" placeholder="Trial title (optional)" maxlength="300" style="margin-top:10px">
+        <div class="crit-list" id="crit-list" aria-label="Criteria to screen"></div>
+        <div class="field-error" id="crit-err" role="alert"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="run-bar">
+    <div class="row" style="gap:18px">
+      <label>Decoding <span class="seg" id="decoding"><button aria-pressed="true" data-v="kv_cached">KV-cached greedy</button><button aria-pressed="false" data-v="speculative">Speculative</button></span></label>
+      <label id="gamma-wrap" hidden>γ <input type="range" id="gamma" min="1" max="8" value="4" style="width:90px"><span id="gamma-v">4</span></label>
+      <label>Explanation <span class="seg" id="explain"><button aria-pressed="true" data-v="llm">Grounded LLM</button><button aria-pressed="false" data-v="template">Evidence template</button></span></label>
+    </div>
+    <button class="btn primary" id="run" disabled><span aria-hidden="true">▶</span> Run screening</button>
+  </div>
+
+  <section id="results" hidden aria-live="polite"></section>
+
+  <section class="history card" aria-labelledby="h-hist">
+    <div class="card-h"><h2 id="h-hist">Recent screenings</h2><button class="btn sm ghost" id="hist-refresh">Refresh</button></div>
+    <div class="card-b" id="history"><p class="empty">No screenings yet.</p></div>
+  </section>
+</main>
+<div id="toasts" aria-live="assertive"></div>
+<script type="module" src="/assets/js/screen.js"></script>
+</body>
+</html>

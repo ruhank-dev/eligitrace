@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     adapter_repo_id: str = "ruhank-dev/eligitrace-qwen2.5-1.5b-lora"
     adapter_local_dir: Path = REPO_ROOT / "models" / "eligitrace-lora"
     device: Literal["auto", "cuda", "cpu"] = "auto"
-    dtype: Literal["float16", "float32"] = "float16"
+    dtype: Literal["bfloat16", "float16", "float32"] = "bfloat16"  # fp16 GEMM is ~5x slower on GTX 16xx
     max_new_tokens: int = 64
 
     # App
