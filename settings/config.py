@@ -27,6 +27,9 @@ class Settings(BaseSettings):
     device: Literal["auto", "cuda", "cpu"] = "auto"
     dtype: Literal["bfloat16", "float16", "float32"] = "bfloat16"  # fp16 GEMM is ~5x slower on GTX 16xx
     max_new_tokens: int = 64
+    # Fraction of VRAM PyTorch may hold. Windows WDDM pages GPU memory to system RAM when the desktop
+    # (dwm, overlays, browsers) + this process exceed physical VRAM -> 7x slowdown. 0.8 of 6 GB = 4.8 GB.
+    gpu_mem_fraction: float = 0.8
 
     # App
     db_url: str = f"sqlite:///{(REPO_ROOT / 'app_data' / 'eligitrace.sqlite3').as_posix()}"

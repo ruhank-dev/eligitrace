@@ -39,7 +39,7 @@ def run_one(model_id: str, strategy: str, ckpt: bool, mb: int, steps: int = 4) -
     s = get_settings()
     # Windows' CUDA sysmem fallback silently spills to system RAM (100x slower) instead of OOM.
     # Cap the caching allocator at physical VRAM so "does not fit" is reported honestly.
-    torch.cuda.set_per_process_memory_fraction(0.98)
+    torch.cuda.set_per_process_memory_fraction(get_settings().gpu_mem_fraction)
     tok = AutoTokenizer.from_pretrained(model_id)
     exs = read_jsonl(s.data_dir / "processed" / "train.jsonl")
     toks = sorted((tokenize_example(tok, e["messages"], 1024) for e in exs),

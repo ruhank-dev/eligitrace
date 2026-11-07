@@ -15,6 +15,8 @@ def resolve_device(device: str | None = None) -> torch.device:
     device = device or get_settings().device
     if device == "auto":
         device = "cuda" if torch.cuda.is_available() else "cpu"
+    if device == "cuda":
+        torch.cuda.set_per_process_memory_fraction(get_settings().gpu_mem_fraction)
     return torch.device(device)
 
 

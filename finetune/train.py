@@ -60,7 +60,7 @@ def main() -> None:
     a = ap.parse_args()
     cfg = yaml.safe_load(Path(a.config).read_text())
     s = get_settings()
-    torch.cuda.set_per_process_memory_fraction(0.98)  # fail loudly instead of Windows sysmem spill
+    torch.cuda.set_per_process_memory_fraction(get_settings().gpu_mem_fraction)  # fail loudly instead of Windows sysmem spill
     seed_all(cfg["seed"])
     run_dir = s.results_dir / "training" / cfg["run_name"]
     ckpt_root = s.repo_root / "checkpoints" / cfg["run_name"]
