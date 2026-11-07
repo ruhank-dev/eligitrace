@@ -1,0 +1,62 @@
+# ── Private working files (never commit) ─────────────────────────
+AGENTS.md
+INSTRUCTIONS.md
+docs/
+.memory/
+
+# ── Secrets ──────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Python ───────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# ── Model weights, checkpoints, caches (hosted on Hugging Face) ──
+models/
+checkpoints/
+outputs/
+hf_cache/
+*.safetensors
+*.bin
+*.pt
+*.gguf
+wandb/
+
+# ── Data (re-downloaded from HF; only the split manifest is tracked)
+data/raw/
+data/processed/
+!data/splits/
+
+# ── App runtime ──────────────────────────────────────────────────
+*.sqlite3
+*.db
+app_data/
+
+# ── LaTeX build artefacts (the compiled PDF is tracked) ──────────
+report/build/
+*.aux
+*.log
+!results/**/*.log
+*.out
+*.bbl
+*.blg
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.toc
+
+# ── Editors / OS ─────────────────────────────────────────────────
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+node_modules/
