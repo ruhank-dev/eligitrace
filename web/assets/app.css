@@ -29,6 +29,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body { margin: 0; }
 body { background: var(--bg); color: var(--text); font: 14px/1.55 "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
 a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
@@ -100,7 +101,7 @@ textarea.invalid, input.invalid { border-color: var(--bad); box-shadow: 0 0 0 3p
 .crit-list { display: flex; flex-direction: column; gap: 6px; max-height: 330px; overflow: auto; margin-top: 10px; padding-right: 2px; }
 .crit-row { display: grid; grid-template-columns: 88px 1fr 28px; gap: 6px; align-items: start; }
 .crit-row select { padding: 7px 6px; font-size: 12px; }
-.crit-row textarea { min-height: 38px; height: 38px; font-size: 13px; padding: 7px 9px; }
+.crit-row textarea { min-height: 38px; max-height: 140px; field-sizing: content; font-size: 13px; padding: 7px 9px; resize: vertical; }
 .crit-row .del { border: 0; background: transparent; cursor: pointer; color: var(--text-3); font-size: 18px; line-height: 34px; }
 .counter { font-size: 12px; color: var(--text-3); }
 
@@ -169,7 +170,10 @@ textarea.invalid, input.invalid { border-color: var(--bad); box-shadow: 0 0 0 3p
 .form-grid { display: grid; gap: 12px; }
 .form-grid label { display: grid; gap: 4px; font-size: 12px; font-weight: 600; color: var(--text-2); }
 .form-grid input[type=range] { width: 100%; }
-.checks { display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; }
+.checks { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; }
+.form-grid .checks label { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; color: var(--text); }
+.form-grid .lbl { display: flex; justify-content: space-between; }
+.form-grid .lbl b { color: var(--text); font-variant-numeric: tabular-nums; }
 table.data { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
 table.data th, table.data td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: right; white-space: nowrap; }
 table.data th:first-child, table.data td:first-child { text-align: left; }

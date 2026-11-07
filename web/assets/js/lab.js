@@ -41,7 +41,7 @@ function renderDecode(run) {
 
 $("run-dec").addEventListener("click", async () => {
   $("dec-err").textContent = "";
-  const modes = [...document.querySelectorAll(".checks input:checked")].map((c) => c.value);
+  const modes = [...document.querySelectorAll("#modes input:checked")].map((c) => c.value);
   if (!modes.length) { $("dec-err").textContent = "Select at least one mode."; return; }
   const custom = $("src").value === "custom";
   if (custom && $("custom").value.trim().length < 3) { $("dec-err").textContent = "Enter a custom prompt."; return; }
@@ -68,7 +68,7 @@ $("run-att").addEventListener("click", async () => {
     $("att-out").replaceChildren(
       h("table", { class: "data" }, h("thead", {}, h("tr", {}, ...["Implementation", "Median ms", "Max |err|", "Mean |err|", "Peak +MiB"].map((t) => h("th", { text: t })))),
         h("tbody", {}, ...r.rows.map((x) => h("tr", {}, h("td", { text: x.impl }), h("td", { text: fmt(x.ms, 2) }),
-          h("td", { text: x.max_abs_err.toExponential(2) }), h("td", { text: x.mean_abs_err.toExponential(2) }), h("td", { text: fmt(x.peak_extra_mib) })))))),
+          h("td", { text: x.max_abs_err.toExponential(2) }), h("td", { text: x.mean_abs_err.toExponential(2) }), h("td", { text: fmt(x.peak_extra_mib) }))))),
       bars(r.rows.map((x) => ({ ...x, mode: x.impl })), "ms", "ms", 2),
       h("p", { class: "hint", style: "margin-top:10px", text: `Errors vs a float64 ground truth on ${r.device} (${r.dtype}). A materialised score matrix would need ${fmt(r.score_matrix_mib_if_materialised)} MiB in fp32; the tiled kernel only ever holds one tile.` }));
     loadRuns();

@@ -27,16 +27,16 @@
       <div class="card-b form-grid">
         <label>Prompt
           <select id="src"><option value="example">Validation example (real screening prompt)</option><option value="custom">Custom prompt</option></select></label>
-        <label id="ex-wrap">Example #<input type="range" id="ex" min="0" max="49" value="0"><span class="hint" id="ex-v">0</span></label>
+        <label id="ex-wrap"><span class="lbl">Validation example <b id="ex-v">0</b></span><input type="range" id="ex" min="0" max="49" value="0"></label>
         <label id="custom-wrap" hidden>Custom prompt<textarea id="custom" maxlength="6000" style="min-height:90px" placeholder="Explain what a KV cache is in two sentences."></textarea></label>
         <div><span class="hint" style="font-weight:600">Modes</span>
-          <div class="checks" style="margin-top:4px">
+          <div class="checks" id="modes" style="margin-top:4px">
             <label><input type="checkbox" value="no_cache" checked> No cache (reference)</label>
             <label><input type="checkbox" value="kv_cached" checked> KV-cached</label>
             <label><input type="checkbox" value="speculative" checked> Speculative</label></div></div>
-        <label>Draft tokens per round γ = <span id="g-v">4</span><input type="range" id="gamma" min="1" max="8" value="4"></label>
-        <label>Max new tokens = <span id="m-v">48</span><input type="range" id="maxnew" min="8" max="256" step="8" value="48"></label>
-        <label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="noeos"> Ignore EOS (generate exactly max tokens)</label>
+        <label><span class="lbl">Draft tokens per round γ <b id="g-v">4</b></span><input type="range" id="gamma" min="1" max="8" value="4"></label>
+        <label><span class="lbl">Max new tokens <b id="m-v">48</b></span><input type="range" id="maxnew" min="8" max="256" step="8" value="48"></label>
+        <div class="checks"><label><input type="checkbox" id="noeos"> Ignore EOS (generate exactly max tokens)</label></div>
         <label>Repeats<select id="repeats"><option>1</option><option selected>2</option><option>3</option><option>5</option></select></label>
         <div class="field-error" id="dec-err" role="alert"></div>
         <button class="btn primary" id="run-dec" disabled>Run comparison</button>
@@ -50,12 +50,12 @@
     <section class="card" aria-labelledby="h-att">
       <div class="card-h"><h2 id="h-att">Attention check</h2></div>
       <div class="card-b form-grid">
-        <label>Sequence length = <span id="s-v">512</span><input type="range" id="seq" min="16" max="4096" step="16" value="512"></label>
+        <label><span class="lbl">Sequence length <b id="s-v">512</b></span><input type="range" id="seq" min="16" max="4096" step="16" value="512"></label>
         <label>Query heads / KV heads<span class="row"><select id="heads"><option>4</option><option selected>12</option><option>16</option></select><select id="kvh"><option>1</option><option selected>2</option><option>4</option></select></span></label>
         <label>Head dim<select id="hd"><option>32</option><option>64</option><option selected>128</option></select></label>
         <label>Tile size<select id="block"><option>16</option><option>32</option><option selected>64</option><option>128</option><option>256</option></select></label>
         <label>Precision<select id="adt"><option selected>float32</option><option>bfloat16</option><option>float16</option></select></label>
-        <label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="causal" checked> Causal mask</label>
+        <div class="checks"><label><input type="checkbox" id="causal" checked> Causal mask</label></div>
         <div class="field-error" id="att-err" role="alert"></div>
         <button class="btn primary" id="run-att">Run attention check</button>
       </div>
