@@ -1,0 +1,321 @@
+{
+  "target": "Qwen/Qwen2.5-1.5B-Instruct",
+  "target_adapter": "checkpoints\\lora_r16_bf16\\best",
+  "draft": "Qwen/Qwen2.5-0.5B-Instruct",
+  "dtype": "torch.bfloat16",
+  "gpu": "NVIDIA GeForce GTX 1660 SUPER",
+  "compatibility": {
+    "tokenizer_vocab_size": 151665,
+    "same_vocab": true,
+    "same_special_tokens": true,
+    "same_chat_template": true,
+    "same_probe_ids": true,
+    "target_logit_dim": 151936,
+    "draft_logit_dim": 151936,
+    "compatible": true
+  },
+  "n_prompts": 8,
+  "repeats": 2,
+  "peak_mib_spec_total": 4020.56884765625,
+  "peak_mib_greedy_total_with_draft_loaded": 4022.76123046875,
+  "mismatches": [
+    {
+      "workload": "task_json",
+      "gamma": 3,
+      "prompt_len": 328,
+      "first_diff": 11,
+      "len_spec": 15,
+      "len_ref": 14
+    },
+    {
+      "workload": "free_96",
+      "gamma": 1,
+      "prompt_len": 343,
+      "first_diff": 26,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 1,
+      "prompt_len": 322,
+      "first_diff": 32,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 1,
+      "prompt_len": 343,
+      "first_diff": 51,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 1,
+      "prompt_len": 329,
+      "first_diff": 80,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 1,
+      "prompt_len": 336,
+      "first_diff": 52,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 1,
+      "prompt_len": 328,
+      "first_diff": 64,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 1,
+      "prompt_len": 330,
+      "first_diff": 27,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 2,
+      "prompt_len": 343,
+      "first_diff": 26,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 2,
+      "prompt_len": 343,
+      "first_diff": 73,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 2,
+      "prompt_len": 330,
+      "first_diff": 27,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 3,
+      "prompt_len": 343,
+      "first_diff": 26,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 3,
+      "prompt_len": 322,
+      "first_diff": 32,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 3,
+      "prompt_len": 328,
+      "first_diff": 57,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 3,
+      "prompt_len": 343,
+      "first_diff": 51,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 3,
+      "prompt_len": 329,
+      "first_diff": 85,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 3,
+      "prompt_len": 328,
+      "first_diff": 11,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 3,
+      "prompt_len": 330,
+      "first_diff": 27,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 4,
+      "prompt_len": 343,
+      "first_diff": 26,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 4,
+      "prompt_len": 322,
+      "first_diff": 32,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 4,
+      "prompt_len": 328,
+      "first_diff": 57,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 4,
+      "prompt_len": 343,
+      "first_diff": 51,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 4,
+      "prompt_len": 329,
+      "first_diff": 80,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 4,
+      "prompt_len": 336,
+      "first_diff": 37,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 4,
+      "prompt_len": 330,
+      "first_diff": 27,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 6,
+      "prompt_len": 343,
+      "first_diff": 26,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 6,
+      "prompt_len": 328,
+      "first_diff": 29,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 6,
+      "prompt_len": 343,
+      "first_diff": 73,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 6,
+      "prompt_len": 329,
+      "first_diff": 80,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 6,
+      "prompt_len": 336,
+      "first_diff": 52,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 6,
+      "prompt_len": 328,
+      "first_diff": 31,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 8,
+      "prompt_len": 343,
+      "first_diff": 26,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 8,
+      "prompt_len": 322,
+      "first_diff": 32,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 8,
+      "prompt_len": 329,
+      "first_diff": 85,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 8,
+      "prompt_len": 336,
+      "first_diff": 52,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 8,
+      "prompt_len": 328,
+      "first_diff": 75,
+      "len_spec": 96,
+      "len_ref": 96
+    },
+    {
+      "workload": "free_96",
+      "gamma": 8,
+      "prompt_len": 330,
+      "first_diff": 27,
+      "len_spec": 96,
+      "len_ref": 96
+    }
+  ],
+  "all_equal": false,
+  "timing": "1 warm-up + repeats, torch.cuda.synchronize around every phase, batch 1"
+}

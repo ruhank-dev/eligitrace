@@ -1,0 +1,16 @@
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Same model before and after fine-tuning on identical examples (greedy, KV-cached decoder, bf16, max 64 new tokens). Macro-F1 over all 6 labels; MF1$_p$ over labels present in gold; Inc./Exc. = 4-label macro-F1 per criterion type; Ev = evidence F1; Inv = \% unparseable outputs.}
+\label{tab:main}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+Model / split & Acc & MF1 & MF1$_p$ & Inc. & Exc. & Ev$_\mu$ & Ev$_M$ & Inv \\
+\midrule
+Base (zero-shot), val & 0.189 & 0.145 & 0.145 & 0.243 & 0.030 & 0.175 & 0.304 & 0.0 \\
+Fine-tuned, val & 0.738 & 0.543 & 0.543 & 0.383 & 0.520 & 0.532 & 0.731 & 0.0 \\
+\textbf{Base (zero-shot), test} & 0.160 & 0.129 & 0.155 & 0.207 & 0.042 & 0.169 & 0.354 & 0.0 \\
+\textbf{Fine-tuned, test} & 0.733 & 0.440 & 0.528 & 0.425 & 0.299 & 0.561 & 0.819 & 0.0 \\
+\bottomrule
+\end{tabular}
+\end{table*}

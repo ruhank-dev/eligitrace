@@ -1,0 +1,159 @@
+\section{Results and Analysis}\label{sec:results}
+\input{tables/ci}
+
+\subsection{Training}
+Training took 62\,min for 3 epochs (114 optimiser steps, 3.75\,ks wall clock) with a peak of 4.28\,GB of
+allocated VRAM. Fig.~\ref{fig:training} shows the curves. Validation loss was lowest after epoch~2 (0.127 vs.\
+0.129 after epoch~3), but generated-output validation macro-F1 kept rising (0.348, 0.436, 0.543). We selected
+the checkpoint by validation macro-F1, the metric we report, so epoch~3 was used. Token-level loss is
+dominated by the evidence-ID tokens and the JSON scaffold, so it is a weak proxy for the label decision.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{training_curves.png}
+\caption{Training loss per optimiser step, and validation loss and generated-output validation macro-F1 per
+epoch.}
+\label{fig:training}
+\end{figure}
+
+\subsection{Classification: Before vs.\ After Fine-Tuning}
+\input{tables/tab_main}
+Table~\ref{tab:main} compares the same network with and without the adapter on identical inputs, using the
+same prompt, decoder and parser. On the held-out test patients, test accuracy rose from 0.160 to 0.733
+(patient-level bootstrap 95\% CI \ciacc). Macro-F1 over the labels present in gold rose from 0.155 to 0.528
+(CI \cimf). Neither model produced an unparseable output, so the gain comes from label and evidence decisions,
+not from formatting. The zero-shot base mostly answers \emph{included} or \emph{not applicable} and almost
+never \emph{not enough information}: it treats absent facts as decisive.
+
+Six-label macro-F1 on test (0.440) is lower than on validation (0.543) mainly because the test split contains
+no \emph{excluded} example, which scores that class as~0. Over the labels present in gold the two splits agree
+(0.528 vs.\ 0.543).
+
+\input{tables/tab_perclass}
+Per class (Table~\ref{tab:perclass}), the model is strong and precise on \emph{included} (P\,=\,1.00, F1 0.875)
+and \emph{not excluded} (F1 0.820). It is weak on the rare classes:
+\begin{itemize}
+\item \emph{not included}: all 7 test cases were predicted \emph{not enough information};
+\item \emph{not applicable}: recall is 0.20.
+\end{itemize}
+These are the classes with the fewest training examples, so the result matches the label skew documented in
+Section~\ref{sec:split}. For exclusion criteria, 28 of the 66 \emph{not enough information} cases were
+predicted \emph{not excluded}. This reproduces, in a milder form, the base model's habit of reading silence as
+a negative finding. The confusion matrices in Fig.~\ref{fig:cm} show the same pattern.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.49\linewidth]{cm_base_all.png}\hfill
+\includegraphics[width=0.49\linewidth]{cm_finetuned_all.png}
+\caption{Test confusion matrices over all six labels: zero-shot base (left) and fine-tuned (right).}
+\label{fig:cm}
+\end{figure}
+
+\subsection{Evidence Retrieval}
+\input{tables/tab_evidence}
+Fine-tuning improves evidence citation more than any other metric (Table~\ref{tab:evidence}). Micro-F1 rose
+from 0.169 to 0.561, and the gain came almost entirely from precision (0.097 to 0.500), with recall unchanged
+(0.649 vs.\ 0.638). The base model cites many sentences indiscriminately. The fine-tuned model abstains
+correctly on 131 of the 145 empty-gold criteria, compared with 53 for the base model. On the non-empty-gold
+subset, which isolates retrieval from abstention, F1 rose from 0.374 to 0.663. Neither model cited a sentence
+ID outside the note.
+
+\subsection{Error Analysis}
+\input{tables/tab_errors}
+Of the 206 test criteria, 55 received the wrong label. Table~\ref{tab:errors} groups them with deterministic
+rules (\texttt{evaluation/errors.py}). The most frequent pattern is an unsupported decision, where missing
+information is treated as decisive (28 cases). Temporal qualifiers such as ``within the past 6 months'' and
+``history of'' are next (19 cases). The opposite error, answering \emph{not enough information} although the
+experts found the note sufficient, occurs 17 times.
+
+One instructive case is a vascular-surgery trial whose inclusion criteria list specific operations
+(``patients undergoing open abdominal aortic aneurysm repair''). For a patient with a femoral pseudoaneurysm,
+the experts labelled these criteria \emph{not included} with no evidence: a note that describes a different
+procedure implies the listed one is not happening. The model answered \emph{not enough information} and cited
+the three sentences describing the actual procedure. Expert reasoning of this kind rests on the absence of a
+fact in an otherwise complete clinical picture, and it is underrepresented in 603 training examples.
+
+A further 34 records have the correct label but differ from the gold evidence. Most of these are omissions on
+\emph{not excluded} criteria, where the annotators cited background sentences such as the demographic opening
+line.
+
+\subsection{KV-Cached Decoding}\label{sec:res-kv}
+\input{tables/tab_kv}
+Table~\ref{tab:kv} and Fig.~\ref{fig:kv} compare the two decoders. Prefill cost is the same for both, since
+both process the prompt once. Without a cache, every decode step reprocesses the whole sequence, so no-cache
+throughput falls from 4.0 to 0.7\,tok/s as the input grows from 128 to 1024 tokens. With the cache, each step
+costs one token through the network and throughput stays between 9 and 13\,tok/s. Decode speed-up therefore
+grows with context: about $3.6\times$ at 128 input tokens, $10\times$ at 512 and $18$--$20\times$ at 1024.
+
+Peak extra memory is dominated by prefill activations (the $T\times151{,}936$ logit matrix), not by the cache.
+The cache adds 28\,KiB per token, so it occupies only 32\,MiB even at 1{,}152 tokens. At batch~1 on this GPU,
+decoding is launch-bound: a single-token step costs about 75--110\,ms whatever the context length, which is
+why the cached throughput stays flat.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{kv_benchmark.png}
+\caption{Decode throughput (left) and peak extra memory (right) of the KV-cached decoder and the no-cache reference vs.\ input and output length.}
+\label{fig:kv}
+\end{figure}
+
+\textbf{Equality.} The CPU fp64 tests on tiny Qwen2 models and the bf16 GPU test on the base model produce
+token-identical output for both decoders. With the merged fine-tuned weights in bf16, 6 of the 9 benchmark
+cases are identical. The other three diverge at a step where the top-2 logit margin is 0.125, which is exactly
+one bf16 unit in the last place for logits between 16 and 32. In other words, the two candidate tokens are
+tied at bf16 resolution. The cached path computes attention for one query against stored keys, while the
+reference recomputes the full $T\times T$ product; the two reduction orders round differently, and a tie can
+go either way. Section~\ref{sec:res-numerics} tests this explanation in fp32.
+
+\subsection{Tiled Attention}
+\input{tables/tab_attn_err}
+Against a float64 ground truth, the tiled kernel matches PyTorch SDPA to the precision of its storage format
+(Table~\ref{tab:attnerr}). In fp32 its maximum error is $2.7\times10^{-6}$ against $2.4\times10^{-6}$ for SDPA,
+over 432 cases that cover GQA (12:2), decode shapes with $S_q{=}1$, causal and non-causal masks, and tile sizes
+16, 64 and 128. In bf16 and fp16 all three implementations have the same error, set by rounding the output to
+the storage type.
+
+Speed and memory show the expected trade-off (Fig.~\ref{fig:attn}). On the GTX~1660 SUPER (sm\_75), PyTorch's
+fused flash and memory-efficient kernels are unavailable in bf16, so the fair baseline is the unfused
+\texttt{math} backend. At sequence length 4096, that backend materialises the score matrix and needs 1.9\,GB of
+extra memory, whereas the tiled kernel needs 41\,MiB, about 46$\times$ less. Being a Python loop over tiles, the
+tiled kernel is slower: 465\,ms vs.\ 73\,ms with 128-wide tiles. Larger tiles reduce the number of kernel
+launches and run $3.7\times$ faster than 64-wide tiles. This is the I/O-versus-launch trade-off that fused
+kernels such as FlashAttention remove~\cite{dao2022flashattention}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{attention_benchmark.png}
+\caption{Attention latency and peak extra memory vs.\ sequence length (bf16, GPU, 12 query / 2 KV heads,
+$d$=128, causal).}
+\label{fig:attn}
+\end{figure}
+
+\subsection{Speculative Decoding}
+\input{tables/tab_spec}
+The draft and target models share tokenizer, special tokens and chat template, which we verified
+programmatically. Acceptance is high: 91\% of drafted tokens are accepted at $\gamma{=}1$ on the
+structured-output task, and acceptance falls to 40\% at $\gamma{=}8$ (Table~\ref{tab:spec}, Fig.~\ref{fig:spec}).
+The number of target forwards per output token falls from 1.0 to 0.31.
+
+Even so, speculative decoding was \emph{slower} than KV-cached greedy decoding at every $\gamma$, at
+0.39--0.69$\times$ its speed. The reason is that at batch~1 on this GPU, forward cost scales with the number of
+layers and kernel launches rather than with parameter count. The 0.5B draft has 24 layers against the target's
+28, so a draft step costs almost as much as a target step. Saving a target forward therefore saves less time
+than the extra draft steps add. Speculative decoding pays off when the draft is much cheaper per token than the
+target, for example a larger target, a shallower draft, or a compute-bound regime. We report the negative
+result as measured.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{spec_benchmark.png}
+\caption{Speculative decoding: acceptance rate and speed-up over KV-cached greedy decoding vs.\ draft length
+$\gamma$.}
+\label{fig:spec}
+\end{figure}
+
+\subsection{Numerical Agreement in bf16 vs.\ fp32}\label{sec:res-numerics}
+\input{sections/numerics}
+
+\subsection{Application}\label{sec:res-app}
+\input{sections/app_results}

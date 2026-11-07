@@ -1,0 +1,18 @@
+{
+  "frozen_at": "2026-11-07T20:33:19+00:00",
+  "git_commit": "32d0a86ebf481596baa3b3d8499dd40d36e48b2a",
+  "adapter": "checkpoints/lora_r16_bf16/best",
+  "adapter_sha256": "eb1843b2a2921a70508a03bbd18a551e75709b47babe33fca4a74d36a87144ad",
+  "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "system_prompt_sha256": "589635efa4f7d074863997e1b76781aaf01bb2971e34b6b734c7e864c3313589",
+  "decoding": {
+    "strategy": "greedy (argmax)",
+    "decoder": "kvcache.greedy_cached",
+    "max_new_tokens": 64,
+    "batch_size": 1,
+    "do_sample": false,
+    "repetition_penalty": 1.0
+  },
+  "dtype": "bfloat16",
+  "note": "All model/prompt/threshold choices were made on the validation split."
+}

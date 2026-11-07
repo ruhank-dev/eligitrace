@@ -1,0 +1,28 @@
+warning: `VIRTUAL_ENV=C:\Users\RUHAN\anaconda3` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+[base/test] 25/206
+[base/test] 50/206
+[base/test] 75/206
+[base/test] 100/206
+[base/test] 125/206
+[base/test] 150/206
+[base/test] 175/206
+[base/test] 200/206
+W1108 01:40:14.275000 32292 .venv\Lib\site-packages\torch\utils\flop_counter.py:113] triton not found; flop counting will not work for triton kernels
+[finetuned/test] 25/206
+[finetuned/test] 50/206
+[finetuned/test] 75/206
+[finetuned/test] 100/206
+[finetuned/test] 125/206
+[finetuned/test] 150/206
+[finetuned/test] 175/206
+[finetuned/test] 200/206
+{
+  "base": {
+    "acc": 0.16019417475728157,
+    "macro_f1": 0.12878787878787878
+  },
+  "finetuned": {
+    "acc": 0.7330097087378641,
+    "macro_f1": 0.4398608574889637
+  }
+}

@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Rule-assigned error categories, fine-tuned model, test split (55 wrong labels of 206; one error may have several).}
+\label{tab:errors}
+\begin{tabular}{lr}
+\toprule
+Category & Count \\
+\midrule
+correct label, wrong evidence & 34 \\
+missing information treated as decisive (unsupported decision) & 28 \\
+temporal qualifier & 19 \\
+false 'not enough information' (evidence was present) & 17 \\
+not-applicable confusion & 13 \\
+negation in evidence & 7 \\
+numeric / threshold reasoning & 6 \\
+cited evidence where experts found none & 3 \\
+\bottomrule
+\end{tabular}
+\end{table}

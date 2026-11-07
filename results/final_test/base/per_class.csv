@@ -1,0 +1,15 @@
+subset,label,precision,recall,f1,support
+all,included,0.4262,0.9630,0.5909,27
+all,not included,0.0000,0.0000,0.0000,7
+all,excluded,0.0000,0.0000,0.0000,0
+all,not excluded,0.0000,0.0000,0.0000,91
+all,not enough information,0.0000,0.0000,0.0000,66
+all,not applicable,0.1129,0.4667,0.1818,15
+inclusion,included,0.4262,0.9630,0.5909,27
+inclusion,not included,0.0000,0.0000,0.0000,7
+inclusion,not enough information,0.0000,0.0000,0.0000,38
+inclusion,not applicable,0.1429,0.6667,0.2353,3
+exclusion,excluded,0.0000,0.0000,0.0000,0
+exclusion,not excluded,0.0000,0.0000,0.0000,91
+exclusion,not enough information,0.0000,0.0000,0.0000,28
+exclusion,not applicable,0.1042,0.4167,0.1667,12

@@ -1,0 +1,70 @@
+warning: `VIRTUAL_ENV=C:\Users\RUHAN\anaconda3` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+C:\Users\RUHAN\Downloads\gen_ai_assignment_2\attention\benchmark.py:34: UserWarning: Memory efficient kernel not used because: (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\aten\src\ATen\native\transformers\cuda\sdp_utils.cpp:1240.)
+  return F.scaled_dot_product_attention(q, k, v, is_causal=True)
+C:\Users\RUHAN\Downloads\gen_ai_assignment_2\attention\benchmark.py:34: UserWarning: Expected query, key and value to all be of dtype: {Half, Float}. Got Query dtype: struct c10::BFloat16, Key dtype: struct c10::BFloat16, and Value dtype: struct c10::BFloat16 instead. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\aten\src\ATen/native/transformers/sdp_utils_cpp.h:120.)
+  return F.scaled_dot_product_attention(q, k, v, is_causal=True)
+C:\Users\RUHAN\Downloads\gen_ai_assignment_2\attention\benchmark.py:34: UserWarning: Flash attention kernel not used because: (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\aten\src\ATen\native\transformers\cuda\sdp_utils.cpp:1242.)
+  return F.scaled_dot_product_attention(q, k, v, is_causal=True)
+C:\Users\RUHAN\Downloads\gen_ai_assignment_2\attention\benchmark.py:34: UserWarning: Torch was not compiled with flash attention. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\aten\src\ATen\native\transformers\cuda\sdp_utils.cpp:1050.)
+  return F.scaled_dot_product_attention(q, k, v, is_causal=True)
+C:\Users\RUHAN\Downloads\gen_ai_assignment_2\attention\benchmark.py:34: UserWarning: cuDNN attention kernel not used because: (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\aten\src\ATen\native\transformers\cuda\sdp_utils.cpp:1244.)
+  return F.scaled_dot_product_attention(q, k, v, is_causal=True)
+C:\Users\RUHAN\Downloads\gen_ai_assignment_2\attention\benchmark.py:34: UserWarning: cuDNN attention has been runtime disabled. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\aten\src\ATen\native\transformers\cuda\sdp_utils.cpp:922.)
+  return F.scaled_dot_product_attention(q, k, v, is_causal=True)
+C:\Users\RUHAN\Downloads\gen_ai_assignment_2\attention\benchmark.py:34: UserWarning: Memory Efficient attention has been runtime disabled. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\aten\src\ATen/native/transformers/sdp_utils_cpp.h:600.)
+  return F.scaled_dot_product_attention(q, k, v, is_causal=True)
+seq 256 done
+seq 512 done
+seq 1024 done
+seq 2048 done
+seq 4096 done
+seq 256 done
+seq 512 done
+seq 1024 done
+{
+  "tiled|float32": {
+    "cases": 432,
+    "max_abs_err": 2.7418136596679688e-06,
+    "mean_abs_err_avg": 2.8212577203002686e-08
+  },
+  "reference|float32": {
+    "cases": 144,
+    "max_abs_err": 0.0,
+    "mean_abs_err_avg": 0.0
+  },
+  "torch_sdpa|float32": {
+    "cases": 144,
+    "max_abs_err": 2.384185791015625e-06,
+    "mean_abs_err_avg": 2.6322918259836258e-08
+  },
+  "tiled|bfloat16": {
+    "cases": 432,
+    "max_abs_err": 0.0078046321868896484,
+    "mean_abs_err_avg": 0.00018334493772858453
+  },
+  "reference|bfloat16": {
+    "cases": 144,
+    "max_abs_err": 0.0078046321868896484,
+    "mean_abs_err_avg": 0.00018334492938471778
+  },
+  "torch_sdpa|bfloat16": {
+    "cases": 144,
+    "max_abs_err": 0.0078046321868896484,
+    "mean_abs_err_avg": 0.00018334493746414006
+  },
+  "tiled|float16": {
+    "cases": 432,
+    "max_abs_err": 0.0009763240814208984,
+    "mean_abs_err_avg": 2.2846610187537597e-05
+  },
+  "reference|float16": {
+    "cases": 144,
+    "max_abs_err": 0.0009763240814208984,
+    "mean_abs_err_avg": 2.2846529487816874e-05
+  },
+  "torch_sdpa|float16": {
+    "cases": 144,
+    "max_abs_err": 0.0009763240814208984,
+    "mean_abs_err_avg": 2.2846609675162844e-05
+  }
+}

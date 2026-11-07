@@ -1,0 +1,25 @@
+\begin{abstract}
+Pre-screening patients for clinical trials means checking a free-text note against every eligibility criterion
+and citing the facts that justify each decision. We present \sys, a locally executable system for
+criterion-level eligibility prediction with evidence tracing, built on Qwen2.5-1.5B-Instruct and the TrialGPT
+criterion-annotation benchmark. We fine-tune the model with LoRA on a 6\,GB consumer GPU, choosing bf16 with
+gradient checkpointing after measuring the alternatives. On held-out test patients, the same model goes from
+0.160 to 0.733 accuracy, from 0.155 to 0.528 macro-F1 over the labels present, and from 0.169 to 0.561
+evidence micro-F1, with no unparseable outputs. We also implement and benchmark three inference mechanisms by
+hand:
+\begin{itemize}
+\item a KV-cached decoder, $3.6\times$ faster than recomputation at 128 context tokens and up to $20\times$ at
+1{,}024;
+\item a tiled online-softmax attention kernel that matches PyTorch SDPA to $3\times10^{-6}$ in fp32 and uses
+46$\times$ less memory than unfused attention at 4{,}096 tokens;
+\item a greedy speculative decoder whose draft acceptance reaches 91\%, but which is slower than plain cached
+decoding on launch-bound consumer hardware.
+\end{itemize}
+Where bf16 outputs diverge from the reference, we trace the cause to logit ties within one bf16 rounding
+step and confirm exact agreement in fp32. A browser application screens unseen notes, highlights evidence
+sentences, explains each decision only from the cited evidence, and exposes the inference mechanisms live.
+\end{abstract}
+
+\begin{IEEEkeywords}
+clinical-trial matching, LoRA, KV cache, speculative decoding, online softmax, evidence attribution
+\end{IEEEkeywords}

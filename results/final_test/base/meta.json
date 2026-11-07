@@ -1,0 +1,21 @@
+{
+  "tag": "base",
+  "split": "test",
+  "n": 206,
+  "model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+  "adapter": null,
+  "adapter_sha256": null,
+  "dtype": "torch.bfloat16",
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce GTX 1660 SUPER",
+  "decoding": {
+    "strategy": "greedy (argmax)",
+    "decoder": "kvcache.greedy_cached",
+    "max_new_tokens": 64,
+    "batch_size": 1,
+    "do_sample": false,
+    "repetition_penalty": 1.0
+  },
+  "git_commit": "32d0a86ebf481596baa3b3d8499dd40d36e48b2a",
+  "created_at": "2026-11-07T20:40:03+00:00"
+}

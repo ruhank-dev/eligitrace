@@ -1,0 +1,201 @@
+{
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "adapter": "checkpoints\\lora_r16_bf16\\best",
+  "dtype": "torch.bfloat16",
+  "gpu": "NVIDIA GeForce GTX 1660 SUPER",
+  "torch": "2.14.1+cu126",
+  "all_equal": false,
+  "cases": [
+    {
+      "input_len": 128,
+      "output_len": 16,
+      "equal": false,
+      "n_match_prefix": 5,
+      "divergence": {
+        "step": 5,
+        "cached_tok": 576,
+        "nocache_tok": 2932,
+        "top2_margin": 0.125
+      }
+    },
+    {
+      "input_len": 128,
+      "output_len": 64,
+      "equal": false,
+      "n_match_prefix": 5,
+      "divergence": {
+        "step": 5,
+        "cached_tok": 576,
+        "nocache_tok": 2932,
+        "top2_margin": 0.125
+      }
+    },
+    {
+      "input_len": 128,
+      "output_len": 128,
+      "equal": false,
+      "n_match_prefix": 5,
+      "divergence": {
+        "step": 5,
+        "cached_tok": 576,
+        "nocache_tok": 2932,
+        "top2_margin": 0.125
+      }
+    },
+    {
+      "input_len": 512,
+      "output_len": 16,
+      "equal": true,
+      "n_match_prefix": 16
+    },
+    {
+      "input_len": 512,
+      "output_len": 64,
+      "equal": true,
+      "n_match_prefix": 64
+    },
+    {
+      "input_len": 512,
+      "output_len": 128,
+      "equal": true,
+      "n_match_prefix": 128
+    },
+    {
+      "input_len": 1024,
+      "output_len": 16,
+      "equal": true,
+      "n_match_prefix": 16
+    },
+    {
+      "input_len": 1024,
+      "output_len": 64,
+      "equal": true,
+      "n_match_prefix": 64
+    },
+    {
+      "input_len": 1024,
+      "output_len": 128,
+      "equal": false,
+      "n_match_prefix": 84,
+      "divergence": {
+        "step": 84,
+        "cached_tok": 5185,
+        "nocache_tok": 8720,
+        "top2_margin": 0.125
+      }
+    }
+  ],
+  "timing": "1 warm-up + 3 synchronized repeats, batch 1, EOS disabled",
+  "kv_bytes_per_token_theoretical": 28672,
+  "cache_growth_trace": {
+    "cache_len": [
+      129,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139,
+      140,
+      141,
+      142,
+      143
+    ],
+    "layer0_k_shape": [
+      [
+        1,
+        2,
+        129,
+        128
+      ],
+      [
+        1,
+        2,
+        130,
+        128
+      ],
+      [
+        1,
+        2,
+        131,
+        128
+      ],
+      [
+        1,
+        2,
+        132,
+        128
+      ],
+      [
+        1,
+        2,
+        133,
+        128
+      ],
+      [
+        1,
+        2,
+        134,
+        128
+      ],
+      [
+        1,
+        2,
+        135,
+        128
+      ],
+      [
+        1,
+        2,
+        136,
+        128
+      ],
+      [
+        1,
+        2,
+        137,
+        128
+      ],
+      [
+        1,
+        2,
+        138,
+        128
+      ],
+      [
+        1,
+        2,
+        139,
+        128
+      ],
+      [
+        1,
+        2,
+        140,
+        128
+      ],
+      [
+        1,
+        2,
+        141,
+        128
+      ],
+      [
+        1,
+        2,
+        142,
+        128
+      ],
+      [
+        1,
+        2,
+        143,
+        128
+      ]
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Per-class results on the held-out test split (fine-tuned; base F1 for reference). Classes with zero support cannot be scored.}
+\label{tab:perclass}
+\begin{tabular}{llrrrrr}
+\toprule
+Type & Label & n & F1$_{base}$ & P & R & F1 \\
+\midrule
+inc. & included & 27 & 0.591 & 1.000 & 0.778 & 0.875 \\
+inc. & not included & 7 & 0.000 & 0.000 & 0.000 & 0.000 \\
+inc. & not enough information & 38 & 0.000 & 0.704 & 1.000 & 0.826 \\
+inc. & not applicable & 3 & 0.235 & 0.000 & 0.000 & 0.000 \\
+exc. & excluded & 0 & 0.000 & 0.000 & 0.000 & 0.000 \\
+exc. & not excluded & 91 & 0.000 & 0.706 & 0.978 & 0.820 \\
+exc. & not enough information & 28 & 0.000 & 0.000 & 0.000 & 0.000 \\
+exc. & not applicable & 12 & 0.167 & 0.750 & 0.250 & 0.375 \\
+\bottomrule
+\end{tabular}
+\end{table}

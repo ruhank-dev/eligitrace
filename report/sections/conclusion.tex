@@ -1,0 +1,20 @@
+\section{Conclusion}\label{sec:conclusion}
+\sys\ shows that a 1.5B-parameter open model, adapted with LoRA on a single 6\,GB consumer GPU in about an
+hour, reaches 0.733 accuracy on held-out patients and cites the same evidence sentences as expert annotators
+far more precisely than its untuned starting point. Every component runs locally, so patient notes never leave
+the machine.
+
+Each inference mechanism has its own lesson:
+\begin{itemize}
+\item \emph{KV cache}: removes the quadratic cost of recomputation, and its benefit grows with context length;
+\item \emph{online softmax}: removes the quadratic memory of attention, but needs kernel fusion before it also
+saves time;
+\item \emph{speculative decoding}: is exact, but at batch~1 on launch-bound hardware it only pays off when the
+draft is much cheaper per step than the target, not merely smaller.
+\end{itemize}
+In reduced precision, agreement with the reference is ``identical up to ties within one rounding step'', and a
+careful comparison has to say so explicitly.
+
+The weakest areas are the rare labels and reasoning from the absence of a fact. Natural next steps are more
+annotated data for \emph{not included} and \emph{not applicable}, label-balanced or contrastive training,
+multiple seeds, and clinician review of the generated explanations.

@@ -1,0 +1,15 @@
+{
+  "n": 206,
+  "n_wrong_label": 173,
+  "category_counts": {
+    "correct label, wrong evidence": 26,
+    "polarity flip (met vs not met)": 66,
+    "cited evidence where experts found none": 92,
+    "negation in evidence": 66,
+    "not-applicable confusion": 63,
+    "temporal qualifier": 78,
+    "missing information treated as decisive (unsupported decision)": 66,
+    "numeric / threshold reasoning": 43
+  },
+  "cases_written": 14
+}

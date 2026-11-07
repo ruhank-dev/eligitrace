@@ -1,0 +1,26 @@
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Greedy speculative decoding (target: fine-tuned Qwen2.5-1.5B, draft: Qwen2.5-0.5B, bf16) vs.\ KV-cached greedy on the same 8 validation prompts. Acc.\ = accepted/proposed; $\bar n$ = accepted per round; Fwd/tok = target forwards per output token.}
+\label{tab:spec}
+\begin{tabular}{lrrrrrrrc}
+\toprule
+Workload & $\gamma$ & Lat. ms & tok/s & Acc. & $\bar n$ & Fwd/tok & Speed-up & Eq. \\
+\midrule
+task\_json & greedy & 1437 & 9.9 & -- & -- & 1.00 & 1.00 & yes \\
+task\_json & 1 & 2089 & 6.8 & 0.91 & 0.91 & 0.58 & 0.69 & yes \\
+task\_json & 2 & 2190 & 6.5 & 0.71 & 1.43 & 0.48 & 0.66 & yes \\
+task\_json & 3 & 2296 & 6.3 & 0.60 & 1.80 & 0.43 & 0.63 & no \\
+task\_json & 4 & 2279 & 6.3 & 0.59 & 2.35 & 0.37 & 0.63 & yes \\
+task\_json & 6 & 2420 & 5.9 & 0.51 & 3.04 & 0.32 & 0.59 & yes \\
+task\_json & 8 & 2767 & 5.1 & 0.40 & 3.22 & 0.31 & 0.52 & yes \\
+free\_96 & greedy & 7345 & 13.1 & -- & -- & 1.00 & 1.00 & yes \\
+free\_96 & 1 & 11392 & 8.4 & 0.76 & 0.76 & 0.58 & 0.64 & no \\
+free\_96 & 2 & 11730 & 8.2 & 0.61 & 1.21 & 0.46 & 0.63 & no \\
+free\_96 & 3 & 12251 & 7.8 & 0.55 & 1.62 & 0.39 & 0.60 & no \\
+free\_96 & 4 & 13105 & 7.3 & 0.48 & 1.90 & 0.35 & 0.56 & no \\
+free\_96 & 6 & 13899 & 6.9 & 0.44 & 2.59 & 0.29 & 0.53 & no \\
+free\_96 & 8 & 18911 & 5.1 & 0.29 & 2.25 & 0.32 & 0.39 & no \\
+\bottomrule
+\end{tabular}
+\end{table*}
