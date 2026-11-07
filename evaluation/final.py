@@ -14,7 +14,7 @@ from datetime import UTC, datetime
 import numpy as np
 
 from evaluation.predict import DECODING, adapter_sha256, git_commit, run_predictions
-from evaluation.report import summarise, write_report
+from evaluation.report import write_report
 from modeling.prompts import SYSTEM_PROMPT
 from settings.config import get_settings
 
