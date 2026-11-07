@@ -43,7 +43,7 @@ tasks:
 
   eval-val:
     desc: Fine-tuned model on the validation split
-    cmds: [uv run python -m evaluation.predict --split val --tag finetuned --adapter models/eligitrace-lora]
+    cmds: [uv run python -m evaluation.predict --split val --tag finetuned --adapter checkpoints/lora_r16_bf16/best]
 
   eval-final:
     desc: ONE-TIME frozen evaluation on the held-out test split (base + fine-tuned)

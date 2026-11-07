@@ -1,0 +1,99 @@
+{
+  "gpu": "NVIDIA GeForce GTX 1660 SUPER",
+  "gpu_total_gb": 6.0,
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "lora": {
+    "r": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "rows": [
+    {
+      "strategy": "fp32",
+      "grad_ckpt": true,
+      "micro_batch": 1,
+      "status": "OOM"
+    },
+    {
+      "strategy": "fp32-offload",
+      "grad_ckpt": true,
+      "micro_batch": 1,
+      "status": "error: RuntimeError: Function MmBackward0 returned an invalid gradient at index 1 - expected device meta but got cuda:0"
+    },
+    {
+      "strategy": "fp16-mixed",
+      "grad_ckpt": true,
+      "micro_batch": 1,
+      "seq_len": 623,
+      "weights_gb": 2.945,
+      "peak_gb": 4.217,
+      "step_s": 13.8,
+      "loss_first": 0.1619,
+      "loss_last": 0.0019,
+      "finite_loss": true,
+      "trainable_params": 18464768,
+      "status": "ok"
+    },
+    {
+      "strategy": "bf16-mixed",
+      "grad_ckpt": false,
+      "micro_batch": 1,
+      "status": "OOM"
+    },
+    {
+      "strategy": "bf16-mixed",
+      "grad_ckpt": true,
+      "micro_batch": 1,
+      "seq_len": 623,
+      "weights_gb": 2.945,
+      "peak_gb": 4.217,
+      "step_s": 3.866,
+      "loss_first": 0.1632,
+      "loss_last": 0.0143,
+      "finite_loss": true,
+      "trainable_params": 18464768,
+      "status": "ok"
+    },
+    {
+      "strategy": "bf16-mixed",
+      "grad_ckpt": true,
+      "micro_batch": 4,
+      "status": "OOM"
+    },
+    {
+      "strategy": "bf16-mixed",
+      "grad_ckpt": true,
+      "micro_batch": 8,
+      "status": "OOM"
+    },
+    {
+      "strategy": "qlora-nf4",
+      "grad_ckpt": true,
+      "micro_batch": 1,
+      "seq_len": 623,
+      "weights_gb": 1.579,
+      "peak_gb": 3.332,
+      "step_s": 3.706,
+      "loss_first": 0.152,
+      "loss_last": 0.0019,
+      "finite_loss": true,
+      "trainable_params": 18464768,
+      "status": "ok"
+    },
+    {
+      "strategy": "qlora-nf4",
+      "grad_ckpt": true,
+      "micro_batch": 4,
+      "status": "OOM"
+    }
+  ]
+}

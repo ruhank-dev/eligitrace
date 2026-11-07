@@ -34,9 +34,11 @@ def write_report(records: list[dict], out_dir: Path) -> dict:
         w = csv.writer(f)
         w.writerow(["subset", "label", "precision", "recall", "f1", "support"])
         for sub in ("all", "inclusion", "exclusion"):
-            for lab, v in m[sub]["per_class"].items():
+            for lab, v in m[sub].get("per_class", {}).items():
                 w.writerow([sub, lab, f"{v['precision']:.4f}", f"{v['recall']:.4f}", f"{v['f1']:.4f}", v["support"]])
     for sub in ("all", "inclusion", "exclusion"):
+        if m[sub].get("n", 0) == 0:
+            continue
         confusion_png(m[sub]["confusion"], out_dir / f"confusion_{sub}.png", title=f"{sub} criteria")
     return m
 
