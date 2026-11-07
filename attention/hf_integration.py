@@ -29,9 +29,9 @@ def tiled_attention_forward(module, query, key, value, attention_mask, scaling=N
 AttentionInterface.register("eligitrace_tiled", tiled_attention_forward)
 
 
-def main(n_prompts: int = 3, max_new: int = 32) -> None:
+def main(n_prompts: int = 3, max_new: int = 32, device: str | None = None, dtype: str | None = None) -> None:
     s = get_settings()
-    ref = load_model(attn_implementation="sdpa")
+    ref = load_model(attn_implementation="sdpa", device=device, dtype=dtype)
     tok = ref.tokenizer
     prompts = [tok(render_prompt(tok, e["messages"][:-1]), return_tensors="pt").input_ids.to(ref.device)
                for e in read_jsonl(s.data_dir / "processed" / "val.jsonl")[:n_prompts]]
@@ -40,7 +40,7 @@ def main(n_prompts: int = 3, max_new: int = 32) -> None:
     ref_tok = [greedy_cached(ref.model, p, max_new, set()).tokens for p in prompts]
     del ref
     torch.cuda.empty_cache()
-    til = load_model(attn_implementation="eligitrace_tiled")
+    til = load_model(attn_implementation="eligitrace_tiled", device=device, dtype=dtype)
     rows = []
     with torch.inference_mode():
         for p, rl, rt in zip(prompts, ref_logits, ref_tok):
@@ -50,11 +50,18 @@ def main(n_prompts: int = 3, max_new: int = 32) -> None:
                          "same_argmax": int(tl.argmax()) == int(rl.argmax()), "greedy_tokens_equal": tt == rt,
                          "first_diff": next((i for i, (a, b) in enumerate(zip(tt, rt)) if a != b), None)})
             print(rows[-1], flush=True)
-    out = s.results_dir / "attention" / "hf_integration.json"
+    out = s.results_dir / "attention" / f"hf_integration_{til.device.type}_{str(til.dtype).split('.')[-1]}.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps({"model": til.model_id, "dtype": str(til.dtype), "max_new_tokens": max_new,
                                "reference": "sdpa", "cases": rows}, indent=2))
     print(f"-> {out}")
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--device", default=None)
+    ap.add_argument("--dtype", default=None)
+    a = ap.parse_args()
+    main(device=a.device, dtype=a.dtype)
