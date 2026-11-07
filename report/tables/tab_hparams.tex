@@ -1,0 +1,23 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Fine-tuning configuration.}
+\label{tab:hparams}
+\begin{tabular}{ll}
+\toprule
+Setting & Value \\
+\midrule
+Base model & Qwen/Qwen2.5-1.5B-Instruct \\
+Precision & bf16 base, fp32 LoRA, bf16 autocast \\
+LoRA r / $\alpha$ / dropout & 16 / 32 / 0.05 \\
+Target modules & q,k,v,o,gate,up,down \\
+Optimizer & AdamW, wd 0.0 \\
+LR / schedule & 0.0002 / cosine, 5\% warm-up \\
+Batch & 1 $\times$ 16 accumulation \\
+Epochs / clip / seed & 3 / 1.0 / 42 \\
+Max length & 1024 (no truncation) \\
+Grad. checkpointing & True \\
+Selection & best val macro-F1 over epochs \\
+\bottomrule
+\end{tabular}
+\end{table}

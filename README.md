@@ -58,7 +58,7 @@ All of it is exposed in a **browser app** that has two parts: a screening workfl
 - [Reproducibility](#-reproducibility)
 - [Tech stack](#-tech-stack)
 - [Limitations](#-limitations)
-- [Acknowledgements & AI use](#-acknowledgements--ai-use)
+- [Acknowledgements](#-acknowledgements)
 - [Author](#-author)
 
 ---
@@ -229,11 +229,12 @@ eligitrace/
 
 ---
 
-## 🙏 Acknowledgements & AI use
+## 🙏 Acknowledgements
 
 - The dataset and the reference study come from Jin et al., *TrialGPT* (NCBI/NLM). EligiTrace studies that project as a reference only and does not reuse its code or results.
 - Model weights: the Qwen team (Apache-2.0).
-- AI assistants were used during development for planning, code scaffolding and writing support. All generated code was reviewed, tested and is understood by the author. Details are in the report's AI-use appendix.
+
+Claude was used to assist with research and certain aspects of project implementation.
 
 ---
 

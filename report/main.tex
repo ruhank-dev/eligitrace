@@ -1,0 +1,46 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% Overleaf-compatible: upload the whole report/ folder (main.tex, sections/, tables/, figures/, refs.bib).
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\graphicspath{{figures/}}
+\newcommand{\sys}{\textsc{EligiTrace}}
+
+\begin{document}
+
+\title{\sys: Evidence-Traced Clinical-Trial Eligibility Screening with a Fine-Tuned Small Language Model, KV-Cached and Speculative Decoding, and Tiled Online-Softmax Attention}
+
+\author{\IEEEauthorblockN{Muhammad Ruhan Kamran}
+\IEEEauthorblockA{\textit{Department of Computer Science} \\
+\textit{FAST University (NUCES) Islamabad}\\
+Islamabad, Pakistan \\
+Roll No. 23i-0062, Section CS-A}}
+
+\maketitle
+
+\input{sections/abstract}
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/methods}
+\input{sections/setup}
+\input{sections/results}
+\input{sections/limitations}
+\input{sections/conclusion}
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+
+\appendices
+\input{sections/appendix}
+
+\end{document}

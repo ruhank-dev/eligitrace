@@ -1,0 +1,40 @@
+\section{Related Work}\label{sec:related}
+\textbf{Patient--trial matching.} Koopman and Zuccon~\cite{koopman2016test} released the patient topics
+that underlie the benchmark used here. TrialGPT~\cite{jin2024trialgpt} decomposes matching into
+criterion-level prediction with sentence-level evidence and shows that GPT-4 approaches expert accuracy;
+its criterion annotations (expert labels and expert evidence) form our mandatory dataset. Wornow et
+al.~\cite{wornow2024zeroshot} reach similar conclusions zero-shot. Both rely on proprietary API models:
+excellent accuracy, but no local execution, no control over decoding, and cost per criterion. We instead
+ask how far a 1.5\,B-parameter open model adapted on 603 examples can go, and we keep the GPT-4 outputs
+shipped with the dataset strictly out of inputs, targets and evaluation.
+
+\textbf{Decoder architectures.} The Transformer~\cite{vaswani2017attention} remains the backbone. Modern
+small decoders combine rotary position embeddings (RoPE)~\cite{su2024roformer}, which make attention scores
+depend on relative position through rotations applied to queries and keys, and grouped-query attention
+(GQA)~\cite{ainslie2023gqa}, which shares key/value heads across query heads and shrinks the KV cache.
+Qwen2.5~\cite{qwen2025qwen25}, Llama~3~\cite{grattafiori2024llama3} and Gemma~2~\cite{gemmateam2024gemma2}
+all follow this recipe; they differ in licence, vocabulary and the availability of a smaller
+same-tokenizer sibling, which matters for speculative decoding (Section~\ref{sec:model}).
+
+\textbf{Parameter-efficient adaptation.} LoRA~\cite{hu2022lora} learns a low-rank update $\Delta W=BA$
+for frozen weights, cutting trainable parameters by orders of magnitude; QLoRA~\cite{dettmers2023qlora}
+additionally stores the frozen base in 4-bit NF4. Mixed precision~\cite{micikevicius2018mixed} and
+gradient checkpointing~\cite{chen2016checkpoint} trade numerical range and recomputation for memory.
+These papers report memory and quality on data-centre GPUs; their trade-offs do not transfer directly to
+a 6\,GB Turing card without tensor cores, which is why we measure them (Table~\ref{tab:membench}).
+
+\textbf{Efficient inference.} Autoregressive decoding is memory-bandwidth bound; caching keys and values
+turns each step from $O(n)$ recomputation into a single-token pass~\cite{pope2023scaling}, and
+PagedAttention~\cite{kwon2023paged} manages that cache at serving scale. Online softmax~\cite{milakov2018online}
+lets the normaliser be computed in one streaming pass; Rabe and Staats~\cite{rabe2021selfattention} showed
+attention needs only $O(\sqrt{n})$ or $O(1)$ extra memory with chunking, and
+FlashAttention~\cite{dao2022flashattention,dao2024flashattention2} turned the same idea into fused,
+IO-aware GPU kernels. Speculative decoding~\cite{leviathan2023speculative,chen2023speculative} drafts several
+tokens with a small model and verifies them in one pass of the large model, preserving the target
+distribution exactly (and, for greedy decoding, the exact token sequence). Its benefit depends on the
+draft/target cost ratio and the acceptance rate---both of which we measure rather than assume.
+
+\textbf{Limitations of prior work for our setting.} API-based matchers cannot be benchmarked at the
+mechanism level; kernel papers report speed on hardware we do not have; and speculative-decoding gains are
+reported for large size ratios (e.g.\ 70\,B targets) unlike our 1.5\,B/0.5\,B pair. \sys\ connects these
+lines on one consumer GPU and reports where each technique helps and where it does not.

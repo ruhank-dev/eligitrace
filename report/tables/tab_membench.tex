@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Measured training configurations on NVIDIA GeForce GTX 1660 SUPER (6.0 GB): LoRA r=16, longest training example (623 tokens), 4 optimizer steps, first step excluded from timing.}
+\label{tab:membench}
+\begin{tabular}{lcrrrrl}
+\toprule
+Strategy & Ckpt & MB & Weights GiB & Peak GiB & s/step & Status \\
+\midrule
+fp32 & yes & 1 & -- & -- & -- & OOM \\
+fp32-offload & yes & 1 & -- & -- & -- & incompatible \\
+fp16-mixed & yes & 1 & 2.94 & 4.22 & 13.80 & ok \\
+bf16-mixed & no & 1 & -- & -- & -- & OOM \\
+bf16-mixed & yes & 1 & 2.94 & 4.22 & 3.87 & ok \\
+bf16-mixed & yes & 4 & -- & -- & -- & OOM \\
+bf16-mixed & yes & 8 & -- & -- & -- & OOM \\
+qlora-nf4 & yes & 1 & 1.58 & 3.33 & 3.71 & ok \\
+qlora-nf4 & yes & 4 & -- & -- & -- & OOM \\
+\bottomrule
+\end{tabular}
+\end{table}

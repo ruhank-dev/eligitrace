@@ -1,0 +1,17 @@
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Candidate decoders (from config.json; exact parameter counts; 16-bit memory). KV = KiB of cache per token. All use RoPE, RMSNorm/LayerNorm variants and GQA.}
+\label{tab:candidates}
+\begin{tabular}{lrrcrrrrrl}
+\toprule
+Model & Params (B) & L & Hq/Hkv & d & Vocab & Ctx & GiB & KV & Licence \\
+\midrule
+Qwen2.5-1.5B-Instruct & 1.54 & 28 & 12/2 & 128 & 151k & 32k & 2.9 & 28 & Apache-2.0 \\
+Qwen2.5-0.5B-Instruct & 0.49 & 24 & 14/2 & 64 & 151k & 32k & 0.9 & 12 & Apache-2.0 \\
+Qwen3-1.7B & 1.72 & 28 & 16/8 & 128 & 151k & 40k & 3.2 & 112 & Apache-2.0 \\
+Llama-3.2-1B-Instruct & 1.24 & 16 & 32/8 & 64 & 128k & 128k & 2.3 & 32 & Llama 3.2 CL \\
+gemma-2-2b-it & 2.61 & 26 & 8/4 & 256 & 256k & 8k & 4.9 & 104 & Gemma ToU \\
+\bottomrule
+\end{tabular}
+\end{table*}

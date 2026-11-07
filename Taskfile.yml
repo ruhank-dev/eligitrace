@@ -68,7 +68,7 @@ tasks:
 
   figures:
     desc: Regenerate all report figures/tables from results/
-    cmds: [uv run python -m report.make_figures]
+    cmds: [uv run python report/make_figures.py]
 
   app:
     desc: Start the EligiTrace web app on http://127.0.0.1:8000

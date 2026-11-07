@@ -1,0 +1,39 @@
+\section{Experimental Setup and Metrics}\label{sec:setup}
+\textbf{Hardware and software.} All training, evaluation and benchmarking ran locally on one NVIDIA GeForce
+GTX~1660~SUPER (6\,GB GDDR6, Turing \texttt{sm\_75}, no tensor cores), an AMD Ryzen~5~2600 and 16\,GB RAM, under
+Windows~11 with driver 621.14, Python~3.12, PyTorch~2.14.1 (CUDA~12.6), Transformers~4.57.6 and PEFT~0.21.2
+(exact versions pinned in \texttt{uv.lock}). No paid service or cloud GPU was used. The application also runs on
+CPU (slowly) and on the author's second machine (RTX~4050, 6\,GB).
+
+\textbf{Decoding settings (all comparisons).} Greedy argmax decoding (no sampling, no repetition penalty), batch
+size 1, at most 64 new tokens, bf16 weights, the project's own KV-cached decoder, and stopping at
+\texttt{<|im\_end|>}. Base and fine-tuned models use the identical prompt, parser and examples. Benchmarks
+disable EOS so that every run produces exactly the requested number of tokens.
+
+\textbf{Protocol.} Model and epoch selection used only the validation split (8 patients, 206 annotations).
+The test split (8 patients, 206 annotations) was decoded exactly once by \texttt{evaluation/final.py}, which first
+writes a \texttt{FROZEN.json} record (adapter SHA-256, commit, prompt hash, decoding settings) and refuses to
+run again; ordinary evaluation commands raise an error when asked for the test split.
+
+\subsection{Metrics}\label{sec:metrics}
+\textbf{Criterion classification.} Accuracy; macro-F1 over all six labels (a class absent from the gold
+labels and never predicted scores $F_1=0$); macro-F1$_p$ over the labels present in the gold set of that
+split (needed because the test split has no \emph{excluded} example); per-class precision, recall and F1;
+and confusion matrices. Everything is reported overall and separately for inclusion criteria (4 labels)
+and exclusion criteria (4 labels). Unparseable outputs or labels invalid for the criterion type are a
+separate \emph{invalid} prediction that always counts as an error. Because the 8 test patients are the
+independent units, we report 95\% patient-level bootstrap intervals (1{,}000 resamples).
+
+\textbf{Evidence localisation.} For each record with gold set $G$ and predicted set $P$ of sentence IDs:
+$P{=}G{=}\emptyset$ gives precision = recall = F1 = 1 (correct abstention); $G{=}\emptyset\neq P$ gives
+precision 0, recall 1, F1 0 (hallucinated evidence); $G\neq\emptyset{=}P$ gives precision 1, recall 0, F1 0
+(missed evidence); otherwise standard set precision/recall/F1. \emph{Micro} scores pool TP/FP/FN over all
+records (empty--empty records contribute nothing); \emph{macro} scores average the per-record values. Because
+conventions could inflate scores, we also report micro-F1 on the subset with non-empty gold evidence, and
+count correct abstentions, hallucinations and cited IDs that do not exist in the note.
+
+\textbf{Inference benchmarks.} Same model and inputs for every compared path; two warm-up runs, then five
+timed repeats (three for speculative decoding) with \texttt{torch.cuda.synchronize()} around each timed region;
+peak memory is \texttt{torch.cuda.max\_memory\_allocated()} after \texttt{reset\_peak\_memory\_stats()},
+reported as extra memory over the resident weights. KV-cache inputs of 128/512/1024 tokens are built from real
+validation prompts (several notes concatenated for the longest), with 32/128/256 output tokens.

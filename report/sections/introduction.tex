@@ -1,0 +1,29 @@
+\section{Introduction and Problem Statement}\label{sec:intro}
+Clinical trials fail to recruit on time far more often than they fail scientifically, and a large part
+of the recruitment burden is \emph{pre-screening}: a coordinator reads a free-text patient note against
+every inclusion and exclusion criterion of a protocol. The task is criterion-level, evidence-heavy and
+asymmetric---an absent fact is not a negative fact. Large proprietary models have shown strong results on
+this problem~\cite{jin2024trialgpt,wornow2024zeroshot}, but they cannot be run locally on protected data,
+are expensive, and expose no control over inference.
+
+We study the problem as defined by the TrialGPT criterion-annotation benchmark~\cite{jin2024trialgpt}:
+given (i) a patient note split into numbered sentences, (ii) a criterion type (inclusion or exclusion) and
+(iii) the criterion text, predict the expert eligibility label---one of four type-specific categories,
+including \emph{not enough information} and \emph{not applicable}---and the IDs of the patient sentences
+that support it. A deployable answer must also be \emph{traceable}: each decision should point at its
+evidence and explain itself only from that evidence.
+
+\textbf{Contributions.} We present \sys, a complete, locally executable system built around
+Qwen2.5-1.5B-Instruct~\cite{qwen2025qwen25}:
+\begin{enumerate}
+\item a leakage-safe data pipeline and the prescribed patient-grouped 37/8/8 split with a published
+manifest and automated leakage tests;
+\item a LoRA~\cite{hu2022lora} adaptation whose precision strategy was \emph{chosen by measurement} on a
+6\,GB consumer GPU, with a same-model before/after comparison on identical held-out examples;
+\item a hand-written KV-cached greedy decoder, a tiled online-softmax attention kernel and a greedy
+speculative decoder, each validated for exact agreement with a reference and benchmarked honestly;
+\item a browser application that screens unseen notes against typed or fetched criteria, highlights the
+exact evidence sentences, aggregates criterion decisions with an explicit rule, exports a provenance-stamped
+report, and exposes a live inference laboratory.
+\end{enumerate}
+Fig.~\ref{fig:arch} summarises the system.
