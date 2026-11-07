@@ -1,0 +1,75 @@
+version: "3"
+
+env:
+  PYTHONUTF8: "1"
+  HF_HUB_DISABLE_SYMLINKS_WARNING: "1"
+
+tasks:
+  setup:
+    desc: Create the Python environment from uv.lock
+    cmds: [uv sync]
+
+  lint:
+    desc: Lint with ruff
+    cmds: [uv run ruff check .]
+
+  test:
+    desc: Fast test suite (CPU, no large models)
+    cmds: [uv run pytest -m "not gpu and not slow"]
+
+  test-gpu:
+    desc: GPU / real-model tests (equality checks on Qwen2.5)
+    cmds: [uv run pytest -m gpu]
+
+  data:
+    desc: Download dataset, build patient split + manifest, SFT jsonl, token stats
+    cmds: [uv run python -m dataprep]
+
+  candidates:
+    desc: Inspect candidate models (config facts + measured memory)
+    cmds: [uv run python -m modeling.inspect_candidates]
+
+  train-bench:
+    desc: Benchmark training configurations (memory / speed) on this GPU
+    cmds: [uv run python -m finetune.memory_bench]
+
+  train:
+    desc: LoRA fine-tuning on the train split (config in finetune/configs)
+    cmds: [uv run python -m finetune.train --config finetune/configs/lora_qwen15b.yaml]
+
+  baseline:
+    desc: Zero-shot base model on the validation split
+    cmds: [uv run python -m evaluation.predict --split val --tag base]
+
+  eval-val:
+    desc: Fine-tuned model on the validation split
+    cmds: [uv run python -m evaluation.predict --split val --tag finetuned --adapter models/eligitrace-lora]
+
+  eval-final:
+    desc: ONE-TIME frozen evaluation on the held-out test split (base + fine-tuned)
+    cmds:
+      - uv run python -m evaluation.final
+
+  bench-kv:
+    desc: KV-cache equality tests + benchmark
+    cmds: [uv run python -m kvcache.benchmark]
+
+  bench-attn:
+    desc: Tiled online-softmax attention validation + benchmark
+    cmds: [uv run python -m attention.benchmark]
+
+  bench-spec:
+    desc: Speculative decoding equality tests + benchmark
+    cmds: [uv run python -m speculative.benchmark]
+
+  download-weights:
+    desc: Download base, draft and EligiTrace LoRA adapter from Hugging Face
+    cmds: [uv run python -m modeling.download]
+
+  figures:
+    desc: Regenerate all report figures/tables from results/
+    cmds: [uv run python -m report.make_figures]
+
+  app:
+    desc: Start the EligiTrace web app on http://127.0.0.1:8000
+    cmds: [uv run python -m server.eligitrace_api]

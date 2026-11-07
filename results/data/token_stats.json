@@ -1,0 +1,53 @@
+{
+  "tokenizer": "Qwen/Qwen2.5-1.5B-Instruct",
+  "max_seq_len": 2048,
+  "n_truncated": 0,
+  "n_with_evidence_lost": 0,
+  "truncated_annotation_ids": [],
+  "overall": {
+    "prompt_tokens": {
+      "min": 225,
+      "median": 295.0,
+      "p95": 453.89999999999986,
+      "max": 596,
+      "mean": 311.25320197044334
+    },
+    "target_tokens": {
+      "min": 14,
+      "median": 15.0,
+      "p95": 21.0,
+      "max": 39,
+      "mean": 16.203940886699506
+    },
+    "total_tokens": {
+      "min": 241,
+      "median": 311.0,
+      "p95": 469.5999999999999,
+      "max": 623,
+      "mean": 327.45714285714286
+    }
+  },
+  "by_split": {
+    "test": {
+      "min": 251,
+      "median": 304.0,
+      "p95": 379.75,
+      "max": 517,
+      "mean": 311.4271844660194
+    },
+    "train": {
+      "min": 241,
+      "median": 304.0,
+      "p95": 494.0,
+      "max": 623,
+      "mean": 328.30016583747926
+    },
+    "val": {
+      "min": 281,
+      "median": 345.0,
+      "p95": 390.0,
+      "max": 457,
+      "mean": 341.0194174757282
+    }
+  }
+}
