@@ -1,0 +1,21 @@
+{
+  "tag": "lora_r16_bf16_epoch1",
+  "split": "val",
+  "n": 206,
+  "model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+  "adapter": "C:\\Users\\RUHAN\\Downloads\\gen_ai_assignment_2\\checkpoints\\lora_r16_bf16\\epoch1",
+  "adapter_sha256": "ec55d5b4b574290d961317c36999058feb5640ecc8198aa61600438f019f4bd4",
+  "dtype": "torch.bfloat16",
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce GTX 1660 SUPER",
+  "decoding": {
+    "strategy": "greedy (argmax)",
+    "decoder": "kvcache.greedy_cached",
+    "max_new_tokens": 64,
+    "batch_size": 1,
+    "do_sample": false,
+    "repetition_penalty": 1.0
+  },
+  "git_commit": "b350dcfbb9873826d5148453814d250cfaed52d2",
+  "created_at": "2026-11-07T18:38:07+00:00"
+}
