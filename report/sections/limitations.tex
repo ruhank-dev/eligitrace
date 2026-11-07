@@ -1,0 +1,23 @@
+\section{Limitations}\label{sec:limits}
+\textbf{Data scale and label skew.} The benchmark has 53 patients; the prescribed split leaves 603 training
+annotations and only 8 test patients (206 annotations). Rare labels are nearly absent: the test split has no
+\emph{excluded} example and only 7 \emph{not included}, so per-class scores for these classes are either
+undefined or rest on a handful of cases, and patient-level bootstrap intervals are wide.
+
+\textbf{Single seed, limited search.} Each training configuration was run once (seed 42) and the
+hyper-parameter search was deliberately small to respect the 6\,GB budget and the deadline; reported
+differences of a few points are within run-to-run variance we did not measure.
+
+\textbf{Explanations.} Rationales are constrained to the cited sentences and pass an automatic grounding check,
+but they were not rated by clinicians, and the check (numbers and label contradiction) cannot catch every
+unfaithful paraphrase. They should be read as summaries of the cited evidence, not as clinical reasoning.
+
+\textbf{Inference measurements.} Timings are from one consumer GPU under Windows with a slow host CPU; at
+batch size 1 small kernels are launch-bound, which shapes every speed result (Section~\ref{sec:results}). The
+tiled attention kernel is an educational PyTorch implementation, not a fused kernel, and was validated in
+isolation rather than substituted into the production model path.
+
+\textbf{Aggregation and scope.} The overall outcome is a hand-written rule over criterion predictions; the
+dataset contains no patient--trial ground truth, so this outcome is not evaluated. Criteria fetched from
+ClinicalTrials.gov are split heuristically. \sys\ is an educational screening prototype and must not be used
+to make enrollment or treatment decisions.

@@ -21,7 +21,7 @@ from modeling.prompts import render_prompt
 from settings.config import get_settings
 
 INPUT_LENS = (128, 512, 1024)
-OUTPUT_LENS = (32, 128, 256)
+OUTPUT_LENS = (16, 64, 128)  # no-cache reference is O(n^2): 128 tokens after 1024 already ~4 min/run
 
 
 def build_inputs(tokenizer, device) -> dict[int, torch.Tensor]:
@@ -70,8 +70,8 @@ def first_divergence(model, ids, a: list[int], b: list[int]) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--adapter", type=Path, default=None)
-    ap.add_argument("--repeats", type=int, default=5)
-    ap.add_argument("--warmup", type=int, default=2)
+    ap.add_argument("--repeats", type=int, default=3)
+    ap.add_argument("--warmup", type=int, default=1)
     ap.add_argument("--tag", default="base")
     a = ap.parse_args()
     s = get_settings()

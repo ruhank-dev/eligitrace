@@ -1,0 +1,7 @@
+warning: `VIRTUAL_ENV=C:\Users\RUHAN\anaconda3` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+W1107 20:34:29.079000 25668 .venv\Lib\site-packages\torch\utils\flop_counter.py:113] triton not found; flop counting will not work for triton kernels
+trainable params: 18,464,768 || all params: 1,562,179,072 || trainable%: 1.1820
+C:\Users\RUHAN\Downloads\gen_ai_assignment_2\finetune\train.py:105: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:821.)
+  run_loss += float(loss) * k
+{"step": 1, "epoch": 0.027, "train_loss": 0.6172067331157716, "lr": 4e-05, "grad_norm": 6.715496063232422, "elapsed_s": 79.0}

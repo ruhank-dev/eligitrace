@@ -32,8 +32,9 @@ records (empty--empty records contribute nothing); \emph{macro} scores average t
 conventions could inflate scores, we also report micro-F1 on the subset with non-empty gold evidence, and
 count correct abstentions, hallucinations and cited IDs that do not exist in the note.
 
-\textbf{Inference benchmarks.} Same model and inputs for every compared path; two warm-up runs, then five
-timed repeats (three for speculative decoding) with \texttt{torch.cuda.synchronize()} around each timed region;
+\textbf{Inference benchmarks.} Same model and inputs for every compared path; warm-up runs first (one for
+decoding, two for attention), then repeated timed runs (three for KV-cache, two per prompt for speculative
+decoding, five for attention) with \texttt{torch.cuda.synchronize()} around each timed region;
 peak memory is \texttt{torch.cuda.max\_memory\_allocated()} after \texttt{reset\_peak\_memory\_stats()},
 reported as extra memory over the resident weights. KV-cache inputs of 128/512/1024 tokens are built from real
-validation prompts (several notes concatenated for the longest), with 32/128/256 output tokens.
+validation prompts (several notes concatenated for the longest), with 16/64/128 output tokens (the quadratic no-cache reference makes longer outputs impractical: 128 tokens after a 1{,}024-token input already take about four minutes per run).

@@ -40,9 +40,9 @@ def validation(dev) -> list[dict]:
     rows = []
     grid = itertools.product([(1, 1, 1), (2, 4, 4), (1, 12, 2)], [(1, 1), (1, 513), (7, 7), (64, 64), (129, 129),
                              (37, 300), (512, 512), (1000, 1000)], [32, 64, 128], [True, False],
-                             [torch.float32, torch.float16])
+                             [torch.float32, torch.bfloat16, torch.float16])
     for (B, Hq, Hkv), (Sq, Sk), D, causal, dt in grid:
-        if dt == torch.float16 and dev.type == "cpu":
+        if dt != torch.float32 and dev.type == "cpu":
             continue
         q, k, v = _rand(B, Hq, Hkv, Sq, Sk, D, dt, dev)
         ref64 = sdpa_reference(q.double(), k.double(), v.double(), causal=causal)  # high-precision truth
@@ -85,7 +85,7 @@ def _time(fn, dev, warmup=2, reps=5):
 def speed(dev) -> list[dict]:
     rows = []
     H, Hkv, D = 12, 2, 128  # Qwen2.5-1.5B attention geometry
-    dt = torch.float16 if dev.type == "cuda" else torch.float32
+    dt = torch.bfloat16 if dev.type == "cuda" else torch.float32  # model precision
     seqs = [256, 512, 1024, 2048, 4096] if dev.type == "cuda" else [256, 512, 1024]
     impls = {
         "reference": lambda q, k, v: sdpa_reference(q, k, v, causal=True),

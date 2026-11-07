@@ -227,8 +227,8 @@ def kv():
                     f(n["tokens_per_s"], 1), f(float(n["decode_ms"]) / float(r["decode_ms"]), 1),
                     f(r["peak_extra_mib"], 0), f(n["peak_extra_mib"], 0), "yes" if e["equal"] else f"no@{e['n_match_prefix']}"])
     write("tab_kv.tex", table(
-        "tab:kv", "KV-cached vs.\\ no-cache greedy decoding (fine-tuned target, bf16, batch 1, EOS disabled; mean of 5 "
-        "synchronised runs after 2 warm-ups). Peak = extra MiB over resident weights. Eq. = token-identical output.",
+        "tab:kv", "KV-cached vs.\\ no-cache greedy decoding (fine-tuned target, bf16, batch 1, EOS disabled; mean of 3 "
+        "synchronised runs after 1 warm-up). Peak = extra MiB over resident weights. Eq. = token-identical output.",
         "rrrrrrrrrrc", ["In", "Out", "Pre ms", "Dec ms", "tok/s", "Dec ms$_{nc}$", "tok/s$_{nc}$", "Speed-up", "Peak", "Peak$_{nc}$", "Eq."],
         out, star=True))
     fig, ax = plt.subplots(1, 2, figsize=(7, 2.3))
