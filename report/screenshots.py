@@ -90,8 +90,10 @@ def main():
         lab.wait_for_selector("#dec-out .kpis", timeout=600000)
         lab.click("#run-att")
         lab.wait_for_selector("#att-out table", timeout=300000)
+        lab.add_style_tag(content=".topbar{position:static!important}")
         lab.wait_for_timeout(500)
-        lab.screenshot(path=OUT / "06_lab.png", full_page=True)
+        lab.screenshot(path=OUT / "06_lab.png", full_page=True,
+                       clip={"x": 0, "y": 0, "width": 1440, "height": 1180})
         b.close()
     print("screenshots ->", OUT)
 

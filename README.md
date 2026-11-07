@@ -44,6 +44,12 @@ a consumer 6 GB GPU. Its inference stack is hand-built and validated:
 
 All of it is exposed in a **browser app** that has two parts: a screening workflow with exportable reports, and a live **Inference Lab** that benchmarks the decoding modes side by side.
 
+![Screening results for an unseen patient note: per-criterion labels, highlighted evidence sentences and the rule-based outcome](report/figures/screens/03_results_top.png)
+
+![Inference Lab: live comparison of no-cache, KV-cached and speculative decoding, plus the attention check](report/figures/screens/06_lab.png)
+
+📄 **Report:** [`report/EligiTrace_Report.pdf`](report/EligiTrace_Report.pdf) (IEEE format; LaTeX source in [`report/`](report/))
+
 ---
 
 ## 🧭 Table of contents

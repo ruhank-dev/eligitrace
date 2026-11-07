@@ -11,6 +11,12 @@ def _e(x) -> str:
     return html.escape(str(x if x is not None else ""))
 
 
+def _when(ts) -> str:
+    """DB timestamps are naive UTC; show them unambiguously, without microseconds."""
+    s = str(ts or "")
+    return s[:19].replace("T", " ") + " UTC" if s else ""
+
+
 def to_json(out: dict) -> str:
     return json.dumps(out, indent=2, default=str)
 
@@ -38,7 +44,7 @@ def to_markdown(out: dict) -> str:
                 L.append("- **Missing information:** the note does not contain the facts this criterion needs.")
     p = out.get("provenance") or {}
     L += ["", "## Provenance", "", "```json", json.dumps(p, indent=2), "```",
-          f"Generated: {out['created_at']}"]
+          f"Generated: {_when(out['created_at'])}"]
     return "\n".join(L)
 
 
@@ -76,7 +82,7 @@ h1{{font-size:22px;margin:0}} h2{{font-size:16px;margin:28px 0 10px;border-botto
 .miss{{color:#9a6700;font-weight:500}} ol{{padding-left:28px}} pre{{background:#f5f7fa;padding:10px;border-radius:8px;overflow:auto;font-size:12px}}
 @media print{{body{{margin:0}} .card{{page-break-inside:avoid}}}}
 </style></head><body>
-<h1>EligiTrace screening report</h1><p>ID <code>{_e(out['id'])}</code> &middot; {_e(out['created_at'])}</p>
+<h1>EligiTrace screening report</h1><p>ID <code>{_e(out['id'])}</code> &middot; {_e(_when(out['created_at']))}</p>
 <div class="warn"><b>{_e(out['disclaimer'])}</b></div>
 <p><b>Trial:</b> {_e(out.get('trial_title') or '-')} {_e(out.get('trial_id') or '')} &nbsp; <b>Patient:</b> {_e(out.get('patient_label') or '-')}</p>
 <div class="out">Preliminary outcome (rule-based aggregation): <b>{_e(o.get('outcome', '-'))}</b><ul>{trace}</ul>

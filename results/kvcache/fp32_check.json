@@ -1,0 +1,27 @@
+{
+  "cpu_fp32_equality": [
+    {
+      "input_len": 128,
+      "output_len": 16,
+      "equal": true
+    },
+    {
+      "input_len": 1024,
+      "output_len": 128,
+      "equal": true
+    }
+  ],
+  "cpu_fp32_seconds": 3516.3,
+  "gpu_bf16_step_cost": [
+    {
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "layers": 28,
+      "decode_ms_per_token": 239.26772857140304
+    },
+    {
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "layers": 24,
+      "decode_ms_per_token": 188.53202698353147
+    }
+  ]
+}

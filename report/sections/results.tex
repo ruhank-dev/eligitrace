@@ -58,6 +58,18 @@ correctly on 131 of the 145 empty-gold criteria, compared with 53 for the base m
 subset, which isolates retrieval from abstention, F1 rose from 0.374 to 0.663. Neither model cited a sentence
 ID outside the note.
 
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.49\linewidth]{screens/02_input_top.png}\hfill
+\includegraphics[width=0.49\linewidth]{screens/03_results_top.png}\\[4pt]
+\includegraphics[width=0.49\linewidth]{screens/06_lab.png}\hfill
+\includegraphics[width=0.49\linewidth]{screens/04_report_top.png}
+\caption{\sys\ application. Top: input of an unseen note and criteria (left), and criterion results with
+highlighted evidence, grounded rationales and the rule-based outcome (right). Bottom: Inference Lab with live
+decoder and attention comparisons (left), and the exported report with provenance (right).}
+\label{fig:app}
+\end{figure*}
+
 \subsection{Error Analysis}
 \input{tables/tab_errors}
 Of the 206 test criteria, 55 received the wrong label. Table~\ref{tab:errors} groups them with deterministic
@@ -139,7 +151,9 @@ The number of target forwards per output token falls from 1.0 to 0.31.
 Even so, speculative decoding was \emph{slower} than KV-cached greedy decoding at every $\gamma$, at
 0.39--0.69$\times$ its speed. The reason is that at batch~1 on this GPU, forward cost scales with the number of
 layers and kernel launches rather than with parameter count. The 0.5B draft has 24 layers against the target's
-28, so a draft step costs almost as much as a target step. Saving a target forward therefore saves less time
+28, so a draft step costs almost as much as a target step. We timed this directly, with greedy cached decoding
+after a 512-token prompt in bf16: one draft step took 189\,ms and one target step took 239\,ms, a ratio of
+0.79, although the draft has a third of the target's parameters. Saving a target forward therefore saves less time
 than the extra draft steps add. Speculative decoding pays off when the draft is much cheaper per token than the
 target, for example a larger target, a shallower draft, or a compute-bound regime. We report the negative
 result as measured.

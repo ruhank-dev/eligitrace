@@ -53,7 +53,17 @@ def grounding_check(text: str, label: str, criterion: str, evidence: dict[int, s
     opposite = {"included": "not included", "excluded": "not excluded"}.get(label)
     if opposite and opposite in low:
         return False, "contradicts label"
+    if label == "not enough information" and any(p in low for p in _VERDICT):
+        return False, "definite verdict for an undecided label"
+    if label != "not enough information" and any(p in low for p in _UNDECIDED):
+        return False, "undecided wording for a definite label"
     return True, "ok"
+
+
+# phrases that assert a definite outcome (or its opposite) -- incompatible with "not enough information"
+_VERDICT = ("does not meet", "doesn't meet", "meets the", "meets this", "falls outside", "falls within",
+            "is included", "is excluded", "not included", "not excluded", "is eligible", "is ineligible")
+_UNDECIDED = ("not enough information", "information is missing", "cannot be determined", "cannot be judged")
 
 
 def _prompt(label: str, criterion_type: str, criterion: str, evidence: dict[int, str]) -> list[dict]:
