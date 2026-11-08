@@ -25,11 +25,14 @@ def causal_mask(sq: int, sk: int, device) -> torch.Tensor:
 
 
 def sdpa_reference(q, k, v, causal: bool = False, attn_mask: torch.Tensor | None = None,
-                   scale: float | None = None) -> torch.Tensor:
-    """attn_mask: optional boolean, True = masked out, broadcastable to [B, H, Sq, Sk]."""
+                   scale: float | None = None, compute_dtype: torch.dtype = torch.float32) -> torch.Tensor:
+    """attn_mask: optional boolean, True = masked out, broadcastable to [B, H, Sq, Sk].
+
+    All arithmetic runs in `compute_dtype` (default fp32). Pass torch.float64 for a genuine float64 ground
+    truth; the result is cast back to q.dtype (so float64 inputs give a float64 output)."""
     k, v = expand_kv(k, v, q.shape[1])
     scale = scale if scale is not None else 1.0 / math.sqrt(q.shape[-1])
-    s = (q.float() @ k.float().transpose(-2, -1)) * scale  # [B,H,Sq,Sk] in fp32
+    s = (q.to(compute_dtype) @ k.to(compute_dtype).transpose(-2, -1)) * scale  # [B,H,Sq,Sk] in compute_dtype
     masked = torch.zeros_like(s, dtype=torch.bool)
     if causal:
         masked = masked | causal_mask(q.shape[2], k.shape[2], q.device)
@@ -42,7 +45,7 @@ def sdpa_reference(q, k, v, causal: bool = False, attn_mask: torch.Tensor | None
     p = torch.exp(s - m)
     denom = p.sum(dim=-1, keepdim=True)
     p = p / torch.where(denom == 0, torch.ones_like(denom), denom)
-    return (p @ v.float()).to(q.dtype)
+    return (p @ v.to(compute_dtype)).to(q.dtype)
 
 
 def naive_softmax_attention(q, k, v, scale: float | None = None) -> torch.Tensor:

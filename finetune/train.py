@@ -149,7 +149,7 @@ def select_best(cfg, epochs_log, run_dir: Path, s) -> None:
     for e in epochs_log:
         tag = f"{cfg['run_name']}_epoch{e['epoch']}"
         recs = run_predictions("val", s.repo_root / e["checkpoint"], tag=tag,
-                               out_root=run_dir / "val_predictions")
+                               out_root=run_dir / "val_predictions", model_id=cfg["base_model"])
         m = summarise(recs)
         rows.append({"epoch": e["epoch"], "val_loss": e["val_loss"], "accuracy": m["all"]["accuracy"],
                      "macro_f1": m["all"]["macro_f1"], "evidence_micro_f1": m["evidence"]["micro"]["f1"],

@@ -1,0 +1,50 @@
+{
+ "note": "3 validation prompts, bf16 GPU, 3 repeats each per decoder, two separate processes; cached and no-cache decoders are each deterministic and the two processes agree. Cached vs no-cache differ on prompt 1 at step 42 in both processes (reproducible bf16 numerical difference, not flakiness).",
+ "process_1": [
+  {
+   "prompt": 0,
+   "cached_deterministic": true,
+   "nocache_deterministic": true,
+   "first_diff_cached_vs_nocache": null,
+   "prompt_len": 343
+  },
+  {
+   "prompt": 1,
+   "cached_deterministic": true,
+   "nocache_deterministic": true,
+   "first_diff_cached_vs_nocache": 42,
+   "prompt_len": 322
+  },
+  {
+   "prompt": 2,
+   "cached_deterministic": true,
+   "nocache_deterministic": true,
+   "first_diff_cached_vs_nocache": null,
+   "prompt_len": 328
+  }
+ ],
+ "process_2": [
+  {
+   "prompt": 0,
+   "cached_deterministic": true,
+   "nocache_deterministic": true,
+   "first_diff_cached_vs_nocache": null,
+   "prompt_len": 343
+  },
+  {
+   "prompt": 1,
+   "cached_deterministic": true,
+   "nocache_deterministic": true,
+   "first_diff_cached_vs_nocache": 42,
+   "prompt_len": 322
+  },
+  {
+   "prompt": 2,
+   "cached_deterministic": true,
+   "nocache_deterministic": true,
+   "first_diff_cached_vs_nocache": null,
+   "prompt_len": 328
+  }
+ ],
+ "identical_across_processes": true
+}

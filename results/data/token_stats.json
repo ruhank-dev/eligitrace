@@ -1,6 +1,17 @@
 {
   "tokenizer": "Qwen/Qwen2.5-1.5B-Instruct",
-  "max_seq_len": 2048,
+  "max_seq_len": 1024,
+  "training_max_seq_len": 1024,
+  "limits_audited": {
+    "1024": {
+      "n_over_limit": 0,
+      "annotation_ids": []
+    },
+    "2048": {
+      "n_over_limit": 0,
+      "annotation_ids": []
+    }
+  },
   "n_truncated": 0,
   "n_with_evidence_lost": 0,
   "truncated_annotation_ids": [],

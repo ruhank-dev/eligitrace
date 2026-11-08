@@ -1,0 +1,31 @@
+# Validation-only experiment: LoRA rank 8, alpha 16
+# Differs from lora_qwen15b.yaml only where stated; test split is never used.
+run_name: exp_hp_r8
+base_model: Qwen/Qwen2.5-1.5B-Instruct
+seed: 42
+max_seq_len: 1024
+strategy: bf16-mixed
+grad_ckpt: true
+lora:
+  r: 8
+  alpha: 16
+  dropout: 0.05
+  target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+train:
+  epochs: 3
+  lr: 0.0002
+  warmup_ratio: 0.05
+  micro_batch: 1
+  grad_accum: 16
+  weight_decay: 0.0
+  max_grad_norm: 1.0
+  log_every: 5
+oversample: {}
+eval_each_epoch: true

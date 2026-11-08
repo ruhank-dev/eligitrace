@@ -1,0 +1,48 @@
+warning: `VIRTUAL_ENV=C:\Users\RUHAN\anaconda3` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+{
+  "tiled|float32": {
+    "cases": 432,
+    "max_abs_err": 2.4539612102358888e-06,
+    "mean_abs_err_avg": 2.040901712182305e-08
+  },
+  "reference|float32": {
+    "cases": 144,
+    "max_abs_err": 2.8133476346337005e-06,
+    "mean_abs_err_avg": 2.458105821390731e-08
+  },
+  "torch_sdpa|float32": {
+    "cases": 144,
+    "max_abs_err": 2.8133476346337005e-06,
+    "mean_abs_err_avg": 2.5283205852454575e-08
+  },
+  "tiled|bfloat16": {
+    "cases": 432,
+    "max_abs_err": 0.007804575168740779,
+    "mean_abs_err_avg": 0.0001833448067721434
+  },
+  "reference|bfloat16": {
+    "cases": 144,
+    "max_abs_err": 0.007804575168740779,
+    "mean_abs_err_avg": 0.00018334480572163066
+  },
+  "torch_sdpa|bfloat16": {
+    "cases": 144,
+    "max_abs_err": 0.007804575168740779,
+    "mean_abs_err_avg": 0.00018334480991141387
+  },
+  "tiled|float16": {
+    "cases": 432,
+    "max_abs_err": 0.0009763890508400763,
+    "mean_abs_err_avg": 2.2846571781604094e-05
+  },
+  "reference|float16": {
+    "cases": 144,
+    "max_abs_err": 0.0009763890508400763,
+    "mean_abs_err_avg": 2.284658393860529e-05
+  },
+  "torch_sdpa|float16": {
+    "cases": 144,
+    "max_abs_err": 0.0009763890508400763,
+    "mean_abs_err_avg": 2.2846588938109755e-05
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "dtype": "bfloat16",
+  "noise_cap": 1.5,
+  "rule": "gap <= 2*delta",
+  "results": [
+    {
+      "prompt": 0,
+      "cached_vs_nocache": null,
+      "cached_vs_speculative_gamma4": {
+        "first_diff": 22,
+        "gap": 0.125,
+        "delta": 0.96875,
+        "explained_by_rounding": true
+      }
+    },
+    {
+      "prompt": 1,
+      "cached_vs_nocache": {
+        "first_diff": 42,
+        "gap": 0.0,
+        "delta": 0.375,
+        "explained_by_rounding": true
+      },
+      "cached_vs_speculative_gamma4": {
+        "first_diff": 4,
+        "gap": 0.125,
+        "delta": 0.21875,
+        "explained_by_rounding": true
+      }
+    },
+    {
+      "prompt": 2,
+      "cached_vs_nocache": null,
+      "cached_vs_speculative_gamma4": null
+    }
+  ]
+}

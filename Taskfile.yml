@@ -62,6 +62,34 @@ tasks:
     desc: Speculative decoding equality tests + benchmark
     cmds: [uv run python -m speculative.benchmark]
 
+  test-slow:
+    desc: Slow exactness test - real Qwen pair in float32 on the CPU, no tolerance (tens of minutes)
+    cmds: [uv run pytest -m slow]
+
+  tie-check:
+    desc: Measure bf16 tie sizes between decoders on real prompts (results/speculative/tie_check.json)
+    cmds: [uv run python -m speculative.ties]
+
+  bench-attn-fp64:
+    desc: Re-run only the attention accuracy grid against a float64 reference (keeps the speed benchmark)
+    cmds: [uv run python -m attention.benchmark --validation-only]
+
+  exp-run:
+    desc: Run the validation-only experiments (seeds, oversampling, QLoRA, hyper-parameters, draft); hours
+    cmds: [uv run python -m finetune.run_experiments]
+
+  exp-summary:
+    desc: Collect all experiment runs into results/experiments/summary.{json,csv,md}
+    cmds: [uv run python -m finetune.summarize]
+
+  lab-runs:
+    desc: With `task app` running, repeat the live Lab comparison 5 times (results/lab/live_runs.json)
+    cmds: [uv run python -m speculative.live_lab run 5]
+
+  demo-check:
+    desc: Read-only demo readiness check (files, GPU memory, app status)
+    cmds: [uv run python -m demo.preflight]
+
   download-weights:
     desc: Download base, draft and EligiTrace LoRA adapter from Hugging Face
     cmds: [uv run python -m modeling.download]

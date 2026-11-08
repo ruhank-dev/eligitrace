@@ -9,49 +9,50 @@
   "validation_summary": {
     "tiled|float32": {
       "cases": 432,
-      "max_abs_err": 2.7418136596679688e-06,
-      "mean_abs_err_avg": 2.8212577203002686e-08
+      "max_abs_err": 2.4539612102358888e-06,
+      "mean_abs_err_avg": 2.040901712182305e-08
     },
     "reference|float32": {
       "cases": 144,
-      "max_abs_err": 0.0,
-      "mean_abs_err_avg": 0.0
+      "max_abs_err": 2.8133476346337005e-06,
+      "mean_abs_err_avg": 2.458105821390731e-08
     },
     "torch_sdpa|float32": {
       "cases": 144,
-      "max_abs_err": 2.384185791015625e-06,
-      "mean_abs_err_avg": 2.6322918259836258e-08
+      "max_abs_err": 2.8133476346337005e-06,
+      "mean_abs_err_avg": 2.5283205852454575e-08
     },
     "tiled|bfloat16": {
       "cases": 432,
-      "max_abs_err": 0.0078046321868896484,
-      "mean_abs_err_avg": 0.00018334493772858453
+      "max_abs_err": 0.007804575168740779,
+      "mean_abs_err_avg": 0.0001833448067721434
     },
     "reference|bfloat16": {
       "cases": 144,
-      "max_abs_err": 0.0078046321868896484,
-      "mean_abs_err_avg": 0.00018334492938471778
+      "max_abs_err": 0.007804575168740779,
+      "mean_abs_err_avg": 0.00018334480572163066
     },
     "torch_sdpa|bfloat16": {
       "cases": 144,
-      "max_abs_err": 0.0078046321868896484,
-      "mean_abs_err_avg": 0.00018334493746414006
+      "max_abs_err": 0.007804575168740779,
+      "mean_abs_err_avg": 0.00018334480991141387
     },
     "tiled|float16": {
       "cases": 432,
-      "max_abs_err": 0.0009763240814208984,
-      "mean_abs_err_avg": 2.2846610187537597e-05
+      "max_abs_err": 0.0009763890508400763,
+      "mean_abs_err_avg": 2.2846571781604094e-05
     },
     "reference|float16": {
       "cases": 144,
-      "max_abs_err": 0.0009763240814208984,
-      "mean_abs_err_avg": 2.2846529487816874e-05
+      "max_abs_err": 0.0009763890508400763,
+      "mean_abs_err_avg": 2.284658393860529e-05
     },
     "torch_sdpa|float16": {
       "cases": 144,
-      "max_abs_err": 0.0009763240814208984,
-      "mean_abs_err_avg": 2.2846609675162844e-05
+      "max_abs_err": 0.0009763890508400763,
+      "mean_abs_err_avg": 2.2846588938109755e-05
     }
   },
-  "timing": "2 warm-up + 5 synchronized repeats"
+  "timing": "2 warm-up + 5 synchronized repeats",
+  "validation_truth": "float64 (sdpa_reference with compute_dtype=torch.float64)"
 }

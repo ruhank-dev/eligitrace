@@ -83,7 +83,7 @@ def run_attention(p: AttentionLabIn) -> dict:
     q = torch.randn(1, p.heads, p.seq_len, p.head_dim, generator=g).to(dev, dt)
     k = torch.randn(1, p.kv_heads, p.seq_len, p.head_dim, generator=g).to(dev, dt)
     v = torch.randn(1, p.kv_heads, p.seq_len, p.head_dim, generator=g).to(dev, dt)
-    truth = sdpa_reference(q.double(), k.double(), v.double(), causal=p.causal)
+    truth = sdpa_reference(q.double(), k.double(), v.double(), causal=p.causal, compute_dtype=torch.float64)
     impls = {"reference": lambda: sdpa_reference(q, k, v, causal=p.causal),
              "tiled_online_softmax": lambda: tiled_attention(q, k, v, causal=p.causal, block_q=p.block, block_k=p.block),
              "torch_sdpa": lambda: torch.nn.functional.scaled_dot_product_attention(

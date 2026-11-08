@@ -1,0 +1,162 @@
+[
+  {
+    "created_at": "2026-11-07T22:08:49.190578",
+    "params": {
+      "prompt_source": "example",
+      "example_index": 0,
+      "custom_prompt": null,
+      "modes": [
+        "no_cache",
+        "kv_cached",
+        "speculative"
+      ],
+      "gamma": 4,
+      "max_new_tokens": 48,
+      "ignore_eos": false,
+      "repeats": 2
+    },
+    "modes": [
+      {
+        "mode": "no_cache",
+        "total_ms": 9122.55600001663,
+        "speedup_vs_kv_cached": 0.4225512071363676,
+        "acceptance_rate": null,
+        "tokens_equal_reference": true
+      },
+      {
+        "mode": "kv_cached",
+        "total_ms": 3854.7470499761403,
+        "speedup_vs_kv_cached": 1.0,
+        "acceptance_rate": null,
+        "tokens_equal_reference": true
+      },
+      {
+        "mode": "speculative",
+        "total_ms": 2485.4966499842703,
+        "speedup_vs_kv_cached": 1.5508960955552022,
+        "acceptance_rate": 1.0,
+        "tokens_equal_reference": true
+      }
+    ]
+  },
+  {
+    "created_at": "2026-11-07T22:13:23.705921",
+    "params": {
+      "prompt_source": "example",
+      "example_index": 0,
+      "custom_prompt": null,
+      "modes": [
+        "no_cache",
+        "kv_cached",
+        "speculative"
+      ],
+      "gamma": 4,
+      "max_new_tokens": 48,
+      "ignore_eos": false,
+      "repeats": 2
+    },
+    "modes": [
+      {
+        "mode": "no_cache",
+        "total_ms": 9340.878399991198,
+        "speedup_vs_kv_cached": 0.8018433148680881,
+        "acceptance_rate": null,
+        "tokens_equal_reference": true
+      },
+      {
+        "mode": "kv_cached",
+        "total_ms": 7489.920900028665,
+        "speedup_vs_kv_cached": 1.0,
+        "acceptance_rate": null,
+        "tokens_equal_reference": true
+      },
+      {
+        "mode": "speculative",
+        "total_ms": 5015.547199989669,
+        "speedup_vs_kv_cached": 1.4933407266198377,
+        "acceptance_rate": 1.0,
+        "tokens_equal_reference": true
+      }
+    ]
+  },
+  {
+    "created_at": "2026-11-07T22:16:18.436051",
+    "params": {
+      "prompt_source": "example",
+      "example_index": 0,
+      "custom_prompt": null,
+      "modes": [
+        "no_cache",
+        "kv_cached",
+        "speculative"
+      ],
+      "gamma": 4,
+      "max_new_tokens": 48,
+      "ignore_eos": false,
+      "repeats": 2
+    },
+    "modes": [
+      {
+        "mode": "no_cache",
+        "total_ms": 9317.612250044476,
+        "speedup_vs_kv_cached": 0.38919511272427104,
+        "acceptance_rate": null,
+        "tokens_equal_reference": true
+      },
+      {
+        "mode": "kv_cached",
+        "total_ms": 3626.3691499771085,
+        "speedup_vs_kv_cached": 1.0,
+        "acceptance_rate": null,
+        "tokens_equal_reference": true
+      },
+      {
+        "mode": "speculative",
+        "total_ms": 2316.23219998437,
+        "speedup_vs_kv_cached": 1.5656328195426952,
+        "acceptance_rate": 1.0,
+        "tokens_equal_reference": true
+      }
+    ]
+  },
+  {
+    "created_at": "2026-11-07T22:23:16.289006",
+    "params": {
+      "prompt_source": "example",
+      "example_index": 0,
+      "custom_prompt": null,
+      "modes": [
+        "no_cache",
+        "kv_cached",
+        "speculative"
+      ],
+      "gamma": 4,
+      "max_new_tokens": 48,
+      "ignore_eos": false,
+      "repeats": 2
+    },
+    "modes": [
+      {
+        "mode": "no_cache",
+        "total_ms": 9433.4602500021,
+        "speedup_vs_kv_cached": 0.3745401640921158,
+        "acceptance_rate": null,
+        "tokens_equal_reference": true
+      },
+      {
+        "mode": "kv_cached",
+        "total_ms": 3533.2097499922384,
+        "speedup_vs_kv_cached": 1.0,
+        "acceptance_rate": null,
+        "tokens_equal_reference": true
+      },
+      {
+        "mode": "speculative",
+        "total_ms": 2768.6451000045054,
+        "speedup_vs_kv_cached": 1.276151193949159,
+        "acceptance_rate": 1.0,
+        "tokens_equal_reference": true
+      }
+    ]
+  }
+]

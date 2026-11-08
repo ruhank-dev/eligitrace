@@ -26,10 +26,11 @@ def main() -> None:
     ap.add_argument("--n-prompts", type=int, default=8)
     ap.add_argument("--repeats", type=int, default=2)
     ap.add_argument("--free-run", type=int, default=96, help="EOS-free length for long-generation runs")
+    ap.add_argument("--draft-adapter", type=Path, default=None, help="LoRA adapter for the DRAFT (merged)")
     a = ap.parse_args()
     s = get_settings()
     tgt = load_model(s.target_model_id, adapter=a.adapter, merge=True)
-    drf = load_model(s.draft_model_id)
+    drf = load_model(s.draft_model_id, adapter=a.draft_adapter, merge=a.draft_adapter is not None)
     compat = compatibility(tgt.tokenizer, drf.tokenizer, tgt.model, drf.model)
     assert compat["compatible"], compat
     dev = tgt.device
@@ -93,7 +94,7 @@ def main() -> None:
         w.writerows(rows)
     (out / "summary.json").write_text(json.dumps({
         "target": s.target_model_id, "target_adapter": str(a.adapter) if a.adapter else None,
-        "draft": s.draft_model_id, "dtype": str(tgt.dtype), "gpu": torch.cuda.get_device_name(0),
+        "draft": s.draft_model_id, "draft_adapter": str(a.draft_adapter) if a.draft_adapter else None, "dtype": str(tgt.dtype), "gpu": torch.cuda.get_device_name(0),
         "compatibility": compat, "n_prompts": len(prompts), "repeats": a.repeats,
         "peak_mib_spec_total": peak_spec, "peak_mib_greedy_total_with_draft_loaded": peak_greedy,
         "mismatches": eq, "all_equal": all(r["all_equal"] for r in rows),

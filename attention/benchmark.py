@@ -45,7 +45,8 @@ def validation(dev) -> list[dict]:
         if dt != torch.float32 and dev.type == "cpu":
             continue
         q, k, v = _rand(B, Hq, Hkv, Sq, Sk, D, dt, dev)
-        ref64 = sdpa_reference(q.double(), k.double(), v.double(), causal=causal)  # high-precision truth
+        ref64 = sdpa_reference(q.double(), k.double(), v.double(), causal=causal,
+                               compute_dtype=torch.float64)  # genuine float64 ground truth
         for block in (16, 64, 128):
             til = tiled_attention(q, k, v, causal=causal, block_q=block, block_k=block)
             err = (til.double() - ref64).abs()
@@ -121,6 +122,11 @@ def _write(rows, path: Path):
 
 
 def main() -> None:
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--validation-only", action="store_true",
+                    help="rerun only the accuracy grid (float64 truth); keep the committed speed benchmark")
+    args = ap.parse_args()
     out = get_settings().results_dir / "attention"
     dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     val = validation(dev)
@@ -134,12 +140,19 @@ def main() -> None:
         s["mean_abs_err_avg"] += r["mean_abs_err"]
     for s in summary.values():
         s["mean_abs_err_avg"] /= s["cases"]
+    if args.validation_only:
+        old = json.loads((out / "summary.json").read_text())
+        old["validation_summary"] = summary
+        old["validation_truth"] = "float64 (sdpa_reference with compute_dtype=torch.float64)"
+        (out / "summary.json").write_text(json.dumps(old, indent=2))
+        print(json.dumps(summary, indent=2))
+        return
     rows = speed(dev) + (speed(torch.device("cpu")) if dev.type == "cuda" else [])
     _write(rows, out / "benchmark.csv")
     env = {"torch": torch.__version__, "gpu": torch.cuda.get_device_name(0) if dev.type == "cuda" else None,
            "capability": torch.cuda.get_device_capability(0) if dev.type == "cuda" else None,
            "flash_sdp_enabled": torch.backends.cuda.flash_sdp_enabled(),
-           "validation_summary": summary, "timing": "2 warm-up + 5 synchronized repeats"}
+           "validation_summary": summary, "validation_truth": "float64", "timing": "2 warm-up + 5 synchronized repeats"}
     (out / "summary.json").write_text(json.dumps(env, indent=2))
     print(json.dumps(summary, indent=2))
 

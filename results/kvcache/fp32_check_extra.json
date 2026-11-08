@@ -1,0 +1,15 @@
+{
+  "cpu_fp32_equality": [
+    {
+      "input_len": 128,
+      "output_len": 64,
+      "equal": true
+    },
+    {
+      "input_len": 128,
+      "output_len": 128,
+      "equal": true
+    }
+  ],
+  "cpu_fp32_seconds": 1783.1
+}

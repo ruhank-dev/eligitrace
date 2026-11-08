@@ -1,0 +1,5 @@
+warning: `VIRTUAL_ENV=C:\Users\RUHAN\anaconda3` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+W1108 16:32:38.844000 35724 .venv\Lib\site-packages\torch\utils\flop_counter.py:113] triton not found; flop counting will not work for triton kernels
+{'input_len': 128, 'output_len': 64, 'equal': True}
+{'input_len': 128, 'output_len': 128, 'equal': True}
+-> C:\Users\RUHAN\Downloads\gen_ai_assignment_2\results\kvcache\fp32_check_extra.json

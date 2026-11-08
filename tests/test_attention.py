@@ -81,3 +81,29 @@ def test_fp16_gpu(causal):
     ref = sdpa_reference(q, k, v, causal=causal)
     til = tiled_attention(q, k, v, causal=causal)
     assert (til.float() - ref.float()).abs().max() < 2e-3
+
+
+@pytest.mark.parametrize("causal", [True, False])
+def test_float64_reference_is_genuinely_float64(causal):
+    """The float64 ground truth must equal an independent float64 softmax(QK^T/sqrt(d))V to ~1e-12,
+    and the fp32 reference must differ from it by float32 rounding (so it is NOT a float64 truth)."""
+    q, k, v = (t.double() for t in _rand(1, 4, 2, 37, 53, 32))
+    rep = 2
+    k2, v2 = k.repeat_interleave(rep, 1), v.repeat_interleave(rep, 1)
+    s = (q @ k2.transpose(-2, -1)) / math.sqrt(32)
+    if causal:
+        s = s.masked_fill(causal_mask(37, 53, q.device), float("-inf"))
+    independent = torch.softmax(s, -1) @ v2
+    truth = sdpa_reference(q, k, v, causal=causal, compute_dtype=torch.float64)
+    assert truth.dtype == torch.float64
+    assert (truth - independent).abs().max() < 1e-12
+    fp32 = sdpa_reference(q, k, v, causal=causal).double()  # default compute dtype is fp32
+    err = (fp32 - truth).abs().max()
+    assert 1e-9 < err < 1e-5, "fp32 reference should differ from float64 truth by float32 rounding"
+
+
+def test_tiled_fp32_error_against_float64_truth():
+    q, k, v = _rand(1, 12, 2, 129, 129, 64)
+    truth = sdpa_reference(q.double(), k.double(), v.double(), causal=True, compute_dtype=torch.float64)
+    til = tiled_attention(q, k, v, causal=True, block_q=64, block_k=64)
+    assert (til.double() - truth).abs().max() < 1e-5

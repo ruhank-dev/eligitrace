@@ -46,13 +46,22 @@ def step_cost(model_id: str, adapter: str | None, n: int = 64) -> dict:
 
 
 def main() -> None:
+    import argparse
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--cases", default="128:16,1024:128", help="comma list of input:output lengths")
+    ap.add_argument("--no-step-cost", action="store_true", help="skip the GPU step-cost timing")
+    ap.add_argument("--out", default="fp32_check.json", help="file name under results/kvcache/")
+    a = ap.parse_args()
     s = get_settings()
     adapter = "checkpoints/lora_r16_bf16/best"
+    cases = [tuple(int(x) for x in c.split(":")) for c in a.cases.split(",")]
     t0 = time.time()
-    res = {"cpu_fp32_equality": equality(adapter, [(128, 16), (1024, 128)])}
+    res = {"cpu_fp32_equality": equality(adapter, cases)}
     res["cpu_fp32_seconds"] = round(time.time() - t0, 1)
-    res["gpu_bf16_step_cost"] = [step_cost(s.target_model_id, adapter), step_cost(s.draft_model_id, None)]
-    out = s.results_dir / "kvcache" / "fp32_check.json"
+    if not a.no_step_cost:
+        res["gpu_bf16_step_cost"] = [step_cost(s.target_model_id, adapter), step_cost(s.draft_model_id, None)]
+    out = s.results_dir / "kvcache" / a.out
     out.write_text(json.dumps(res, indent=2))
     print(f"-> {out}")
 

@@ -1,0 +1,84 @@
+{
+  "request": {
+    "prompt_source": "example",
+    "example_index": 0,
+    "gamma": 4,
+    "max_new_tokens": 48,
+    "repeats": 2,
+    "modes": [
+      "no_cache",
+      "kv_cached",
+      "speculative"
+    ],
+    "ignore_eos": false
+  },
+  "runs": [
+    {
+      "run": 1,
+      "prompt_tokens": 343,
+      "no_cache_ms": 8951.580699998885,
+      "kv_cached_ms": 4219.659850001335,
+      "speculative_ms": 3572.3842500010505,
+      "speculative_vs_kv": 1.1811886837201497,
+      "kv_vs_no_cache": 2.121398647807134,
+      "acceptance_rate": 1.0,
+      "all_tokens_equal": true,
+      "output_tokens": 15
+    },
+    {
+      "run": 2,
+      "prompt_tokens": 343,
+      "no_cache_ms": 9779.236650007078,
+      "kv_cached_ms": 4194.129600015003,
+      "speculative_ms": 2679.963599977782,
+      "speculative_vs_kv": 1.564994987263922,
+      "kv_vs_no_cache": 2.331648657202223,
+      "acceptance_rate": 1.0,
+      "all_tokens_equal": true,
+      "output_tokens": 15
+    },
+    {
+      "run": 3,
+      "prompt_tokens": 343,
+      "no_cache_ms": 9703.69214998209,
+      "kv_cached_ms": 4267.929699999513,
+      "speculative_ms": 3020.037699956447,
+      "speculative_vs_kv": 1.4132041133331092,
+      "kv_vs_no_cache": 2.27362979994333,
+      "acceptance_rate": 1.0,
+      "all_tokens_equal": true,
+      "output_tokens": 15
+    },
+    {
+      "run": 4,
+      "prompt_tokens": 343,
+      "no_cache_ms": 9880.39989999379,
+      "kv_cached_ms": 6048.442750034155,
+      "speculative_ms": 3502.2524000087287,
+      "speculative_vs_kv": 1.7270150917789593,
+      "kv_vs_no_cache": 1.6335444193363649,
+      "acceptance_rate": 1.0,
+      "all_tokens_equal": true,
+      "output_tokens": 15
+    },
+    {
+      "run": 5,
+      "prompt_tokens": 343,
+      "no_cache_ms": 8943.376800016267,
+      "kv_cached_ms": 3086.352000012994,
+      "speculative_ms": 2432.027200004086,
+      "speculative_vs_kv": 1.2690450172628862,
+      "kv_vs_no_cache": 2.8977176938918876,
+      "acceptance_rate": 1.0,
+      "all_tokens_equal": true,
+      "output_tokens": 15
+    }
+  ],
+  "aggregate": {
+    "n": 5,
+    "speculative_vs_kv_mean": 1.4310895786718052,
+    "sd": 0.2205285439621043,
+    "min": 1.1811886837201497,
+    "max": 1.7270150917789593
+  }
+}

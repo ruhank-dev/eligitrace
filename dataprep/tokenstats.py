@@ -16,7 +16,11 @@ def _stats(xs) -> dict:
             "max": int(a.max()), "mean": float(a.mean())}
 
 
-def compute(df: pd.DataFrame, tokenizer_id: str, max_seq_len: int = 2048) -> dict:
+TRAIN_MAX_SEQ_LEN = 1024  # the limit finetune/configs/lora_qwen15b.yaml actually trains with
+AUDIT_MAX_SEQ_LEN = 2048  # a second, looser limit audited for reference
+
+
+def compute(df: pd.DataFrame, tokenizer_id: str, max_seq_len: int = TRAIN_MAX_SEQ_LEN) -> dict:
     tok = AutoTokenizer.from_pretrained(tokenizer_id)
     rows = []
     for row in df.itertuples():
@@ -35,7 +39,12 @@ def compute(df: pd.DataFrame, tokenizer_id: str, max_seq_len: int = 2048) -> dic
                      "prompt_tokens": len(prompt), "target_tokens": len(full) - len(prompt),
                      "total_tokens": len(full), "truncated": truncated, "evidence_lost": lost})
     t = pd.DataFrame(rows)
-    out = {"tokenizer": tokenizer_id, "max_seq_len": max_seq_len,
+    audits = {}
+    for lim in (TRAIN_MAX_SEQ_LEN, AUDIT_MAX_SEQ_LEN):
+        over = t[t.total_tokens > lim]
+        audits[str(lim)] = {"n_over_limit": int(len(over)), "annotation_ids": over.annotation_id.tolist()}
+    out = {"tokenizer": tokenizer_id, "max_seq_len": max_seq_len, "training_max_seq_len": TRAIN_MAX_SEQ_LEN,
+           "limits_audited": audits,
            "n_truncated": int(t.truncated.sum()),
            "n_with_evidence_lost": int((t.evidence_lost.map(len) > 0).sum()),
            "truncated_annotation_ids": t.loc[t.truncated, "annotation_id"].tolist(),
@@ -44,7 +53,7 @@ def compute(df: pd.DataFrame, tokenizer_id: str, max_seq_len: int = 2048) -> dic
     return out, t
 
 
-def write(df: pd.DataFrame, tokenizer_id: str, out_dir: Path, max_seq_len: int = 2048) -> dict:
+def write(df: pd.DataFrame, tokenizer_id: str, out_dir: Path, max_seq_len: int = TRAIN_MAX_SEQ_LEN) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
     stats, table = compute(df, tokenizer_id, max_seq_len)
     (out_dir / "token_stats.json").write_text(json.dumps(stats, indent=2), encoding="utf-8")
@@ -54,7 +63,8 @@ def write(df: pd.DataFrame, tokenizer_id: str, out_dir: Path, max_seq_len: int =
     import matplotlib.pyplot as plt
     fig, ax = plt.subplots(figsize=(5, 3))
     ax.hist(table.total_tokens, bins=40, color="#3b6ea5")
-    ax.axvline(max_seq_len, color="#c0392b", ls="--", label=f"max_seq_len={max_seq_len}")
+    ax.axvline(TRAIN_MAX_SEQ_LEN, color="#c0392b", ls="--", label=f"training limit = {TRAIN_MAX_SEQ_LEN}")
+    ax.axvline(table.total_tokens.max(), color="#2a7f3b", ls=":", label=f"longest example = {table.total_tokens.max()}")
     ax.set_xlabel("tokens per training example (prompt + target)")
     ax.set_ylabel("examples")
     ax.legend()
@@ -62,3 +72,13 @@ def write(df: pd.DataFrame, tokenizer_id: str, out_dir: Path, max_seq_len: int =
     fig.savefig(out_dir / "token_hist.png", dpi=160)
     plt.close(fig)
     return stats
+
+
+if __name__ == "__main__":  # regenerate only the token audit: uv run python -m dataprep.tokenstats
+    from dataprep.loader import load_clean
+    from dataprep.split import assign_splits
+    from settings.config import get_settings
+
+    cfg = get_settings()
+    st = write(assign_splits(load_clean(), cfg.seed), cfg.target_model_id, cfg.results_dir / "data")
+    print(json.dumps({"max_total": st["overall"]["total_tokens"]["max"], "limits": st["limits_audited"]}, indent=1))

@@ -1,0 +1,9 @@
+Inclusion Criteria:
+- Adults aged 40 to 80 years with type 2 diabetes
+- HbA1c between 7.0% and 10.5%
+- Stable dose of metformin for at least 3 months
+Exclusion Criteria:
+- Current insulin therapy
+- eGFR below 30 mL/min/1.73m2
+- Pregnancy or breastfeeding
+- History of pancreatitis
