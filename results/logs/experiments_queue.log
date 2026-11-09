@@ -1,0 +1,13 @@
+warning: `VIRTUAL_ENV=C:\Users\RUHAN\anaconda3` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+[start] exp_draft05b_ft
+[end] exp_draft05b_ft rc=0 wall=5822s
+[start] exp_oversample3
+[end] exp_oversample3 rc=0 wall=12245s
+[start] exp_seed43
+[end] exp_seed43 rc=0 wall=8062s
+[start] exp_seed44
+[end] exp_seed44 rc=0 wall=10646s
+[start] exp_qlora
+[end] exp_qlora rc=0 wall=4224s
+[start] exp_hp_r8
+[end] exp_hp_r8 (runner stopped by operator; r32/lr1e-4 intentionally not run: time budget)

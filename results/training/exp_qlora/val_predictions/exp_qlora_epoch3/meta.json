@@ -1,0 +1,21 @@
+{
+  "tag": "exp_qlora_epoch3",
+  "split": "val",
+  "n": 206,
+  "model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+  "adapter": "C:\\Users\\RUHAN\\Downloads\\gen_ai_assignment_2\\checkpoints\\exp_qlora\\epoch3",
+  "adapter_sha256": "77dba91e8416088e251d4797c07ffdda3d9a302de830a05b58e0918d92193a4b",
+  "dtype": "torch.bfloat16",
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce GTX 1660 SUPER",
+  "decoding": {
+    "strategy": "greedy (argmax)",
+    "decoder": "kvcache.greedy_cached",
+    "max_new_tokens": 64,
+    "batch_size": 1,
+    "do_sample": false,
+    "repetition_penalty": 1.0
+  },
+  "git_commit": "bcaf95359bafcdd987f74646a272a54a6dd20c9b",
+  "created_at": "2026-11-08T23:30:08+00:00"
+}

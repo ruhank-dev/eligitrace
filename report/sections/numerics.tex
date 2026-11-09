@@ -16,9 +16,10 @@ code. Speculative decoding then matches greedy decoding token for token on all t
 With the tiled kernel substituted for every attention layer of the fine-tuned model through the Transformers
 \texttt{AttentionInterface}, final-position logits stay within $3.4\times10^{-4}$ of SDPA. Greedy output is
 identical on all three prompts, whereas in bf16 the logit gap is 0.5--0.7 and one prompt diverges.
-Finally, the KV-cached decoder matches the no-cache reference in fp32 on both bf16-diverging KV cases: (128 in,
-16 out), which diverged at step~5, and (1024 in, 128 out), which diverged at step~84. The fp32 runs took
-59\,min on the CPU, mostly in the quadratic no-cache reference.
+Finally, the KV-cached decoder matches the no-cache reference in fp32 on \emph{all four} bf16-diverging KV
+cases: the three 128-token-input cases (16, 64 and 128 output tokens), which all diverged at step~5, and
+(1024 in, 128 out), which diverged at step~84. The fp32 runs took 59\,min and 30\,min on the CPU, mostly in the
+quadratic no-cache reference.
 
 \begin{table}[t]
 \centering
@@ -33,10 +34,12 @@ Check & bf16 GPU & fp32 CPU \\
 Speculative vs.\ greedy ($\gamma{=}4$, 3 prompts) & 1/3 equal & 3/3 equal \\
 Tiled attention in model vs.\ SDPA (3 prompts) & 2/3 equal & 3/3 equal \\
 \quad max $|\Delta\text{logit}|$ & 0.70 & $3.4\times10^{-4}$ \\
-KV-cached vs.\ no-cache (2 diverging cases) & 0/2 equal & 2/2 equal \\
+KV-cached vs.\ no-cache (4 diverging cases) & 0/4 equal & 4/4 equal \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+These checks are also part of the test suite. The real-model GPU test measures the logit gap at the first bf16 divergence and accepts it only if the gap is at most twice the measured difference between the two computation paths (observed gaps 0--0.125 against path differences 0.22--0.97; \texttt{results/speculative/tie\_check.json}), and a control test confirms that a wrong token is rejected. A separate float32 test on the same real models, with no tolerance, passes for cached, no-cache and speculative decoding (3 prompts, 24 CPU minutes).
 
 The mechanisms are therefore exact. In bf16 they are reproducible only up to ties within one rounding step,
 which is also true of production inference stacks. Any bf16 equality claim should be read with that caveat.

@@ -89,6 +89,45 @@ A further 34 records have the correct label but differ from the gold evidence. M
 \emph{not excluded} criteria, where the annotators cited background sentences such as the demographic opening
 line.
 
+\subsection{Seeds, Oversampling, QLoRA and Rank (Validation Only)}\label{sec:res-extra}
+\input{tables/exp_numbers}
+The main run uses one seed and one configuration, so we measured how much of a result is configuration and how
+much is chance. Every run below repeats the pipeline of Section~\ref{sec:ft} on the \emph{training} split with one
+change, is scored on the 206 \emph{validation} criteria with the same prompt, parser and greedy decoder, and never
+touches the test split, which was evaluated once (Table~\ref{tab:main}). Seeds, QLoRA and rank-8 runs are scored
+at the final epoch only (epoch~3, which was also the baseline's best epoch) to fit the time budget.
+\input{tables/tab_experiments}
+\input{tables/tab_seeds}
+
+\textbf{Seeds.} Over seeds 42, 43 and 44 the validation accuracy is $\vSeedAccMean\pm\vSeedAccSd$ (range
+$\vSeedAccMin$--$\vSeedAccMax$), so accuracy is stable to about one point. Macro-F1 is not:
+$\vSeedMFpMean\pm\vSeedMFpSd$ (range $\vSeedMFpMin$--$\vSeedMFpMax$). The reason is the label counts. The
+validation split has 2 \emph{excluded} and 3 \emph{not included} criteria, and the F1 of those classes jumps
+between 0 and 1 from one seed to the next, which moves the six-class average by up to 0.15. Seed~42, the model used for the frozen test
+evaluation, has a validation macro-F1 of $\vBaseMFp$, close to the three-seed mean, so the main result is typical
+rather than a favourable draw. Differences below roughly 0.15 macro-F1 between single runs should not be read
+as real.
+
+\textbf{Oversampling.} Repeating the rare labels three times raised validation accuracy to $\vOverAcc$ and
+macro-F1 to $\vOverMFp$, because the model then predicted \emph{excluded} correctly on both validation examples,
+while evidence F1 fell from $\vBaseEv$ to $\vOverEv$. Its accuracy is about two standard deviations above the
+seed mean and its macro-F1 is only 0.013 above the best seed, while the run itself is a single sample, so it cannot separate this gain from chance. We
+therefore report it as promising but unproven, and we did not change the frozen model.
+
+\textbf{QLoRA.} Training on a 4-bit NF4 base needed $3.4$\,GB instead of $4.3$\,GB (and ran at about the same speed per step in the memory benchmark), but
+accuracy was $\vQloraAcc$ (against $\vSeedAccMean$ for bf16 LoRA, below every bf16 seed) and macro-F1 $\vQloraMFp$,
+with an F1 of 0 on \emph{not applicable}. The adapter was trained against the quantised weights and scored on
+the bf16 weights (the deployment setting here), so part of the drop can be this mismatch. On a 6\,GB card both fit,
+so the extra memory saving did not justify the accuracy cost, which confirms the choice of bf16 LoRA.
+
+\textbf{Rank.} Halving the LoRA rank to 8 trains $9.2$\,M instead of $18.5$\,M parameters and gives validation
+accuracy $\vHpEightAcc$ and macro-F1 $\vHpEightMFp$, which is inside the seed-to-seed spread of the rank-16 runs
+($\vSeedAccMin$--$\vSeedAccMax$ and $\vSeedMFpMin$--$\vSeedMFpMax$). Within the noise we measured, rank~16 is
+therefore not shown to be better than rank~8. Our hyper-parameter search is deliberately small: one alternative rank, one
+quantised variant and one resampling variant, each from a single training run. Rank~32 and a lower learning rate were
+configured (\texttt{finetune/configs/experiments/}) but not run because of time. The frozen configuration
+(rank~16, learning rate $2\times10^{-4}$) is a reasonable default, not a tuned optimum.
+
 \subsection{KV-Cached Decoding}\label{sec:res-kv}
 \input{tables/tab_kv}
 Table~\ref{tab:kv} and Fig.~\ref{fig:kv} compare the two decoders. Prefill cost is the same for both, since
@@ -110,8 +149,10 @@ why the cached throughput stays flat.
 \end{figure}
 
 \textbf{Equality.} The CPU fp64 tests on tiny Qwen2 models and the bf16 GPU test on the base model produce
-token-identical output for both decoders. With the merged fine-tuned weights in bf16, 6 of the 9 benchmark
-cases are identical. The other three diverge at a step where the top-2 logit margin is 0.125, which is exactly
+token-identical output for both decoders. With the merged fine-tuned weights in bf16, \textbf{5 of the 9}
+benchmark cases are identical and 4 differ. The four differences have only two distinct causes: the three
+cases with a 128-token input all diverge at step~5 on the same token pair, and the (1024 in, 128 out) case
+diverges at step~84. At both points the top-2 logit margin is 0.125, which is exactly
 one bf16 unit in the last place for logits between 16 and 32. In other words, the two candidate tokens are
 tied at bf16 resolution. The cached path computes attention for one query against stored keys, while the
 reference recomputes the full $T\times T$ product; the two reduction orders round differently, and a tie can
@@ -119,11 +160,14 @@ go either way. Section~\ref{sec:res-numerics} tests this explanation in fp32.
 
 \subsection{Tiled Attention}
 \input{tables/tab_attn_err}
-Against a float64 ground truth, the tiled kernel matches PyTorch SDPA to the precision of its storage format
-(Table~\ref{tab:attnerr}). In fp32 its maximum error is $2.7\times10^{-6}$ against $2.4\times10^{-6}$ for SDPA,
-over 432 cases that cover GQA (12:2), decode shapes with $S_q{=}1$, causal and non-causal masks, and tile sizes
-16, 64 and 128. In bf16 and fp16 all three implementations have the same error, set by rounding the output to
-the storage type.
+Against a genuine float64 ground truth (the reference routine run with float64 arithmetic and validated against
+an independent float64 softmax in the test suite), the tiled kernel matches PyTorch SDPA to the precision of its
+storage format (Table~\ref{tab:attnerr}). In fp32 its maximum error is $2.5\times10^{-6}$, against
+$2.8\times10^{-6}$ for both our fp32 reference and SDPA, over 432 cases that cover GQA (12:2), decode shapes with
+$S_q{=}1$, causal and non-causal masks, and tile sizes 16, 64 and 128. In bf16 and fp16 all three implementations
+have the same error, set by rounding the output to the storage type. An earlier run of the same grid used an
+fp32 reference by mistake (the routine cast its inputs to fp32); it gave $2.7\times10^{-6}$ for the tiled kernel
+and is kept, labelled as such, in \texttt{results/attention/fp32\_reference\_validation/}.
 
 Speed and memory show the expected trade-off (Fig.~\ref{fig:attn}). On the GTX~1660 SUPER (sm\_75), PyTorch's
 fused flash and memory-efficient kernels are unavailable in bf16, so the fair baseline is the unfused
@@ -165,6 +209,17 @@ result as measured.
 $\gamma$.}
 \label{fig:spec}
 \end{figure}
+
+\textbf{A fine-tuned draft.} The draft above is the untrained 0.5B model, so it is not adapted to the JSON task.
+We fine-tuned the 0.5B model with the same recipe (validation accuracy $\vDraftAcc$, macro-F1 $\vDraftMFp$,
+Section~\ref{sec:res-extra}) and repeated the benchmark in the same session as an untrained-draft rerun
+(Table~\ref{tab:draft}; the rerun reproduces the acceptance rates exactly and its greedy baseline is 10\% slower
+than the earlier session, which is why the table uses the rerun). Acceptance at $\gamma{=}4$ rises from 0.59 to
+0.85 and the speed-up from $0.62\times$ to $0.75\times$, with a best of $0.79\times$ at $\gamma{=}6$. Training the
+draft therefore removes most of the wasted drafting, but it is still \emph{slower} than plain cached decoding,
+which confirms the diagnosis above: the limit is the draft's per-step cost, not its accuracy. On the task workload only the $\gamma{=}8$ row
+differs from greedy (as with the untrained draft, free-text generation differs more often because it has more steps at which a bf16 tie can occur; the mismatches are listed in \texttt{results/speculative/ftdraft/summary.json}).
+\input{tables/tab_draft}
 
 \subsection{Numerical Agreement in bf16 vs.\ fp32}\label{sec:res-numerics}
 \input{sections/numerics}

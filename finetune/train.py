@@ -147,6 +147,8 @@ def select_best(cfg, epochs_log, run_dir: Path, s) -> None:
 
     rows = []
     for e in epochs_log:
+        if cfg.get("eval_epochs") and e["epoch"] not in cfg["eval_epochs"]:
+            continue  # time budget: generation-based validation only for the listed epochs
         tag = f"{cfg['run_name']}_epoch{e['epoch']}"
         recs = run_predictions("val", s.repo_root / e["checkpoint"], tag=tag,
                                out_root=run_dir / "val_predictions", model_id=cfg["base_model"])

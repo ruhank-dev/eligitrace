@@ -1,0 +1,41 @@
+W1109 04:30:23.888000 104584 .venv\Lib\site-packages\torch\utils\flop_counter.py:113] triton not found; flop counting will not work for triton kernels
+C:\Users\RUHAN\Downloads\gen_ai_assignment_2\finetune\train.py:105: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:821.)
+  run_loss += float(loss) * k
+trainable params: 9,232,384 || all params: 1,552,946,688 || trainable%: 0.5945
+{"step": 1, "epoch": 0.027, "train_loss": 0.6172067331157716, "lr": 4e-05, "grad_norm": 4.729633808135986, "elapsed_s": 25.5}
+{"step": 5, "epoch": 0.133, "train_loss": 0.48198056914326215, "lr": 0.0002, "grad_norm": 2.2879278659820557, "elapsed_s": 129.3}
+{"step": 10, "epoch": 0.265, "train_loss": 0.1920139559266697, "lr": 0.00019896341474445525, "grad_norm": 0.5531525015830994, "elapsed_s": 260.1}
+{"step": 15, "epoch": 0.398, "train_loss": 0.17156923572866623, "lr": 0.00019587514915766124, "grad_norm": 0.2544276714324951, "elapsed_s": 395.0}
+{"step": 20, "epoch": 0.531, "train_loss": 0.13195342378704775, "lr": 0.0001907992282510675, "grad_norm": 0.46393948793411255, "elapsed_s": 532.0}
+{"step": 25, "epoch": 0.663, "train_loss": 0.1276105117474957, "lr": 0.00018384088452007578, "grad_norm": 0.3596179187297821, "elapsed_s": 665.8}
+{"step": 30, "epoch": 0.796, "train_loss": 0.12055917551298058, "lr": 0.0001751443762949772, "grad_norm": 0.2989739179611206, "elapsed_s": 797.6}
+{"step": 35, "epoch": 0.929, "train_loss": 0.12758686022814822, "lr": 0.00016488999701978903, "grad_norm": 0.2928810119628906, "elapsed_s": 931.2}
+{"epoch": 1, "step": 38, "val_loss": 0.1535172319098878, "checkpoint": "checkpoints\\exp_hp_r8\\epoch1", "elapsed_s": 1122.6, "peak_gb": 4.146}
+{"step": 40, "epoch": 1.053, "train_loss": 0.12336287246695025, "lr": 0.00015329033746173975, "grad_norm": 0.5105980634689331, "elapsed_s": 1173.0}
+{"step": 45, "epoch": 1.186, "train_loss": 0.1059174242212897, "lr": 0.00014058587834217355, "grad_norm": 0.2712433636188507, "elapsed_s": 1305.6}
+{"step": 50, "epoch": 1.318, "train_loss": 0.09362691107507908, "lr": 0.0001270400047611508, "grad_norm": 0.3741265535354614, "elapsed_s": 1439.3}
+{"step": 55, "epoch": 1.451, "train_loss": 0.0998647673683464, "lr": 0.00011293354577522263, "grad_norm": 0.3072175085544586, "elapsed_s": 1573.9}
+{"step": 60, "epoch": 1.584, "train_loss": 0.12346825877971454, "lr": 9.85589523322443e-05, "grad_norm": 0.44255053997039795, "elapsed_s": 1710.7}
+{"step": 65, "epoch": 1.716, "train_loss": 0.12543099588067647, "lr": 8.42142342645646e-05, "grad_norm": 0.33740097284317017, "elapsed_s": 1845.9}
+{"step": 70, "epoch": 1.849, "train_loss": 0.10717529715562427, "lr": 7.019678203706163e-05, "grad_norm": 0.35690173506736755, "elapsed_s": 1981.4}
+{"step": 75, "epoch": 1.982, "train_loss": 0.07353988930855866, "lr": 5.679720133572206e-05, "grad_norm": 0.2612731456756592, "elapsed_s": 2109.3}
+{"epoch": 2, "step": 76, "val_loss": 0.1281853668800088, "checkpoint": "checkpoints\\exp_hp_r8\\epoch2", "elapsed_s": 2245.3, "peak_gb": 4.146}
+{"step": 80, "epoch": 2.106, "train_loss": 0.08800603544102754, "lr": 4.4293288316255653e-05, "grad_norm": 0.2995942234992981, "elapsed_s": 2347.5}
+{"step": 85, "epoch": 2.239, "train_loss": 0.07477406826053214, "lr": 3.294427041611425e-05, "grad_norm": 0.23645934462547302, "elapsed_s": 2485.4}
+{"step": 90, "epoch": 2.371, "train_loss": 0.08725264818243787, "lr": 2.2985432127701946e-05, "grad_norm": 0.33822792768478394, "elapsed_s": 2617.3}
+{"step": 95, "epoch": 2.504, "train_loss": 0.07566988352880016, "lr": 1.462323714966114e-05, "grad_norm": 0.36114826798439026, "elapsed_s": 2744.7}
+{"step": 100, "epoch": 2.637, "train_loss": 0.08190815838432958, "lr": 8.031048042356392e-06, "grad_norm": 0.37087446451187134, "elapsed_s": 2880.0}
+{"step": 105, "epoch": 2.769, "train_loss": 0.08261868114308721, "lr": 3.3455321263955786e-06, "grad_norm": 0.16664201021194458, "elapsed_s": 3016.8}
+{"step": 110, "epoch": 2.902, "train_loss": 0.08764537467802558, "lr": 6.638281360408339e-07, "grad_norm": 0.3098907172679901, "elapsed_s": 3151.3}
+{"epoch": 3, "step": 114, "val_loss": 0.12690715048808932, "checkpoint": "checkpoints\\exp_hp_r8\\epoch3", "elapsed_s": 3368.6, "peak_gb": 4.146}
+[exp_hp_r8_epoch3/val] 25/206
+[exp_hp_r8_epoch3/val] 50/206
+[exp_hp_r8_epoch3/val] 75/206
+[exp_hp_r8_epoch3/val] 100/206
+[exp_hp_r8_epoch3/val] 125/206
+[exp_hp_r8_epoch3/val] 150/206
+[exp_hp_r8_epoch3/val] 175/206
+[exp_hp_r8_epoch3/val] 200/206
+{"epoch": 3, "val_loss": 0.12690715048808932, "accuracy": 0.7330097087378641, "macro_f1": 0.46953966232663696, "evidence_micro_f1": 0.5132075471698113, "parse_fail": 0.0}
+best epoch 3 -> C:\Users\RUHAN\Downloads\gen_ai_assignment_2\checkpoints\exp_hp_r8\best

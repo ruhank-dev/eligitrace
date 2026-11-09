@@ -1,0 +1,21 @@
+{
+  "tag": "exp_draft05b_ft_epoch1",
+  "split": "val",
+  "n": 206,
+  "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+  "adapter": "C:\\Users\\RUHAN\\Downloads\\gen_ai_assignment_2\\checkpoints\\exp_draft05b_ft\\epoch1",
+  "adapter_sha256": "9501e67ee6855ae3db8b2bf0b764dc3e906b7777a4a31b6eb552b96b380a062f",
+  "dtype": "torch.bfloat16",
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce GTX 1660 SUPER",
+  "decoding": {
+    "strategy": "greedy (argmax)",
+    "decoder": "kvcache.greedy_cached",
+    "max_new_tokens": 64,
+    "batch_size": 1,
+    "do_sample": false,
+    "repetition_penalty": 1.0
+  },
+  "git_commit": "bcaf95359bafcdd987f74646a272a54a6dd20c9b",
+  "created_at": "2026-11-08T13:15:34+00:00"
+}

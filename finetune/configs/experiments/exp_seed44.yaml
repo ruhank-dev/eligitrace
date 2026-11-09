@@ -29,3 +29,4 @@ train:
   log_every: 5
 oversample: {}
 eval_each_epoch: true
+eval_epochs: [3]          # generation-based validation at the final epoch only (time budget); baseline epoch 3 is its best epoch

@@ -188,10 +188,24 @@ The model is precise on `included` (precision 1.00) and `not excluded` (F1 0.82)
 | Mechanism | Headline result |
 |---|---|
 | KV-cached decoding | **3.6×** faster decoding than recomputation at 128 context tokens, **10×** at 512 and **18–20×** at 1,024. The cache costs only 28 KiB per token thanks to grouped-query attention. |
-| Tiled online-softmax attention | Matches PyTorch SDPA to **2.7e-6** in fp32 (432 cases). At 4,096 tokens it needs **41 MiB vs 1.9 GB** of extra memory compared with unfused attention, but it is slower because it is a Python loop over tiles, not a fused kernel. |
-| Speculative decoding (0.5B draft) | **91 %** draft acceptance at γ = 1, and 0.31 target forwards per token at γ = 8. Even so, it runs at **0.39–0.69×** the speed of KV-cached greedy decoding: on this launch-bound GPU, a 24-layer draft step costs nearly as much as a 28-layer target step. This negative result is reported as measured. |
+| Tiled online-softmax attention | Matches a genuine float64 reference to **2.5e-6** in fp32 over 432 cases (PyTorch SDPA: 2.8e-6). At 4,096 tokens it needs **41 MiB vs 1.9 GB** of extra memory compared with unfused attention, but it is slower because it is a Python loop over tiles, not a fused kernel. |
+| Speculative decoding (0.5B draft) | **91 %** draft acceptance at γ = 1, and 0.31 target forwards per token at γ = 8. Even so, it runs at **0.39–0.69×** the speed of KV-cached greedy decoding: on this launch-bound GPU, a 24-layer draft step costs nearly as much as a 28-layer target step. Fine-tuning the draft lifts acceptance at γ = 4 from 0.59 to 0.85 and the speed to 0.75× (best 0.79× at γ = 6), but it is still slower. These negative results are reported as measured. In the live Inference Lab, where the draft accepts every token of a short answer, speculative decoding was **1.43 ± 0.22×** faster than KV-cached decoding over five repeated runs (range 1.18–1.73×; timings vary on a shared GPU). |
 
-In bf16, a few long generations diverge from the reference decoder. Each divergence happens at a logit tie within one bf16 rounding step (a margin of 0.125). Re-running the same cases in fp32 is how we check that the decoders themselves are exact. Full analysis: [`report/`](report/).
+In bf16, 4 of the 9 KV-cache benchmark cases (and some speculative generations) differ from the reference decoder. The differences come from two logit ties within one bf16 rounding step (a margin of 0.125). Re-running all four cases in fp32 on the CPU gives identical tokens, which is how we check that the decoders themselves are exact. The GPU test measures each tie and accepts a bf16 divergence only when the logit gap is explained by the measured path noise (`speculative/ties.py`); a float32 test with no tolerance is `task test-slow`. Full analysis: [`report/`](report/).
+
+### Additional validation experiments (validation split only; the test set was used once)
+
+Same pipeline, one change per run, 206 validation criteria. Summary files: [`results/experiments/`](results/experiments/).
+
+| Run | Accuracy | Macro-F1 | Evidence F1 | Reading |
+|---|---|---|---|---|
+| Seeds 42 / 43 / 44 | 0.738 / 0.757 / 0.752 | 0.543 / 0.608 / 0.450 | 0.532 / 0.579 / 0.538 | accuracy is stable (0.749 ± 0.010); macro-F1 swings by 0.16 because the rare classes have 2–3 validation examples |
+| Oversample rare labels ×3 | 0.767 | 0.621 | 0.504 | promising but within seed noise |
+| QLoRA (4-bit base) | 0.709 | 0.415 | 0.532 | lower accuracy than bf16 LoRA; saves 0.9 GB |
+| LoRA rank 8 | 0.733 | 0.470 | 0.513 | half the parameters, within noise of rank 16 |
+| Fine-tuned 0.5B draft | 0.748 | 0.445 | 0.448 | used as the speculative draft (see above) |
+
+Rank 32 and a lower learning rate were configured but not run (time). The frozen model remains the seed-42 rank-16 bf16 LoRA run.
 
 | Area | Files |
 |------|-------|
@@ -200,6 +214,20 @@ In bf16, a few long generations diverge from the reference decoder. Each diverge
 | KV-cache benchmark | [`results/kvcache/`](results/kvcache/) |
 | Attention validation and benchmark | [`results/attention/`](results/attention/) |
 | Speculative decoding benchmark | [`results/speculative/`](results/speculative/) |
+| Extra experiments, live Lab runs, tie checks | [`results/experiments/`](results/experiments/), [`results/lab/`](results/lab/), [`results/speculative/tie_check.json`](results/speculative/tie_check.json) |
+
+---
+
+## 🧪 Tests and demo helpers
+
+| Command | What it runs |
+|---|---|
+| `task test` | CPU suite (tiny float64 models, API, metrics, split leakage); no GPU needed |
+| `task test-gpu` | real Qwen pair in bf16 on the GPU (ties measured, see above) |
+| `task test-slow` | real Qwen pair in float32 on the CPU with no tolerance (tens of minutes) |
+| `task lint` | ruff |
+| `task demo-check` | read-only readiness check before a demo; walkthrough in [`demo/DEMO_WALKTHROUGH.md`](demo/DEMO_WALKTHROUGH.md) |
+| `task exp-run` / `task exp-summary` | rerun the validation-only experiments and collect their table |
 
 ---
 
@@ -214,10 +242,11 @@ eligitrace/
 ├── evaluation/        # Prediction, metrics, error analysis, test-set guard, plots
 ├── kvcache/           # Cache-aware decoder, decoder without cache, benchmarks
 ├── attention/         # Reference SDPA, tiled online-softmax attention, validation
-├── speculative/       # Greedy speculative decoding, benchmarks
+├── speculative/       # Greedy speculative decoding, benchmarks, tie checks, live Lab evidence
 ├── server/            # FastAPI app (routers · schemas · repositories · services · orm)
 ├── web/               # Browser UI (Screen · Inference Lab)
 ├── tests/             # pytest suite
+├── demo/              # Demo preflight check, sample inputs, walkthrough
 ├── data/splits/       # Published split manifest
 ├── results/           # Metrics, logs, benchmark CSVs, figures
 └── report/            # IEEE LaTeX paper

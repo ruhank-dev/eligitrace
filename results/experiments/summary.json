@@ -1,0 +1,356 @@
+{
+  "runs": [
+    {
+      "run": "lora_r16_bf16",
+      "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "strategy": "bf16-mixed",
+      "seed": 42,
+      "lora_r": 16,
+      "lr": 0.0002,
+      "oversample": {},
+      "best_epoch": 3,
+      "val_loss_best": 0.12932318250590527,
+      "accuracy": 0.7378640776699029,
+      "macro_f1": 0.5427418238143081,
+      "macro_f1_present": 0.5427418238143081,
+      "inclusion_acc": 0.7424242424242424,
+      "exclusion_acc": 0.7357142857142858,
+      "evidence_micro_f1": 0.532319391634981,
+      "parse_fail": 0.0,
+      "per_class_f1": {
+        "included": 0.781,
+        "not included": 0.0,
+        "excluded": 0.667,
+        "not excluded": 0.846,
+        "not enough information": 0.542,
+        "not applicable": 0.421
+      },
+      "per_class_support": {
+        "included": 35,
+        "not included": 3,
+        "excluded": 2,
+        "not excluded": 101,
+        "not enough information": 53,
+        "not applicable": 12
+      },
+      "train_minutes": 62.4,
+      "peak_gb": 4.284,
+      "trainable_params": null,
+      "epoch_macro_f1": [
+        0.3481977366013182,
+        0.4358813700918964,
+        0.5427418238143081
+      ]
+    },
+    {
+      "run": "exp_seed43",
+      "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "strategy": "bf16-mixed",
+      "seed": 43,
+      "lora_r": 16,
+      "lr": 0.0002,
+      "oversample": {},
+      "best_epoch": 3,
+      "val_loss_best": 0.13297477166802962,
+      "accuracy": 0.7572815533980582,
+      "macro_f1": 0.6079739173356195,
+      "macro_f1_present": 0.6079739173356195,
+      "inclusion_acc": 0.696969696969697,
+      "exclusion_acc": 0.7857142857142857,
+      "evidence_micro_f1": 0.578512396694215,
+      "parse_fail": 0.0,
+      "per_class_f1": {
+        "included": 0.738,
+        "not included": 0.0,
+        "excluded": 1.0,
+        "not excluded": 0.88,
+        "not enough information": 0.553,
+        "not applicable": 0.476
+      },
+      "per_class_support": {
+        "included": 35,
+        "not included": 3,
+        "excluded": 2,
+        "not excluded": 101,
+        "not enough information": 53,
+        "not applicable": 12
+      },
+      "train_minutes": 106.6,
+      "peak_gb": 4.284,
+      "trainable_params": 18464768,
+      "epoch_macro_f1": [
+        0.6079739173356195
+      ]
+    },
+    {
+      "run": "exp_seed44",
+      "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "strategy": "bf16-mixed",
+      "seed": 44,
+      "lora_r": 16,
+      "lr": 0.0002,
+      "oversample": {},
+      "best_epoch": 3,
+      "val_loss_best": 0.13022694679132074,
+      "accuracy": 0.7524271844660194,
+      "macro_f1": 0.45034438639716506,
+      "macro_f1_present": 0.45034438639716506,
+      "inclusion_acc": 0.7121212121212122,
+      "exclusion_acc": 0.7714285714285715,
+      "evidence_micro_f1": 0.5384615384615384,
+      "parse_fail": 0.0,
+      "per_class_f1": {
+        "included": 0.742,
+        "not included": 0.0,
+        "excluded": 0.0,
+        "not excluded": 0.866,
+        "not enough information": 0.594,
+        "not applicable": 0.5
+      },
+      "per_class_support": {
+        "included": 35,
+        "not included": 3,
+        "excluded": 2,
+        "not excluded": 101,
+        "not enough information": 53,
+        "not applicable": 12
+      },
+      "train_minutes": 155.6,
+      "peak_gb": 4.284,
+      "trainable_params": 18464768,
+      "epoch_macro_f1": [
+        0.45034438639716506
+      ]
+    },
+    {
+      "run": "exp_oversample3",
+      "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "strategy": "bf16-mixed",
+      "seed": 42,
+      "lora_r": 16,
+      "lr": 0.0002,
+      "oversample": {
+        "excluded": 3,
+        "not included": 3
+      },
+      "best_epoch": 3,
+      "val_loss_best": 0.13669556565026203,
+      "accuracy": 0.7669902912621359,
+      "macro_f1": 0.620956670956671,
+      "macro_f1_present": 0.620956670956671,
+      "inclusion_acc": 0.7121212121212122,
+      "exclusion_acc": 0.7928571428571428,
+      "evidence_micro_f1": 0.5042016806722688,
+      "parse_fail": 0.0,
+      "per_class_f1": {
+        "included": 0.767,
+        "not included": 0.0,
+        "excluded": 1.0,
+        "not excluded": 0.883,
+        "not enough information": 0.6,
+        "not applicable": 0.476
+      },
+      "per_class_support": {
+        "included": 35,
+        "not included": 3,
+        "excluded": 2,
+        "not excluded": 101,
+        "not enough information": 53,
+        "not applicable": 12
+      },
+      "train_minutes": 116.2,
+      "peak_gb": 4.284,
+      "trainable_params": 18464768,
+      "epoch_macro_f1": [
+        0.4588937980690558,
+        0.617326080178826,
+        0.620956670956671
+      ]
+    },
+    {
+      "run": "exp_qlora",
+      "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "strategy": "qlora-nf4",
+      "seed": 42,
+      "lora_r": 16,
+      "lr": 0.0002,
+      "oversample": {},
+      "best_epoch": 3,
+      "val_loss_best": 0.1349139551752412,
+      "accuracy": 0.7087378640776699,
+      "macro_f1": 0.41467333622835184,
+      "macro_f1_present": 0.41467333622835184,
+      "inclusion_acc": 0.7575757575757576,
+      "exclusion_acc": 0.6857142857142857,
+      "evidence_micro_f1": 0.5321888412017168,
+      "parse_fail": 0.0,
+      "per_class_f1": {
+        "included": 0.806,
+        "not included": 0.0,
+        "excluded": 0.333,
+        "not excluded": 0.814,
+        "not enough information": 0.535,
+        "not applicable": 0.0
+      },
+      "per_class_support": {
+        "included": 35,
+        "not included": 3,
+        "excluded": 2,
+        "not excluded": 101,
+        "not enough information": 53,
+        "not applicable": 12
+      },
+      "train_minutes": 60.5,
+      "peak_gb": 3.401,
+      "trainable_params": 18464768,
+      "epoch_macro_f1": [
+        0.41467333622835184
+      ]
+    },
+    {
+      "run": "exp_hp_r8",
+      "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "strategy": "bf16-mixed",
+      "seed": 42,
+      "lora_r": 8,
+      "lr": 0.0002,
+      "oversample": {},
+      "best_epoch": 3,
+      "val_loss_best": 0.12690715048808932,
+      "accuracy": 0.7330097087378641,
+      "macro_f1": 0.46953966232663696,
+      "macro_f1_present": 0.46953966232663696,
+      "inclusion_acc": 0.7272727272727273,
+      "exclusion_acc": 0.7357142857142858,
+      "evidence_micro_f1": 0.5132075471698113,
+      "parse_fail": 0.0,
+      "per_class_f1": {
+        "included": 0.762,
+        "not included": 0.0,
+        "excluded": 0.667,
+        "not excluded": 0.845,
+        "not enough information": 0.543,
+        "not applicable": 0.0
+      },
+      "per_class_support": {
+        "included": 35,
+        "not included": 3,
+        "excluded": 2,
+        "not excluded": 101,
+        "not enough information": 53,
+        "not applicable": 12
+      },
+      "train_minutes": 56.1,
+      "peak_gb": 4.146,
+      "trainable_params": 9232384,
+      "epoch_macro_f1": [
+        0.46953966232663696
+      ]
+    },
+    {
+      "run": "exp_draft05b_ft",
+      "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "strategy": "bf16-mixed",
+      "seed": 42,
+      "lora_r": 16,
+      "lr": 0.0002,
+      "oversample": {},
+      "best_epoch": 2,
+      "val_loss_best": 0.13912749057696397,
+      "accuracy": 0.7475728155339806,
+      "macro_f1": 0.44483218916857364,
+      "macro_f1_present": 0.44483218916857364,
+      "inclusion_acc": 0.7727272727272727,
+      "exclusion_acc": 0.7357142857142858,
+      "evidence_micro_f1": 0.4478764478764479,
+      "parse_fail": 0.0,
+      "per_class_f1": {
+        "included": 0.8,
+        "not included": 0.0,
+        "excluded": 0.0,
+        "not excluded": 0.851,
+        "not enough information": 0.583,
+        "not applicable": 0.435
+      },
+      "per_class_support": {
+        "included": 35,
+        "not included": 3,
+        "excluded": 2,
+        "not excluded": 101,
+        "not enough information": 53,
+        "not applicable": 12
+      },
+      "train_minutes": 55.4,
+      "peak_gb": 2.164,
+      "trainable_params": 8798208,
+      "epoch_macro_f1": [
+        0.35653244700369774,
+        0.44483218916857364,
+        0.4443703721466845
+      ]
+    }
+  ],
+  "seed_aggregate": {
+    "accuracy": {
+      "mean": 0.7491909385113269,
+      "sd": 0.01010517475468996,
+      "n": 3,
+      "values": [
+        0.7378640776699029,
+        0.7572815533980582,
+        0.7524271844660194
+      ]
+    },
+    "macro_f1": {
+      "mean": 0.5336867091823643,
+      "sd": 0.07920393665543096,
+      "n": 3,
+      "values": [
+        0.5427418238143081,
+        0.6079739173356195,
+        0.45034438639716506
+      ]
+    },
+    "macro_f1_present": {
+      "mean": 0.5336867091823643,
+      "sd": 0.07920393665543096,
+      "n": 3,
+      "values": [
+        0.5427418238143081,
+        0.6079739173356195,
+        0.45034438639716506
+      ]
+    },
+    "evidence_micro_f1": {
+      "mean": 0.5497644422635781,
+      "sd": 0.025085158059482623,
+      "n": 3,
+      "values": [
+        0.532319391634981,
+        0.578512396694215,
+        0.5384615384615384
+      ]
+    },
+    "inclusion_acc": {
+      "mean": 0.7171717171717172,
+      "sd": 0.02314432169169614,
+      "n": 3,
+      "values": [
+        0.7424242424242424,
+        0.696969696969697,
+        0.7121212121212122
+      ]
+    },
+    "exclusion_acc": {
+      "mean": 0.7642857142857143,
+      "sd": 0.025753937681885608,
+      "n": 3,
+      "values": [
+        0.7357142857142858,
+        0.7857142857142857,
+        0.7714285714285715
+      ]
+    }
+  },
+  "note": "validation split only; test never used"
+}

@@ -312,8 +312,89 @@ def speculative():
     print("fig spec_benchmark")
 
 
+DESC = {"lora_r16_bf16": "baseline (seed 42)", "exp_seed43": "seed 43", "exp_seed44": "seed 44",
+        "exp_oversample3": "oversample rare labels $3\\times$", "exp_qlora": "QLoRA (4-bit NF4 base)",
+        "exp_hp_r8": "LoRA rank 8", "exp_hp_r32": "LoRA rank 32", "exp_hp_lr1e-4": "learning rate $10^{-4}$",
+        "exp_draft05b_ft": "0.5B draft, fine-tuned (own model)"}
+
+
+def experiments():
+    s = load("experiments/summary.json")
+    if not s:
+        return print("skip experiments")
+    runs = [r for r in s["runs"] if r["run"] != "exp_draft05b_ft"]
+    rows = [[DESC.get(r["run"], esc(r["run"])), f(r["accuracy"]), f(r["macro_f1_present"]), f(r["evidence_micro_f1"]),
+             f(r["inclusion_acc"]), f(r["exclusion_acc"]), r["best_epoch"], f(r["peak_gb"], 2)]
+            for r in runs]
+    write("tab_experiments.tex", table(
+        "tab:exps", "Validation-only fine-tuning experiments (206 validation criteria; the test split is untouched). "
+        "Same prompt, parser and greedy decoder as the main run; best epoch chosen by validation macro-F1; "
+        "GB = peak GPU memory. Wall-clock time is not reported: the GPU was shared with other programs.", "lrrrrrrr",
+        ["Run", "Acc", "MF1$_p$", "Evid F1", "Incl acc", "Excl acc", "Best ep", "GB"], rows, star=True))
+    a = s.get("seed_aggregate") or {}
+    if a:
+        rows = [[k, f(v["mean"], 3), f(v["sd"], 3), " / ".join(f(x, 3) for x in v["values"])] for k, v in
+                (("accuracy", a["accuracy"]), ("macro_f1_present", a["macro_f1_present"]),
+                 ("evidence_micro_f1", a["evidence_micro_f1"]), ("inclusion_acc", a["inclusion_acc"]),
+                 ("exclusion_acc", a["exclusion_acc"]))]
+        write("tab_seeds.tex", table(
+            "tab:seeds", f"Variation across {a['accuracy']['n']} training seeds (42, 43, 44), validation split. "
+            "SD is the sample standard deviation.", "lrrl", ["Metric", "Mean", "SD", "Per seed (42 / 43 / 44)"],
+            [[esc(r[0])] + r[1:] for r in rows]))
+    names = {"lora_r16_bf16": "Base", "exp_seed43": "SeedB", "exp_seed44": "SeedC", "exp_oversample3": "Over",
+             "exp_qlora": "Qlora", "exp_hp_r8": "HpEight", "exp_hp_r32": "HpThirtyTwo", "exp_hp_lr1e-4": "HpLr",
+             "exp_draft05b_ft": "Draft"}
+    mac = []
+    for r in s["runs"]:
+        n = names.get(r["run"])
+        if n:
+            for k, m in (("accuracy", "Acc"), ("macro_f1_present", "MFp"), ("evidence_micro_f1", "Ev"),
+                         ("inclusion_acc", "Incl"), ("exclusion_acc", "Excl")):
+                mac.append(f"\\newcommand{{\\v{n}{m}}}{{{r[k]:.3f}}}")
+            mac.append(f"\\newcommand{{\\v{n}Ep}}{{{r['best_epoch']}}}")
+    for k, m in (("accuracy", "Acc"), ("macro_f1_present", "MFp"), ("evidence_micro_f1", "Ev")):
+        if k in a:
+            mac.append(f"\\newcommand{{\\vSeed{m}Mean}}{{{a[k]['mean']:.3f}}}")
+            mac.append(f"\\newcommand{{\\vSeed{m}Sd}}{{{a[k]['sd']:.3f}}}")
+            mac.append(f"\\newcommand{{\\vSeed{m}Min}}{{{min(a[k]['values']):.3f}}}")
+            mac.append(f"\\newcommand{{\\vSeed{m}Max}}{{{max(a[k]['values']):.3f}}}")
+    write("exp_numbers.tex", "\n".join(mac) + "\n")
+    fig, ax = plt.subplots(figsize=(3.4, 2.4))
+    labs = [DESC.get(r["run"], r["run"]).replace("$", "").replace("\\times", "x").replace("\\", "") for r in runs]
+    ax.barh(range(len(runs)), [r["macro_f1_present"] for r in runs], color=C["ft"], height=0.55, label="macro-F1")
+    ax.scatter([r["accuracy"] for r in runs], range(len(runs)), color=C["tiled"], zorder=3, s=14, label="accuracy")
+    ax.set_yticks(range(len(runs)))
+    ax.set_yticklabels(labs, fontsize=6)
+    ax.invert_yaxis()
+    ax.set_xlim(0, 1)
+    ax.legend(frameon=False, fontsize=6, loc="lower right")
+    ax.set_xlabel("validation score")
+    fig.tight_layout()
+    fig.savefig(FIG / "experiments_val.png")
+    plt.close(fig)
+    print("fig experiments_val")
+
+
+def draft():
+    a, b = rows_csv("speculative/untrained_rerun/benchmark.csv"), rows_csv("speculative/ftdraft/benchmark.csv")
+    if not (a and b):
+        return print("skip draft")
+    out = []
+    for g in (1, 2, 4, 6, 8):
+        ra = next(r for r in a if r["workload"] == "task_json" and r["mode"] == "speculative" and int(r["gamma"]) == g)
+        rb = next(r for r in b if r["workload"] == "task_json" and r["mode"] == "speculative" and int(r["gamma"]) == g)
+        out.append([g, f(ra["acceptance_rate"], 2), f(ra["speedup"], 2), f(rb["acceptance_rate"], 2), f(rb["speedup"], 2)])
+    write("tab_draft.tex", table(
+        "tab:draft", "Speculative decoding on the real task (JSON answers) with the untrained vs.\\ the fine-tuned 0.5B "
+        "draft; target = fine-tuned 1.5B, same 8 validation prompts, bf16, batch 1. Speed-up is relative to KV-cached "
+        "greedy decoding of the target.", "rrrrr",
+        ["$\\gamma$", "Acc. (untrained)", "Speed-up", "Acc. (fine-tuned)", "Speed-up"], out))
+    print("table draft")
+
+
 if __name__ == "__main__":
-    for fn in (t_split, t_candidates, t_membench, t_hparams, fig_training, t_results, kv, attention, speculative):
+    for fn in (t_split, t_candidates, t_membench, t_hparams, fig_training, t_results, kv, attention, speculative,
+               experiments, draft):
         try:
             fn()
         except Exception as e:  # keep going; report what is missing

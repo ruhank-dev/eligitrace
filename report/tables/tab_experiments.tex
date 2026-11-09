@@ -1,0 +1,18 @@
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Validation-only fine-tuning experiments (206 validation criteria; the test split is untouched). Same prompt, parser and greedy decoder as the main run; best epoch chosen by validation macro-F1; GB = peak GPU memory. Wall-clock time is not reported: the GPU was shared with other programs.}
+\label{tab:exps}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Run & Acc & MF1$_p$ & Evid F1 & Incl acc & Excl acc & Best ep & GB \\
+\midrule
+baseline (seed 42) & 0.738 & 0.543 & 0.532 & 0.742 & 0.736 & 3 & 4.28 \\
+seed 43 & 0.757 & 0.608 & 0.579 & 0.697 & 0.786 & 3 & 4.28 \\
+seed 44 & 0.752 & 0.450 & 0.538 & 0.712 & 0.771 & 3 & 4.28 \\
+oversample rare labels $3\times$ & 0.767 & 0.621 & 0.504 & 0.712 & 0.793 & 3 & 4.28 \\
+QLoRA (4-bit NF4 base) & 0.709 & 0.415 & 0.532 & 0.758 & 0.686 & 3 & 3.40 \\
+LoRA rank 8 & 0.733 & 0.470 & 0.513 & 0.727 & 0.736 & 3 & 4.15 \\
+\bottomrule
+\end{tabular}
+\end{table*}

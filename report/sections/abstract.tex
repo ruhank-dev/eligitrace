@@ -10,10 +10,10 @@ hand:
 \begin{itemize}
 \item a KV-cached decoder, $3.6\times$ faster than recomputation at 128 context tokens and up to $20\times$ at
 1{,}024;
-\item a tiled online-softmax attention kernel that matches PyTorch SDPA to $3\times10^{-6}$ in fp32 and uses
+\item a tiled online-softmax attention kernel that matches a float64 reference to $2.5\times10^{-6}$ in fp32 and uses
 46$\times$ less memory than unfused attention at 4{,}096 tokens;
-\item a greedy speculative decoder whose draft acceptance reaches 91\%, but which is slower than plain cached
-decoding on launch-bound consumer hardware.
+\item a greedy speculative decoder whose draft acceptance reaches 91\% (96\% with a fine-tuned draft), but
+which is still slower than plain cached decoding on launch-bound consumer hardware.
 \end{itemize}
 Where bf16 outputs diverge from the reference, we trace the cause to logit ties within one bf16 rounding
 step and confirm exact agreement in fp32. A browser application screens unseen notes, highlights evidence

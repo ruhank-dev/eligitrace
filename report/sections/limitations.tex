@@ -4,9 +4,12 @@ annotations and only 8 test patients (206 annotations). Rare labels are nearly a
 \emph{excluded} example and only 7 \emph{not included}, so per-class scores for these classes are either
 undefined or rest on a handful of cases, and patient-level bootstrap intervals are wide.
 
-\textbf{Single seed, limited search.} Each training configuration was run once (seed 42) and the
-hyper-parameter search was deliberately small to respect the 6\,GB budget and the deadline; reported
-differences of a few points are within run-to-run variance we did not measure.
+\textbf{Seeds and search.} The frozen model is a single run (seed 42). Two further seeds, oversampling, QLoRA and a
+rank-8 run (Section~\ref{sec:res-extra}, validation split only) show that validation accuracy varies by about one
+point between seeds but macro-F1 by up to 0.16, because the rare classes have 2--3 validation examples. The
+hyper-parameter search is small (one alternative rank, one quantised and one resampling variant, one training run
+each), so no configuration is shown to beat the frozen one beyond noise. Rank~32 and learning-rate runs were not
+run. Test-set numbers come only from the frozen seed-42 model.
 
 \textbf{Explanations.} Rationales are constrained to the cited sentences and pass an automatic grounding check,
 but they were not rated by clinicians, and the check (numbers and label contradiction) cannot catch every
@@ -16,8 +19,8 @@ unfaithful paraphrase. They should be read as summaries of the cited evidence, n
 batch size 1 small kernels are launch-bound, which shapes every speed result (Section~\ref{sec:results}). The
 tiled attention kernel is an educational PyTorch implementation, not a fused kernel. It was checked inside the
 full model (Section~\ref{sec:res-numerics}) but is not used in the application's serving path. Equality
-claims in bf16 hold only up to logit ties within one rounding step; exactness was confirmed in fp32 on a
-small number of prompts, not on the full benchmark grid.
+claims in bf16 hold only up to logit ties within one rounding step; exactness was confirmed in fp32 on all four diverging KV-cache cases and on three
+prompts for speculative decoding, not on every prompt of the benchmark grid.
 
 \textbf{Aggregation and scope.} The overall outcome is a hand-written rule over criterion predictions; the
 dataset contains no patient--trial ground truth, so this outcome is not evaluated. Criteria fetched from

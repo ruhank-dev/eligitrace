@@ -82,8 +82,10 @@ silently mapped), and drops cited IDs that do not exist in the note (reported as
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.92\linewidth]{token_hist.png}
-\caption{Tokens per training example (prompt + target) across all 1{,}015 annotations. The dashed line is
-the training limit; every example fits, so truncation never removes evidence.}
+\caption{Tokens per training example (prompt + target) across all 1{,}015 annotations. The red dashed line
+is the training limit (1{,}024 tokens); the green dotted line marks the longest example (623 tokens). Every
+example fits, so truncation never removes evidence. A looser 2{,}048-token audit also finds no example over
+the limit (\texttt{results/data/token\_stats.json}).}
 \label{fig:tokens}
 \end{figure}
 

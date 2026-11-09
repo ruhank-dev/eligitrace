@@ -9,13 +9,13 @@ Impl. & dtype & Cases & max $|\Delta|$ & mean $|\Delta|$ \\
 \midrule
 reference & bfloat16 & 144 & 7.80e-03 & 1.83e-04 \\
 reference & float16 & 144 & 9.76e-04 & 2.28e-05 \\
-reference & float32 & 144 & 0.00e+00 & 0.00e+00 \\
+reference & float32 & 144 & 2.81e-06 & 2.46e-08 \\
 tiled & bfloat16 & 432 & 7.80e-03 & 1.83e-04 \\
 tiled & float16 & 432 & 9.76e-04 & 2.28e-05 \\
-tiled & float32 & 432 & 2.74e-06 & 2.82e-08 \\
+tiled & float32 & 432 & 2.45e-06 & 2.04e-08 \\
 torch\_sdpa & bfloat16 & 144 & 7.80e-03 & 1.83e-04 \\
 torch\_sdpa & float16 & 144 & 9.76e-04 & 2.28e-05 \\
-torch\_sdpa & float32 & 144 & 2.38e-06 & 2.63e-08 \\
+torch\_sdpa & float32 & 144 & 2.81e-06 & 2.53e-08 \\
 \bottomrule
 \end{tabular}
 \end{table}

@@ -31,9 +31,14 @@ in Table~\ref{tab:errors}.
 
 The Inference Lab runs the no-cache, KV-cached and speculative decoders on the loaded model. For each run it
 reports timing, token equality and draft acceptance, and it also runs the attention check against a float64
-ground truth. In the captured run (validation example~0, $\gamma{=}4$), the output is a 15-token JSON answer
-and the draft proposed every token correctly (100\% acceptance). Speculative decoding was therefore
-$1.57\times$ faster than KV-cached greedy decoding, and all three decoders produced identical tokens. Averaged
-over the 8 benchmark prompts at $\gamma{=}4$, acceptance was 59\% and the result was a slowdown
+ground truth. In the captured run (validation example~0, $\gamma{=}4$; Fig.~\ref{fig:app}, bottom left), the
+output is a 15-token JSON answer and the draft proposed every token correctly (100\% acceptance). Speculative
+decoding then took 2{,}769\,ms against 3{,}533\,ms for KV-cached greedy decoding, a speed-up of
+$1.28\times$, and all three decoders produced identical tokens. Live timings on a shared consumer GPU vary
+from run to run, so one run is not a stable figure. We therefore repeated the identical request five times
+(\texttt{results/lab/live\_runs.json}): the speed-up was $1.43\pm0.22\times$ (range $1.18$--$1.73\times$), and the
+four runs saved earlier in the application database gave $1.28$--$1.57\times$ (\texttt{results/lab/ui\_runs\_saved.json});
+the screenshot shows one of them. In every run the tokens were identical and acceptance was 100\%.
+Averaged over the 8 benchmark prompts at $\gamma{=}4$, acceptance was 59\% and the result was a slowdown
 (Table~\ref{tab:spec}). Whether speculative decoding helps depends almost entirely on acceptance: each fully
 accepted round produces $\gamma{+}1$ tokens for one target forward pass.
