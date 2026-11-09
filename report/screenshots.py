@@ -97,6 +97,10 @@ def main():
         lab.screenshot(path=OUT / "06_lab.png", full_page=True,
                        clip={"x": 0, "y": 0, "width": 1440, "height": 1180})
         b.close()
+    from PIL import Image
+    for name, h in (("02_input", 1164), ("03_results", 1157), ("04_report", 990)):  # tight crops used in the report
+        im = Image.open(OUT / f"{name}.png")
+        im.crop((0, 0, im.width, min(h, im.height))).save(OUT / f"{name}_top.png")
     print("screenshots ->", OUT)
 
 

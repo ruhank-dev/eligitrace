@@ -335,6 +335,22 @@ def perclass():
         "small to rank runs.", "lrrrrrrr", ["Run"] + short + ["Mean of 4"], rows, star=True))
 
 
+def cm_val():
+    import json as _j
+    import sys as _s
+    _s.path.insert(0, str(ROOT))
+    from evaluation.metrics_cls import classification
+    from evaluation.plots import confusion_png
+    for run, name in (("lora_r16_bf16", "cm_val_frozen"), ("exp_hp_r32", "cm_val_r32")):
+        pth = ROOT / "results" / "training" / run / "val_predictions" / f"{run}_epoch3" / "predictions.jsonl"
+        if not pth.exists():
+            return print("skip cm_val")
+        recs = [_j.loads(x) for x in pth.read_text(encoding="utf-8").splitlines()]
+        confusion_png(classification(recs)["confusion"], FIG / f"{name}.png",
+                      "validation, " + ("frozen (rank 16)" if run == "lora_r16_bf16" else "rank 32"), figsize=(3.6, 3.0))
+    print("fig cm_val")
+
+
 def experiments():
     s = load("experiments/summary.json")
     if not s:
@@ -411,7 +427,7 @@ def draft():
 
 if __name__ == "__main__":
     for fn in (t_split, t_candidates, t_membench, t_hparams, fig_training, t_results, kv, attention, speculative,
-               experiments, perclass, draft):
+               experiments, perclass, cm_val, draft):
         try:
             fn()
         except Exception as e:  # keep going; report what is missing

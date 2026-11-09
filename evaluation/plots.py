@@ -12,10 +12,10 @@ SHORT = {"included": "incl", "not included": "not incl", "excluded": "excl", "no
          "not enough information": "NEI", "not applicable": "N/A", "invalid": "invalid"}
 
 
-def confusion_png(conf: dict, path: Path, title: str = "") -> None:
+def confusion_png(conf: dict, path: Path, title: str = "", figsize: tuple | None = None) -> None:
     labels = conf["labels"]
     m = np.array(conf["matrix"])
-    fig, ax = plt.subplots(figsize=(0.75 * len(labels) + 1.8, 0.65 * (len(labels) - 1) + 1.6))
+    fig, ax = plt.subplots(figsize=figsize or (0.75 * len(labels) + 1.8, 0.65 * (len(labels) - 1) + 1.6))
     ax.imshow(m, cmap="Blues")
     ax.set_xticks(range(len(labels)), [SHORT.get(x, x) for x in labels], rotation=35, ha="right")
     ax.set_yticks(range(m.shape[0]), [SHORT.get(x, x) for x in labels[: m.shape[0]]])

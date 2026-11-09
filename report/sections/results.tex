@@ -97,7 +97,6 @@ change, is scored on the 206 \emph{validation} criteria with the same prompt, pa
 touches the test split, which was evaluated once (Table~\ref{tab:main}). Seeds, QLoRA, rank and learning-rate runs are scored
 at the final epoch only (epoch~3, which was also the baseline's best epoch) to fit the time budget.
 \input{tables/tab_experiments}
-\input{tables/tab_seeds}
 
 \textbf{Seeds.} Over seeds 42, 43 and 44 the validation accuracy is $\vSeedAccMean\pm\vSeedAccSd$ (range
 $\vSeedAccMin$--$\vSeedAccMax$), so accuracy is stable to about one point. Macro-F1 is not:
@@ -125,7 +124,7 @@ accuracy $\vHpEightAcc$ and macro-F1 $\vHpEightMFp$, which is inside the seed-to
 ($\vSeedAccMin$--$\vSeedAccMax$ and $\vSeedMFpMin$--$\vSeedMFpMax$). Within the noise we measured, rank~16 is
 therefore not shown to be better than rank~8. Doubling it to 32 (36.9\,M trainable parameters) gave the highest validation accuracy of all runs, $\vHpThirtyTwoAcc$,
 but a macro-F1 of $\vHpThirtyTwoMFp$, because the \emph{excluded} class (two examples) was missed. On the four classes
-with at least 12 validation examples (Table~\ref{tab:perclass}) rank~32 also has the best mean F1
+with at least 12 validation examples (Table~\ref{tab:perclassval}, Fig.~\ref{fig:cmval}) rank~32 also has the best mean F1
 (0.703 against 0.647 for the frozen run and 0.662--0.682 for the other rank-16 runs), driven by \emph{included}
 (0.84) and \emph{not enough information} (0.63). Its accuracy lies about two standard deviations above the three-seed
 mean, so the improvement is plausible but modest, about two accuracy points, and it comes from one run. It also
@@ -138,6 +137,16 @@ configuration, so rank~32 is reported as a validated direction, not a result. Th
 each hyper-parameter besides rank 16 and rate $2\times10^{-4}$, one training run each), so the frozen
 configuration is a reasonable default, not a tuned optimum.
 \input{tables/tab_perclassval}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.49\linewidth]{cm_val_frozen.png}\hfill
+\includegraphics[width=0.49\linewidth]{cm_val_r32.png}
+\caption{Validation confusion matrices (rows: expert label; columns: prediction) for the frozen rank-16 model and the
+rank-32 run. Rank~32 moves \emph{not enough information} and \emph{included} mass onto the diagonal but never
+predicts \emph{excluded}, which explains its higher accuracy and lower macro-F1.}
+\label{fig:cmval}
+\end{figure}
 
 \textbf{Label calibration.} The dominant validation error is \emph{not enough information} predicted as \emph{not
 excluded} (22 of 54 errors), so we tested a cheap post-hoc correction: score every allowed label by its sequence

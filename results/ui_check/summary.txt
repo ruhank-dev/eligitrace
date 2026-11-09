@@ -1,0 +1,163 @@
+[
+ {
+  "scheme": "light",
+  "view": "desktop",
+  "page": "/",
+  "scrollWidth": 1440,
+  "viewport": 1440,
+  "overflow": false,
+  "title": "EligiTrace \u00b7 Screen",
+  "console_errors": []
+ },
+ {
+  "scheme": "light",
+  "view": "desktop",
+  "page": "/lab",
+  "scrollWidth": 1440,
+  "viewport": 1440,
+  "overflow": false,
+  "title": "EligiTrace \u00b7 Inference Lab",
+  "console_errors": []
+ },
+ {
+  "scheme": "light",
+  "view": "desktop",
+  "page": "/docs",
+  "scrollWidth": 1440,
+  "viewport": 1440,
+  "overflow": false,
+  "title": "EligiTrace API - Swagger UI",
+  "console_errors": []
+ },
+ {
+  "scheme": "light",
+  "view": "desktop",
+  "interaction": {
+   "empty_run_error": "Enter a clinical note of at least 20 characters.",
+   "example_note_chars": 756,
+   "criteria_loaded": 31,
+   "nct_tab_visible": true
+  }
+ },
+ {
+  "scheme": "light",
+  "view": "mobile",
+  "page": "/",
+  "scrollWidth": 390,
+  "viewport": 390,
+  "overflow": false,
+  "title": "EligiTrace \u00b7 Screen",
+  "console_errors": []
+ },
+ {
+  "scheme": "light",
+  "view": "mobile",
+  "page": "/lab",
+  "scrollWidth": 390,
+  "viewport": 390,
+  "overflow": false,
+  "title": "EligiTrace \u00b7 Inference Lab",
+  "console_errors": []
+ },
+ {
+  "scheme": "light",
+  "view": "mobile",
+  "page": "/docs",
+  "scrollWidth": 390,
+  "viewport": 390,
+  "overflow": false,
+  "title": "EligiTrace API - Swagger UI",
+  "console_errors": []
+ },
+ {
+  "scheme": "light",
+  "view": "mobile",
+  "interaction": {
+   "empty_run_error": "Enter a clinical note of at least 20 characters.",
+   "example_note_chars": 756,
+   "criteria_loaded": 31,
+   "nct_tab_visible": true
+  }
+ },
+ {
+  "scheme": "dark",
+  "view": "desktop",
+  "page": "/",
+  "scrollWidth": 1440,
+  "viewport": 1440,
+  "overflow": false,
+  "title": "EligiTrace \u00b7 Screen",
+  "console_errors": []
+ },
+ {
+  "scheme": "dark",
+  "view": "desktop",
+  "page": "/lab",
+  "scrollWidth": 1440,
+  "viewport": 1440,
+  "overflow": false,
+  "title": "EligiTrace \u00b7 Inference Lab",
+  "console_errors": []
+ },
+ {
+  "scheme": "dark",
+  "view": "desktop",
+  "page": "/docs",
+  "scrollWidth": 1440,
+  "viewport": 1440,
+  "overflow": false,
+  "title": "EligiTrace API - Swagger UI",
+  "console_errors": []
+ },
+ {
+  "scheme": "dark",
+  "view": "desktop",
+  "interaction": {
+   "empty_run_error": "Enter a clinical note of at least 20 characters.",
+   "example_note_chars": 756,
+   "criteria_loaded": 31,
+   "nct_tab_visible": true
+  }
+ },
+ {
+  "scheme": "dark",
+  "view": "mobile",
+  "page": "/",
+  "scrollWidth": 390,
+  "viewport": 390,
+  "overflow": false,
+  "title": "EligiTrace \u00b7 Screen",
+  "console_errors": []
+ },
+ {
+  "scheme": "dark",
+  "view": "mobile",
+  "page": "/lab",
+  "scrollWidth": 390,
+  "viewport": 390,
+  "overflow": false,
+  "title": "EligiTrace \u00b7 Inference Lab",
+  "console_errors": []
+ },
+ {
+  "scheme": "dark",
+  "view": "mobile",
+  "page": "/docs",
+  "scrollWidth": 390,
+  "viewport": 390,
+  "overflow": false,
+  "title": "EligiTrace API - Swagger UI",
+  "console_errors": []
+ },
+ {
+  "scheme": "dark",
+  "view": "mobile",
+  "interaction": {
+   "empty_run_error": "Enter a clinical note of at least 20 characters.",
+   "example_note_chars": 756,
+   "criteria_loaded": 31,
+   "nct_tab_visible": true
+  }
+ }
+]
+PROBLEMS: 0
