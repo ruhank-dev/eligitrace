@@ -60,13 +60,14 @@ def main():
         pg.fill("#trial-title", "Hypothetical T2DM add-on therapy trial")
         pg.click("#preview-toggle")
         pg.wait_for_timeout(800)
+        pg.add_style_tag(content=".topbar{position:static!important}body{background-attachment:scroll!important}")
         pg.screenshot(path=OUT / "02_input.png", full_page=True)
         # 3. run + results
         pg.click("#run")
         pg.wait_for_selector(".outcome", timeout=600000)
         pg.wait_for_timeout(500)
         pg.locator("#results").scroll_into_view_if_needed()
-        pg.add_style_tag(content=".topbar{position:static!important}")
+        pg.add_style_tag(content=".topbar{position:static!important}body{background-attachment:scroll!important}")
         pg.wait_for_selector("#status[data-s='ready']", timeout=60000)
         cards = pg.locator(".crit-card")
         if cards.count():
@@ -92,7 +93,8 @@ def main():
         lab.wait_for_selector("#dec-out .kpis", timeout=600000)
         lab.click("#run-att")
         lab.wait_for_selector("#att-out table", timeout=300000)
-        lab.add_style_tag(content=".topbar{position:static!important}")
+        lab.wait_for_selector("#status[data-s='ready']", timeout=120000)
+        lab.add_style_tag(content=".topbar{position:static!important}body{background-attachment:scroll!important}")
         lab.wait_for_timeout(500)
         lab.screenshot(path=OUT / "06_lab.png", full_page=True,
                        clip={"x": 0, "y": 0, "width": 1440, "height": 1180})

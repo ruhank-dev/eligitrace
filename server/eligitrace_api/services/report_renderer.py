@@ -71,16 +71,17 @@ def to_html(out: dict) -> str:
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>EligiTrace report {_e(out['id'])}</title>
 <style>
-body{{font:14px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#1b1f24;max-width:860px;margin:24px auto;padding:0 16px;background:#fff}}
-h1{{font-size:22px;margin:0}} h2{{font-size:16px;margin:28px 0 10px;border-bottom:1px solid #dde3ea;padding-bottom:4px}}
-.warn{{background:#fff4e5;border:1px solid #f0c27b;padding:10px 12px;border-radius:8px;margin:14px 0}}
-.out{{border:1px solid #dde3ea;border-radius:10px;padding:12px 14px}} .out b{{font-size:18px}}
-.card{{border:1px solid #dde3ea;border-radius:10px;padding:10px 14px;margin:10px 0;break-inside:avoid}}
-.hd{{display:flex;justify-content:space-between;align-items:center}} .id{{font-weight:600;color:#5f6b7a}}
-.badge{{color:#fff;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600}}
-.crit{{font-weight:500}} .ev{{margin:6px 0;padding-left:18px;color:#24467a}} .ex{{color:#3a434d}}
-.miss{{color:#9a6700;font-weight:500}} ol{{padding-left:28px}} pre{{background:#f5f7fa;padding:10px;border-radius:8px;overflow:auto;font-size:12px}}
-@media print{{body{{margin:0}} .card{{page-break-inside:avoid}}}}
+body{{font:14px/1.6 "Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;color:#17140f;max-width:880px;margin:32px auto;padding:0 20px;background:#f5f1e8}}
+h1{{font-family:"Cormorant Garamond",Georgia,serif;font-size:38px;font-weight:600;margin:0;letter-spacing:-.005em}}
+h2{{font-family:"Cormorant Garamond",Georgia,serif;font-size:24px;font-weight:600;margin:34px 0 12px;border-bottom:1px solid #d6cdb6;padding-bottom:6px;color:#0f3b33}}
+.warn{{background:#f3e9cf;border:1px solid #d9c08a;color:#6d5018;padding:11px 14px;border-radius:12px;margin:16px 0;font-size:13px}}
+.out{{border:1px solid #e6dfcd;border-left:4px solid #a9853f;border-radius:16px;padding:16px 20px;background:#fffdf8}} .out b{{font-family:"Cormorant Garamond",Georgia,serif;font-size:26px}}
+.card{{border:1px solid #e6dfcd;border-radius:16px;padding:14px 18px;margin:12px 0;break-inside:avoid;background:#fffdf8}}
+.hd{{display:flex;justify-content:space-between;align-items:center}} .id{{font-weight:700;color:#a9853f;letter-spacing:.12em;font-size:12px}}
+.badge{{color:#fff;border-radius:999px;padding:3px 12px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}}
+.crit{{font-family:"Cormorant Garamond",Georgia,serif;font-size:20px;font-weight:600;margin:8px 0 4px}} .ev{{margin:6px 0;padding-left:18px;color:#4d463a;font-style:italic}} .ex{{color:#4d463a}}
+.miss{{color:#8a6420;font-weight:600}} ol{{padding-left:28px}} pre{{background:#f1ebdd;padding:12px;border-radius:12px;overflow:auto;font-size:12px}}
+@media print{{body{{margin:0;background:#fff}} .card{{page-break-inside:avoid}}}}
 </style></head><body>
 <h1>EligiTrace screening report</h1><p>ID <code>{_e(out['id'])}</code> &middot; {_e(_when(out['created_at']))}</p>
 <div class="warn"><b>{_e(out['disclaimer'])}</b></div>

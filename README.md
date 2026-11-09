@@ -48,6 +48,14 @@ All of it is exposed in a **browser app** that has two parts: a screening workfl
 
 ![Inference Lab: live comparison of no-cache, KV-cached and speculative decoding, plus the attention check](report/figures/screens/06_lab.png)
 
+<details><summary>Interface redesign: before and after</summary>
+
+![Original interface (left) and the redesigned "Ivory and Obsidian" interface (right)](results/ui_redesign/before_after.png)
+
+Self-hosted Cormorant Garamond and Manrope fonts (no network needed), champagne-gold accents on warm ivory, with an automatic obsidian dark mode.
+
+</details>
+
 📄 **Report:** [`report/EligiTrace_Report.pdf`](report/EligiTrace_Report.pdf) (IEEE format; LaTeX source in [`report/`](report/))
 
 ---

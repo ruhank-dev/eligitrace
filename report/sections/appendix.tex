@@ -20,9 +20,7 @@ task setup     # env from uv.lock
 task data      # split, manifest, stats
 task train     # LoRA fine-tuning
 task eval-final  # one-time test eval
-task bench-kv; task bench-attn
-task bench-spec
-task download-weights
-task app       # 127.0.0.1:8000
+task bench-kv bench-attn bench-spec
+task download-weights; task app  # :8000
 \end{verbatim}
 }
