@@ -318,6 +318,23 @@ DESC = {"lora_r16_bf16": "baseline (seed 42)", "exp_seed43": "seed 43", "exp_see
         "exp_draft05b_ft": "0.5B draft, fine-tuned (own model)"}
 
 
+def perclass():
+    d = load("experiments/per_class_f1.json")
+    if not d:
+        return print("skip perclass")
+    labs = ["included", "not included", "excluded", "not excluded", "not enough information", "not applicable"]
+    short = ["incl.", "not incl.", "excl.", "not excl.", "NEI", "N/A"]
+    freq = ["included", "not excluded", "not enough information", "not applicable"]
+    rows = []
+    for r, v in d.items():
+        rows.append([DESC.get(r, esc(r))] + [f(v[l], 2) for l in labs] + [f(sum(v[l] for l in freq) / 4, 3)])
+    write("tab_perclassval.tex", table(
+        "tab:perclassval", "Per-class F1 on the validation split at the final epoch. The last column averages the four "
+        "labels with at least 12 validation examples (\\emph{included}, \\emph{not excluded}, \\emph{not enough "
+        "information}, \\emph{not applicable}); \\emph{excluded} (2 examples) and \\emph{not included} (3) are too "
+        "small to rank runs.", "lrrrrrrr", ["Run"] + short + ["Mean of 4"], rows, star=True))
+
+
 def experiments():
     s = load("experiments/summary.json")
     if not s:
@@ -394,7 +411,7 @@ def draft():
 
 if __name__ == "__main__":
     for fn in (t_split, t_candidates, t_membench, t_hparams, fig_training, t_results, kv, attention, speculative,
-               experiments, draft):
+               experiments, perclass, draft):
         try:
             fn()
         except Exception as e:  # keep going; report what is missing

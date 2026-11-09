@@ -66,6 +66,8 @@ def main():
         pg.wait_for_selector(".outcome", timeout=600000)
         pg.wait_for_timeout(500)
         pg.locator("#results").scroll_into_view_if_needed()
+        pg.add_style_tag(content=".topbar{position:static!important}")
+        pg.wait_for_selector("#status[data-s='ready']", timeout=60000)
         cards = pg.locator(".crit-card")
         if cards.count():
             cards.nth(1).hover()

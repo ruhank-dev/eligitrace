@@ -203,9 +203,11 @@ Same pipeline, one change per run, 206 validation criteria. Summary files: [`res
 | Oversample rare labels ×3 | 0.767 | 0.621 | 0.504 | promising but within seed noise |
 | QLoRA (4-bit base) | 0.709 | 0.415 | 0.532 | lower accuracy than bf16 LoRA; saves 0.9 GB |
 | LoRA rank 8 | 0.733 | 0.470 | 0.513 | half the parameters, within noise of rank 16 |
+| LoRA rank 32 | 0.772 | 0.469 | 0.536 | highest accuracy and best mean F1 on the four frequent classes (0.703 vs 0.647), but misses the 2-example *excluded* class; single run, 4.55 GB peak |
+| Learning rate 1e-4 | 0.723 | 0.462 | 0.544 | under-trained in 3 epochs (F1 0 on *not applicable*) |
 | Fine-tuned 0.5B draft | 0.748 | 0.445 | 0.448 | used as the speculative draft (see above) |
 
-Rank 32 and a lower learning rate were configured but not run (time). The frozen model remains the seed-42 rank-16 bf16 LoRA run.
+Rank 32 had a first attempt that ran out of memory on the shared 6 GB GPU (log kept in `results/logs/`); it completed on retry with `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True`. Post-hoc label calibration (`evaluation/calibration.py`, leave-one-patient-out) did not beat the greedy decoder and was not adopted. The test split was evaluated once, so the frozen model remains the seed-42 rank-16 bf16 LoRA run.
 
 | Area | Files |
 |------|-------|

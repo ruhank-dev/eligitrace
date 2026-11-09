@@ -248,6 +248,86 @@
       ]
     },
     {
+      "run": "exp_hp_r32",
+      "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "strategy": "bf16-mixed",
+      "seed": 42,
+      "lora_r": 32,
+      "lr": 0.0002,
+      "oversample": {},
+      "best_epoch": 3,
+      "val_loss_best": 0.12805583579378635,
+      "accuracy": 0.7718446601941747,
+      "macro_f1": 0.46851132788632793,
+      "macro_f1_present": 0.46851132788632793,
+      "inclusion_acc": 0.7878787878787878,
+      "exclusion_acc": 0.7642857142857142,
+      "evidence_micro_f1": 0.536,
+      "parse_fail": 0.0,
+      "per_class_f1": {
+        "included": 0.844,
+        "not included": 0.0,
+        "excluded": 0.0,
+        "not excluded": 0.865,
+        "not enough information": 0.626,
+        "not applicable": 0.476
+      },
+      "per_class_support": {
+        "included": 35,
+        "not included": 3,
+        "excluded": 2,
+        "not excluded": 101,
+        "not enough information": 53,
+        "not applicable": 12
+      },
+      "train_minutes": 87.1,
+      "peak_gb": 4.553,
+      "trainable_params": 36929536,
+      "epoch_macro_f1": [
+        0.46851132788632793
+      ]
+    },
+    {
+      "run": "exp_hp_lr1e-4",
+      "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "strategy": "bf16-mixed",
+      "seed": 42,
+      "lora_r": 16,
+      "lr": 0.0001,
+      "oversample": {},
+      "best_epoch": 3,
+      "val_loss_best": 0.12721883540983772,
+      "accuracy": 0.7233009708737864,
+      "macro_f1": 0.4615740740740741,
+      "macro_f1_present": 0.4615740740740741,
+      "inclusion_acc": 0.7121212121212122,
+      "exclusion_acc": 0.7285714285714285,
+      "evidence_micro_f1": 0.544,
+      "parse_fail": 0.0,
+      "per_class_f1": {
+        "included": 0.75,
+        "not included": 0.0,
+        "excluded": 0.667,
+        "not excluded": 0.842,
+        "not enough information": 0.511,
+        "not applicable": 0.0
+      },
+      "per_class_support": {
+        "included": 35,
+        "not included": 3,
+        "excluded": 2,
+        "not excluded": 101,
+        "not enough information": 53,
+        "not applicable": 12
+      },
+      "train_minutes": 65.5,
+      "peak_gb": 4.284,
+      "trainable_params": 18464768,
+      "epoch_macro_f1": [
+        0.4615740740740741
+      ]
+    },
+    {
       "run": "exp_draft05b_ft",
       "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
       "strategy": "bf16-mixed",

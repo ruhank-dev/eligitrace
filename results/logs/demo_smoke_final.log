@@ -1,0 +1,12 @@
+inclusion included                 evidence=[0]  Adults aged 40 to 80 years with type 2 diabetes
+inclusion not enough information   evidence=[1]  HbA1c between 7.0% and 10.5%
+inclusion not enough information   evidence=[1]  Stable dose of metformin for at least 3 months
+exclusion not excluded             evidence=[5]  Current insulin therapy
+exclusion not excluded             evidence=[2]  eGFR below 30 mL/min/1.73m2
+exclusion not applicable           evidence=[]  Pregnancy or breastfeeding
+exclusion not excluded             evidence=[]  History of pancreatitis
+OUTCOME: Needs more information
+TRACE:
+  Inclusion #2 needs information: HbA1c between 7.0% and 10.5%
+  Inclusion #3 needs information: Stable dose of metformin for at least 3 months
+HTML report bytes: 7790

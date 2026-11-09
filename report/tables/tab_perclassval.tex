@@ -1,0 +1,20 @@
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Per-class F1 on the validation split at the final epoch. The last column averages the four labels with at least 12 validation examples (\emph{included}, \emph{not excluded}, \emph{not enough information}, \emph{not applicable}); \emph{excluded} (2 examples) and \emph{not included} (3) are too small to rank runs.}
+\label{tab:perclassval}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Run & incl. & not incl. & excl. & not excl. & NEI & N/A & Mean of 4 \\
+\midrule
+baseline (seed 42) & 0.78 & 0.00 & 0.67 & 0.85 & 0.54 & 0.42 & 0.647 \\
+seed 43 & 0.74 & 0.00 & 1.00 & 0.88 & 0.55 & 0.48 & 0.662 \\
+seed 44 & 0.74 & 0.00 & 0.00 & 0.87 & 0.59 & 0.50 & 0.675 \\
+oversample rare labels $3\times$ & 0.77 & 0.00 & 1.00 & 0.88 & 0.60 & 0.48 & 0.682 \\
+QLoRA (4-bit NF4 base) & 0.81 & 0.00 & 0.33 & 0.81 & 0.53 & 0.00 & 0.538 \\
+LoRA rank 8 & 0.76 & 0.00 & 0.67 & 0.85 & 0.54 & 0.00 & 0.537 \\
+LoRA rank 32 & 0.84 & 0.00 & 0.00 & 0.86 & 0.63 & 0.48 & 0.703 \\
+learning rate $10^{-4}$ & 0.75 & 0.00 & 0.67 & 0.84 & 0.51 & 0.00 & 0.525 \\
+\bottomrule
+\end{tabular}
+\end{table*}

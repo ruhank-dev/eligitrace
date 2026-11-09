@@ -1,0 +1,20 @@
+{
+  "epochs": [
+    {
+      "epoch": 3,
+      "val_loss": 0.12721883540983772,
+      "accuracy": 0.7233009708737864,
+      "macro_f1": 0.4615740740740741,
+      "evidence_micro_f1": 0.544,
+      "parse_fail": 0.0
+    }
+  ],
+  "best": {
+    "epoch": 3,
+    "val_loss": 0.12721883540983772,
+    "accuracy": 0.7233009708737864,
+    "macro_f1": 0.4615740740740741,
+    "evidence_micro_f1": 0.544,
+    "parse_fail": 0.0
+  }
+}

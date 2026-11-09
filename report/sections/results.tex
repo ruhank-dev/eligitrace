@@ -94,7 +94,7 @@ line.
 The main run uses one seed and one configuration, so we measured how much of a result is configuration and how
 much is chance. Every run below repeats the pipeline of Section~\ref{sec:ft} on the \emph{training} split with one
 change, is scored on the 206 \emph{validation} criteria with the same prompt, parser and greedy decoder, and never
-touches the test split, which was evaluated once (Table~\ref{tab:main}). Seeds, QLoRA and rank-8 runs are scored
+touches the test split, which was evaluated once (Table~\ref{tab:main}). Seeds, QLoRA, rank and learning-rate runs are scored
 at the final epoch only (epoch~3, which was also the baseline's best epoch) to fit the time budget.
 \input{tables/tab_experiments}
 \input{tables/tab_seeds}
@@ -123,10 +123,31 @@ so the extra memory saving did not justify the accuracy cost, which confirms the
 \textbf{Rank.} Halving the LoRA rank to 8 trains $9.2$\,M instead of $18.5$\,M parameters and gives validation
 accuracy $\vHpEightAcc$ and macro-F1 $\vHpEightMFp$, which is inside the seed-to-seed spread of the rank-16 runs
 ($\vSeedAccMin$--$\vSeedAccMax$ and $\vSeedMFpMin$--$\vSeedMFpMax$). Within the noise we measured, rank~16 is
-therefore not shown to be better than rank~8. Our hyper-parameter search is deliberately small: one alternative rank, one
-quantised variant and one resampling variant, each from a single training run. Rank~32 and a lower learning rate were
-configured (\texttt{finetune/configs/experiments/}) but not run because of time. The frozen configuration
-(rank~16, learning rate $2\times10^{-4}$) is a reasonable default, not a tuned optimum.
+therefore not shown to be better than rank~8. Doubling it to 32 (36.9\,M trainable parameters) gave the highest validation accuracy of all runs, $\vHpThirtyTwoAcc$,
+but a macro-F1 of $\vHpThirtyTwoMFp$, because the \emph{excluded} class (two examples) was missed. On the four classes
+with at least 12 validation examples (Table~\ref{tab:perclass}) rank~32 also has the best mean F1
+(0.703 against 0.647 for the frozen run and 0.662--0.682 for the other rank-16 runs), driven by \emph{included}
+(0.84) and \emph{not enough information} (0.63). Its accuracy lies about two standard deviations above the three-seed
+mean, so the improvement is plausible but modest, about two accuracy points, and it comes from one run. It also
+needs more memory (4.55 against 4.28\,GB peak) and its first attempt ran out of memory on the 6\,GB card while other
+programs held GPU memory; it completed only after enabling expandable CUDA allocator segments. Lowering the
+learning rate to $10^{-4}$ gave accuracy $\vHpLrAcc$ and macro-F1 $\vHpLrMFp$, below the baseline and with an F1 of 0
+on \emph{not applicable}: with the same three epochs the adapter is under-trained. Neither run changes the frozen model.
+The test split was evaluated once for the seed-42 rank-16 model and may not be re-scored to select a different
+configuration, so rank~32 is reported as a validated direction, not a result. The search remains small (one value of
+each hyper-parameter besides rank 16 and rate $2\times10^{-4}$, one training run each), so the frozen
+configuration is a reasonable default, not a tuned optimum.
+\input{tables/tab_perclassval}
+
+\textbf{Label calibration.} The dominant validation error is \emph{not enough information} predicted as \emph{not
+excluded} (22 of 54 errors), so we tested a cheap post-hoc correction: score every allowed label by its sequence
+log-probability after the prompt prefix \texttt{\{"label": "}, add a per-label bias, and fit the biases to maximise
+macro-F1 with leave-one-patient-out cross-validation over the eight validation patients
+(\texttt{evaluation/calibration.py}). Scoring by sequence probability alone gives accuracy 0.738 and macro-F1 0.411,
+below the greedy decoder's 0.543, because greedy decoding commits to the shared first token \emph{not}. Calibration
+raises the cross-validated macro-F1 to 0.511 but lowers accuracy to 0.694, and it still does not exceed the greedy
+decoder. The biases chosen on all 206 examples (up to $+3$ nats) reach 0.599 macro-F1 only in-sample. We therefore
+did not adopt calibration; the gain is not reliable on eight patients with two to three examples of the rare classes.
 
 \subsection{KV-Cached Decoding}\label{sec:res-kv}
 \input{tables/tab_kv}

@@ -1,0 +1,89 @@
+{
+ "n": 206,
+ "uncalibrated": {
+  "accuracy": 0.7378640776699029,
+  "macro_f1": 0.4111152221861098
+ },
+ "loo_patient_calibrated": {
+  "accuracy": 0.6941747572815534,
+  "macro_f1": 0.5110380534908837
+ },
+ "in_sample_oracle_bias": {
+  "included": 2.5,
+  "not included": 3.0,
+  "excluded": 1.0,
+  "not excluded": 0.0,
+  "not enough information": 0.0,
+  "not applicable": 1.5
+ },
+ "fold_biases": {
+  "sigir-20141": {
+   "included": 3.0,
+   "not included": 3.0,
+   "excluded": 1.0,
+   "not excluded": 0.0,
+   "not enough information": 0.0,
+   "not applicable": 1.5
+  },
+  "sigir-201415": {
+   "included": 2.5,
+   "not included": 3.0,
+   "excluded": 0.5,
+   "not excluded": 0.0,
+   "not enough information": 0.0,
+   "not applicable": 1.5
+  },
+  "sigir-20142": {
+   "included": 1.0,
+   "not included": 1.0,
+   "excluded": 1.0,
+   "not excluded": 0.0,
+   "not enough information": 0.0,
+   "not applicable": 1.5
+  },
+  "sigir-201420": {
+   "included": 2.0,
+   "not included": 3.0,
+   "excluded": 1.0,
+   "not excluded": 0.0,
+   "not enough information": 0.0,
+   "not applicable": 1.5
+  },
+  "sigir-201427": {
+   "included": 2.5,
+   "not included": 3.0,
+   "excluded": 1.0,
+   "not excluded": 0.0,
+   "not enough information": 0.0,
+   "not applicable": 1.5
+  },
+  "sigir-201430": {
+   "included": 3.0,
+   "not included": 3.0,
+   "excluded": 1.0,
+   "not excluded": 0.0,
+   "not enough information": 0.0,
+   "not applicable": 1.5
+  },
+  "sigir-201515": {
+   "included": 1.0,
+   "not included": 3.0,
+   "excluded": 1.0,
+   "not excluded": 0.0,
+   "not enough information": 0.0,
+   "not applicable": 1.5
+  },
+  "sigir-201522": {
+   "included": 2.5,
+   "not included": 3.0,
+   "excluded": 1.0,
+   "not excluded": 0.0,
+   "not enough information": 0.0,
+   "not applicable": 1.0
+  }
+ },
+ "in_sample_oracle_calibrated": {
+  "accuracy": 0.7281553398058253,
+  "macro_f1": 0.5986645930342381
+ }
+}

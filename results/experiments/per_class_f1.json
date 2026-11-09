@@ -1,0 +1,66 @@
+{
+ "lora_r16_bf16": {
+  "included": 0.78,
+  "not included": 0.0,
+  "excluded": 0.67,
+  "not excluded": 0.85,
+  "not enough information": 0.54,
+  "not applicable": 0.42
+ },
+ "exp_seed43": {
+  "included": 0.74,
+  "not included": 0.0,
+  "excluded": 1.0,
+  "not excluded": 0.88,
+  "not enough information": 0.55,
+  "not applicable": 0.48
+ },
+ "exp_seed44": {
+  "included": 0.74,
+  "not included": 0.0,
+  "excluded": 0.0,
+  "not excluded": 0.87,
+  "not enough information": 0.59,
+  "not applicable": 0.5
+ },
+ "exp_oversample3": {
+  "included": 0.77,
+  "not included": 0.0,
+  "excluded": 1.0,
+  "not excluded": 0.88,
+  "not enough information": 0.6,
+  "not applicable": 0.48
+ },
+ "exp_qlora": {
+  "included": 0.81,
+  "not included": 0.0,
+  "excluded": 0.33,
+  "not excluded": 0.81,
+  "not enough information": 0.53,
+  "not applicable": 0.0
+ },
+ "exp_hp_r8": {
+  "included": 0.76,
+  "not included": 0.0,
+  "excluded": 0.67,
+  "not excluded": 0.85,
+  "not enough information": 0.54,
+  "not applicable": 0.0
+ },
+ "exp_hp_r32": {
+  "included": 0.84,
+  "not included": 0.0,
+  "excluded": 0.0,
+  "not excluded": 0.86,
+  "not enough information": 0.63,
+  "not applicable": 0.48
+ },
+ "exp_hp_lr1e-4": {
+  "included": 0.75,
+  "not included": 0.0,
+  "excluded": 0.67,
+  "not excluded": 0.84,
+  "not enough information": 0.51,
+  "not applicable": 0.0
+ }
+}

@@ -1,0 +1,5 @@
+warning: `VIRTUAL_ENV=C:\Users\RUHAN\anaconda3` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+[start] exp_hp_r32
+[end] exp_hp_r32 rc=1 wall=5177s
+[start] exp_hp_lr1e-4
+[end] exp_hp_lr1e-4 rc=0 wall=4596s
