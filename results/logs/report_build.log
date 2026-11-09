@@ -4,13 +4,9 @@ Latexmk: This is Latexmk, John Collins, 9 March 2026. Version 4.88.
 Latexmk: applying rule 'pdflatex'...
 Rule 'pdflatex':  Reasons for rerun
 Changed files or newly in use/created:
-  figures/screens/06_lab.png
-  sections/results.tex
+  sections/appendix.tex
 Category 'changed_user':
-  figures/screens/06_lab.png
-  sections/results.tex
-Category 'no_dest':
-  pdflatex
+  sections/appendix.tex
 
 ------------
 Run number 1 of rule 'pdflatex'
@@ -413,11 +409,7 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[13] (./main.aux)
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
- )
+[13] (./main.aux) )
 (see the transcript file for additional information)</usr/local/texlive/2026/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2026/texmf
@@ -440,16 +432,15 @@ r8a.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></
 usr/local/texlive/2026/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local
 /texlive/2026/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2
 026/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (13 pages, 1571272 bytes).
+Output written on main.pdf (13 pages, 1571824 bytes).
 Transcript written on main.log.
 Latexmk: Getting log file 'main.log'
 Latexmk: Examining 'main.fls'
 Latexmk: Examining 'main.log'
 Latexmk: Found input bbl file 'main.bbl'
-Latexmk: References changed.
 Latexmk: Log file says output to 'main.pdf'
-  ===Source file 'main.bbl' for 'pdflatex'
 Latexmk: Using bibtex to make bibliography file(s).
+  ===Source file 'main.bbl' for 'pdflatex'
 Latexmk: Found bibliography file(s):
   ./refs.bib
 Latexmk: applying rule 'bibtex main'...
@@ -901,7 +892,7 @@ r8a.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></
 usr/local/texlive/2026/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local
 /texlive/2026/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2
 026/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (13 pages, 1571272 bytes).
+Output written on main.pdf (13 pages, 1571824 bytes).
 Transcript written on main.log.
 Latexmk: Getting log file 'main.log'
 Latexmk: Examining 'main.fls'
