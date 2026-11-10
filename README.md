@@ -58,6 +58,8 @@ Self-hosted Cormorant Garamond and Manrope fonts (no network needed), champagne-
 
 📄 **Report:** [`report/EligiTrace_Report.pdf`](report/EligiTrace_Report.pdf) (IEEE format; LaTeX source in [`report/`](report/))
 
+🎬 **Demo video:** <https://youtu.be/-X1Lm_6_rU0>
+
 ---
 
 ## 🧭 Table of contents
